@@ -6,11 +6,13 @@ const getLogs = (logs, state) => (logs || []).map((l) => {
 
   if (!template) {
     template = { name: 'anonymous', path: 'anonymous' }
+  } else {
+    template = { ...template, path: selectors.resolveEntityPath(state, template) }
   }
 
   return {
     ...l,
-    template: { ...template, path: selectors.resolveEntityPath(state, template) }
+    template: template
   }
 })
 
