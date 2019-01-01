@@ -1,5 +1,5 @@
 import 'should'
-import { actions, ActionTypes } from '../../../src/redux/entities'
+import { actions, ActionTypes } from '../../../../src/redux/entities'
 import { describeAsyncStore, itAsync } from '../asyncStore.js'
 
 describeAsyncStore('entities.actions.save', async ({ store, api, history }) => {
@@ -95,7 +95,7 @@ describeAsyncStore('entities.actions.save', async ({ store, api, history }) => {
   })
 
   itAsync('post trigger API_START and API_DONE events', async () => {
-    store.update({ entities: { '1': { __entitySet: 'testEntity', __isNew: true,_id: '1' } } })
+    store.update({ entities: { '1': { __entitySet: 'testEntity', __isNew: true, _id: '1' } } })
     api.post((p) => ({ _id: '2' }))
 
     await store.dispatch(actions.save('1'))

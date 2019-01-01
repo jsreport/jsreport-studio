@@ -1,5 +1,5 @@
 import 'should'
-import { actions } from '../../../src/redux/editor'
+import { actions } from '../../../../src/redux/editor'
 import { describeAsyncStore, itAsync } from './../asyncStore.js'
 
 describeAsyncStore('editor.actions.activateTab', ({ store, api, history }) => {

@@ -1,6 +1,6 @@
 import React from 'react'
 import 'should'
-import Preview from '../../../src/components/Preview/Preview.js'
+import Preview from '../../../../src/components/Preview/Preview.js'
 import { shallow } from 'enzyme'
 
 // don't find out such kind of component tests very much useful, but contributions welcome

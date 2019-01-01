@@ -1,7 +1,7 @@
 import 'should'
-import { actions } from '../../../src/redux/editor'
-import resolveUrl from '../../../src/helpers/resolveUrl.js'
-import { ActionTypes as EntitiesActionTypes } from '../../../src/redux/entities'
+import { actions } from '../../../../src/redux/editor'
+import resolveUrl from '../../../../src/helpers/resolveUrl.js'
+import { ActionTypes as EntitiesActionTypes } from '../../../../src/redux/entities'
 import { describeAsyncStore, itAsync } from './../asyncStore.js'
 
 describeAsyncStore('editor.actions.openTab', ({ store, api, history }) => {

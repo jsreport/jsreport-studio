@@ -1,6 +1,6 @@
 import 'should'
-import { actions } from '../../../src/redux/editor'
-import resolveUrl from '../../../src/helpers/resolveUrl.js'
+import { actions } from '../../../../src/redux/editor'
+import resolveUrl from '../../../../src/helpers/resolveUrl.js'
 import { describeAsyncStore, itAsync } from './../asyncStore.js'
 
 describeAsyncStore('editor.actions.updateHistory', ({ store, api, history }) => {

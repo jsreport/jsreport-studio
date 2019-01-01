@@ -1,6 +1,6 @@
 import should from 'should'
-import { actions } from '../../../src/redux/editor'
-import * as entities from '../../../src/redux/entities'
+import { actions } from '../../../../src/redux/editor'
+import * as entities from '../../../../src/redux/entities'
 import { describeAsyncStore, itAsync } from './../asyncStore.js'
 
 describeAsyncStore('editor.actions.closeTab', ({ store, api, history }) => {

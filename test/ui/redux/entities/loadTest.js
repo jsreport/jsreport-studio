@@ -1,5 +1,5 @@
 import 'should'
-import { actions, ActionTypes } from '../../../src/redux/entities'
+import { actions, ActionTypes } from '../../../../src/redux/entities'
 import { describeAsyncStore, itAsync } from '../asyncStore.js'
 
 describeAsyncStore('entities.actions.load', async ({ store, api, history }) => {
