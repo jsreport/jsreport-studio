@@ -2,7 +2,6 @@ const should = require('should')
 const jsreport = require('jsreport-core')
 const studio = require('../../')
 const Promise = require('bluebird')
-const createRequest = require('jsreport-core/lib/render/request')
 
 describe('studio', () => {
   let reporter
