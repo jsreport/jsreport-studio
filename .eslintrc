@@ -4,6 +4,10 @@
   "plugins": [
     "babel"
   ],
+  "env": {
+    "node": true,
+    "mocha": true
+  },
   "rules": {
     "babel/arrow-parens": 2,
     "arrow-parens": 0

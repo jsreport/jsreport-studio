@@ -51,3 +51,4 @@ main.js
 main.js.map
 dist/
 extensions_dev.js
+.vscode

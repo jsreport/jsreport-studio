@@ -23,7 +23,9 @@
   "scripts": {
     "start": "jsreport-studio-start",
     "run": "npm run build && jsreport-studio-start --run-only",
-    "test": "mocha test/ui/.setup.js test/ui --compilers js:babel-register --recursive --require mocha-clean --require ignore-styles&&mocha test/server",
+    "test": "npm run ui-test&&npm run server-test",
+    "ui-test": "mocha test/ui/.setup.js test/ui --compilers js:babel-register --recursive --require mocha-clean --require ignore-styles",
+    "server-test": "mocha test/server",
     "test:watch": "npm test -- --watch",
     "prepublish": "in-publish && npm run build || not-in-publish",
     "docs": "jsdoc2md src/Studio.js > static/Studio.md",
