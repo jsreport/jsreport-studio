@@ -89,12 +89,18 @@ export default () => {
   configuration.toolbarComponents.settings.push(connect(
     undefined,
     { openTab }
-  )((props) => (
-    <div
-      onClick={() => props.openTab({ key: 'StartupPage', editorComponentKey: 'startup', title: 'Startup' })}>
-      <i className='fa fa-home'></i> Startup page
-    </div>
-  )))
+  )((props) => {
+    if (!configuration.extensions.studio.options.startupPage) {
+      return null
+    }
+
+    return (
+      <div
+        onClick={() => props.openTab({ key: 'StartupPage', editorComponentKey: 'startup', title: 'Startup' })}>
+        <i className='fa fa-home'></i> Startup page
+      </div>
+    )
+  }))
 
   configuration.toolbarComponents.settings.push(() => (
     <div

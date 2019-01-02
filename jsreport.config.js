@@ -6,6 +6,10 @@ module.exports = {
       studio: {
         type: 'object',
         properties: {
+          startupPage: {
+            type: 'boolean',
+            default: true
+          },
           requestLogEnabled: {
             type: 'boolean',
             default: true

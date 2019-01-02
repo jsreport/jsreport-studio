@@ -25,6 +25,7 @@ import * as progress from '../../redux/progress'
 import getCloneName from '../../../shared/getCloneName'
 import cookies from 'js-cookie'
 import {
+  extensions,
   triggerSplitResize,
   removeHandler,
   previewListeners,
@@ -184,6 +185,10 @@ class App extends Component {
   }
 
   openStartup () {
+    if (!extensions.studio.options.startupPage) {
+      return
+    }
+
     if (shouldOpenStartupPage) {
       this.props.openTab({ key: 'StartupPage', editorComponentKey: 'startup', title: 'Startup' })
     }
@@ -359,10 +364,19 @@ class App extends Component {
         <div className={style.appContent + ' container'}>
           <div className='block'>
             <Toolbar
-              canRun={canRun} canSave={canSave} canSaveAll={canSaveAll} onSave={() => this.save()}
-              onSaveAll={() => this.saveAll()} isPending={isPending} activeTab={activeTabWithEntity} onUpdate={update}
-              canReformat={canReformat} onReformat={reformat}
-              onRun={(target, ignoreUndockMode) => this.handleRun(target, ignoreUndockMode ? false : undockMode)} openStartup={() => this.openStartup()} />
+              canRun={canRun}
+              canSave={canSave}
+              canSaveAll={canSaveAll}
+              onSave={() => this.save()}
+              onSaveAll={() => this.saveAll()}
+              isPending={isPending}
+              activeTab={activeTabWithEntity}
+              onUpdate={update}
+              canReformat={canReformat}
+              onReformat={reformat}
+              onRun={(target, ignoreUndockMode) => this.handleRun(target, ignoreUndockMode ? false : undockMode)}
+              openStartup={() => this.openStartup()}
+            />
 
             <div className='block'>
               <SplitPane
