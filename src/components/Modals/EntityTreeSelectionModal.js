@@ -129,7 +129,7 @@ class EntityTreeSelectionModal extends Component {
       <div>
         <div>
           <h1>
-            <i className='fa fa-check-square' /> {headingLabel != null ? headingLabel : 'Select entity'}
+            <i className='fa fa-check-square-o' /> {headingLabel != null ? headingLabel : 'Select entity'}
           </h1>
         </div>
         <div style={{ height: '30rem', overflow: 'auto' }}>

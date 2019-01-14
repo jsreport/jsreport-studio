@@ -4,44 +4,62 @@
   margin-bottom: 0.2rem;
 }
 
-.openTree {
-  cursor: pointer;
-  display: block;
+.select {           
+  overflow-y: auto;
+  overflow-x: auto;    
+  background-color: $primarySelectionColor
+}
+
+.select > ul {
+  margin: 0rem;
+  padding: 0rem;  
+  list-style: none;  
+}
+
+.select > ul > li {
+  cursor: pointer;  
+  padding: 0.3rem;
+  border-bottom: 0.1rem solid $secondaryColor;
+}
+
+.select > ul > li:hover {   
+  background-color: $secondaryHoverBackgroundColor;
+  color: $primaryHoverColor; 
+}
+
+.selectInput {        
+  cursor: pointer;  
+  font-size: 0.9rem;    
+  background-color: $primarySelectionColor;       
+  border-bottom: solid 0.2rem $secondaryColor;
+  transition: border 0.3s;
+  padding: 0.5rem;  
   width: 100%;
+  display: flex;
+  color: black;    
+  margin-top: 2px;  
 }
 
-.select {
-  background-color: #fff;
-  border: none;
-  letter-spacing: normal;
-  word-spacing: normal;
-  border-bottom: .2rem solid $secondaryColor;
-  color: #000;
-  transition: border .3s;
-  padding: .5rem;
-  font: 400 11px system-ui;
-  overflow-y: scroll;
-  overflow-x: scroll;
+.selectInput:hover, .selectInput:focus, .selectInput:active {
+  border-bottom: solid 0.2rem $primarySelectionBackgroundColor;
 }
 
-.select:active, .select:focus, .select:hover {
-  border-bottom: .2rem solid $primarySelectionBackgroundColor;
+.selectInput > i {
+  margin-top: 0.1rem;
 }
 
-.list {
-  cursor: default;
-  margin: 0px;
-  padding: 0px;
-  list-style: none;
+.selectInput > i:hover {      
+  color: $primarySelectionBackgroundColor;  
 }
 
-.list * {
-  cursor: inherit;
+.selectInput > span {  
+  margin-left: 0.5rem;  
+  white-space: nowrap;
+  overflow-x: hidden;
 }
 
-.listOption {
-  white-space: pre;
-  padding: 0px 2px 1px;
-  min-height: 1.2em;
-  max-width: 125px;
+.selectInput > span.link:hover {  
+  margin-left: 0.5rem;  
+  color: $primarySelectionBackgroundColor;
+  text-decoration: underline;
 }

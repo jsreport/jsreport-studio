@@ -2,16 +2,23 @@
 
 .container {
   margin: 0;
-  width: 360px;
+  width: 560px;  
+  height: 280px;  
+  overflow: hidden;
 }
 
 .input {
   width: 100%;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 5px 2px;
+  padding-top: 0.7rem;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 5px 2px;  
+}
+
+.input:hover, .input:focus, .input:active {
+  border-bottom: solid 0.2rem #d9d9d9 !important;
 }
 
 .results {
-  border-width: 0px 1px 1px;
+  border-width: 0px 0px 1px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 12px 30px 2px;
   border-top-style: initial;
   border-right-style: solid;

@@ -4,6 +4,7 @@ import TemplateProperties from './components/Properties/TemplateProperties.js'
 import EntityTree from './components/EntityTree/EntityTree.js'
 import EntityTreeNewButton from './components/EntityTree/EntityTreeNewButton'
 import EntityTreeInputSearch from './components/EntityTree/EntityTreeInputSearch.js'
+import EntityTreeNavigateButton from './components/EntityTree/EntityTreeNavigateButton.js'
 import Startup from './containers/Startup/Startup.js'
 import ApiModal from './components/Modals/ApiModal.js'
 import NewFolderModal from './components/Modals/NewFolderModal'
@@ -84,6 +85,10 @@ export default () => {
 
   configuration.entityTreeToolbarComponents.single.push((props) => (
     <EntityTreeInputSearch {...props} />
+  ))
+
+  configuration.entityTreeToolbarComponents.single.push((props) => (
+    <EntityTreeNavigateButton {...props} />
   ))
 
   configuration.toolbarComponents.settings.push(connect(

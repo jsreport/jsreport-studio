@@ -23,15 +23,19 @@ select:hover, select:focus, select:active {
   border-bottom: solid 0.2rem $primarySelectionBackgroundColor;
 }
 
-input {
+input { 
   border: none;
   border-bottom: solid 0.2rem $secondaryColor;
   transition: border 0.3s;
-  padding: 0.3rem;
+  padding: 0.3rem;  
 }
 
 input:hover, input:focus, input:active {
   border-bottom: solid 0.2rem $primarySelectionBackgroundColor;
+}
+
+input[type=text] {
+  width: 100%;
 }
 
 input[type=checkbox] {

@@ -87,11 +87,11 @@ class ModalContent extends Component {
   }
 
   render () {
-    const { onClose } = this.props
+    const { onClose, frameless } = this.props
 
     return (
       <div ref={this.setNode}>
-        <span className={style.close} onClick={() => onClose()}></span>
+        {frameless ? '' : <span className={style.close} onClick={() => onClose()}></span>}
         {this.renderBody()}
       </div>
     )
@@ -188,12 +188,13 @@ class Modal extends Component {
         key={this.props.contentId}
         getBodyParams={this.getBodyParams}
         updateContainerPosition={this.updateContainerPosition}
+        frameless={this.componentOrText && this.componentOrText.frameless}
         onClose={this.close}
       />
     )
   }
 
-  open (componentOrText, options) {
+  open (componentOrText, options = {}) {
     this.componentOrText = componentOrText
     this.options = options
     this.props.open()
@@ -227,7 +228,8 @@ class Modal extends Component {
             transform: `translateX(${left !== '0' ? `-${left}` : left}) translateY(${top !== '0' ? `-${top}` : top})`,
             maxWidth,
             maxHeight,
-            overflow: 'auto'
+            overflow: 'auto',
+            padding: (this.componentOrText && this.componentOrText.frameless) ? '0px' : '1.5rem'
           }
         }}
         contentRef={(el) => { this.contentRef = el }}

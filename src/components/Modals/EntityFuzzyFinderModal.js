@@ -197,7 +197,7 @@ class EntityFuzzyFinderModal extends Component {
           }
 
           pathElements.push(
-            <span key={`entity-path${indexStart}/${indexEnd}`} style={{ color: '#000' }}>
+            <span key={`entity-path${indexStart}/${indexEnd}`}>
               <strong>{parentPath.slice(indexStart, indexEnd + 1)}</strong>
             </span>
           )
@@ -291,7 +291,7 @@ class EntityFuzzyFinderModal extends Component {
     const { entities } = this.props
 
     return (
-      <div className={`form-group ${styles.container}`}>
+      <div className={styles.container}>
         <div onKeyDown={this.handleKeyDown}>
           <InputFilter
             debounceTime={200}
@@ -314,8 +314,8 @@ class EntityFuzzyFinderModal extends Component {
   }
 }
 
-export default connect((state) => ({
+export default Object.assign(connect((state) => ({
   entities: entitiesSelector.getNormalizedEntities(state)
 }), {
   openTab: editorActions.openTab
-})(EntityFuzzyFinderModal)
+})(EntityFuzzyFinderModal), { frameless: true })

@@ -2,8 +2,31 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { modalHandler } from '../../../lib/configuration.js'
 import { selectors as entitiesSelectors } from '../../../redux/entities'
+import { actions } from '../../../redux/editor'
 import EntityTreeSelectionModal from '../../Modals/EntityTreeSelectionModal.js'
 import styles from './EntityRefSelect.scss'
+
+const SelectInput = ({ textToShow, entity, handleOpenTree, openTab }) => (
+  <div className={styles.selectInput} onClick={() => handleOpenTree()}>
+    <i className='fa fa-pencil-square-o' />
+    <span
+      title={textToShow}
+      className={textToShow ? styles.link : ''}
+      onClick={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        if (entity) {
+          openTab(entity)
+        } else {
+          handleOpenTree()
+        }
+      }}
+    >
+      {textToShow || 'select ...'}
+    </span>
+  </div>
+)
 
 class EntityRefSelect extends Component {
   constructor (props) {
@@ -26,10 +49,9 @@ class EntityRefSelect extends Component {
     })
   }
 
-  renderSelectedControl () {
+  render () {
     const {
       value,
-      size,
       multiple = false,
       getEntityByShortid,
       resolveEntityPath
@@ -43,9 +65,10 @@ class EntityRefSelect extends Component {
 
     if (!multiple) {
       let textToShow
+      let entity
 
       if (currentValue != null && currentValue[0] != null) {
-        const entity = getEntityByShortid(currentValue[0], false)
+        entity = getEntityByShortid(currentValue[0], false)
 
         if (!entity) {
           textToShow = ''
@@ -56,20 +79,13 @@ class EntityRefSelect extends Component {
         textToShow = ''
       }
 
-      return (
-        <input
-          style={{ display: 'inline', padding: '0px', margin: '0px' }}
-          title={textToShow}
-          type='text'
-          placeholder={'not selected'}
-          value={textToShow}
-          readOnly
-        />
-      )
+      return <SelectInput
+        textToShow={textToShow}
+        handleOpenTree={this.handleOpenTree}
+        entity={entity}
+        openTab={this.props.openTab}
+      />
     }
-
-    const sizeToUse = size != null ? size : multiple ? 5 : 1
-    const height = 16.46 * sizeToUse
 
     let items = []
 
@@ -84,7 +100,7 @@ class EntityRefSelect extends Component {
         const namePath = resolveEntityPath(entity)
 
         items.push(
-          <li key={namePath} title={namePath} className={styles.listOption}>
+          <li key={namePath} title={namePath} onClick={() => this.props.openTab(entity)}>
             <span>{namePath}</span>
           </li>
         )
@@ -92,63 +108,14 @@ class EntityRefSelect extends Component {
     }
 
     return (
-      <ul
-        className={styles.list}
-        tabIndex='0'
-        style={{ minHeight: height, maxHeight: height }}
-      >
-        {items}
-      </ul>
-    )
-  }
-
-  render () {
-    const { value, multiple } = this.props
-    let content
-    let label
-
-    if (multiple) {
-      label = value != null && value.length > 0 ? 'edit...' : 'select...'
-    } else {
-      label = value != null ? 'edit...' : 'select...'
-    }
-
-    if (!multiple) {
-      content = (
-        <div>
-          <div style={{ display: 'inline-block', minWidth: '170px' }}>
-            <button
-              className={styles.openTree}
-              title={label}
-              style={{ display: 'inline', width: '25px' }}
-              onClick={this.handleOpenTree}
-            >
-              <i className='fa fa-edit' />
-            </button>
-            {' '}
-            {this.renderSelectedControl()}
-          </div>
-        </div>
-      )
-    } else {
-      content = [
-        <div key='heading' className={styles.heading}>
-          <button
-            className={styles.openTree}
-            onClick={this.handleOpenTree}
-          >
-            {label}
-          </button>
-        </div>,
-        <div key='select' className={styles.select}>
-          {this.renderSelectedControl()}
-        </div>
-      ]
-    }
-
-    return (
-      <div>
-        {content}
+      <div className={styles.select}>
+        <SelectInput
+          handleOpenTree={this.handleOpenTree}
+          openTab={this.props.openTab}
+        />
+        <ul tabIndex='0'>
+          {items}
+        </ul>
       </div>
     )
   }
@@ -158,5 +125,5 @@ export default connect(
   (state) => ({
     getEntityByShortid: (shortid, ...params) => entitiesSelectors.getByShortid(state, shortid, ...params),
     resolveEntityPath: (_id, ...params) => entitiesSelectors.resolveEntityPath(state, _id, ...params)
-  })
+  }), { openTab: actions.openTab }
 )(EntityRefSelect)
