@@ -26,6 +26,12 @@ export default (store) => (next) => (action) => {
       type: ActionTypes.UPDATE,
       entity: flush
     })
+
+    // ensures that when the action is update we get the last template content/helpers
+    // that was flushed too
+    if (action.type === ActionTypes.UPDATE && flush._id === action.entity._id) {
+      action.entity = Object.assign({}, action.entity, flush)
+    }
   }
 
   return next(action)
