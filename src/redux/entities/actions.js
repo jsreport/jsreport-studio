@@ -1,6 +1,5 @@
 import * as ActionTypes from './constants.js'
 import api from '../../helpers/api.js'
-import getVisibleEntitySetsInTree from '../../helpers/getVisibleEntitySetsInTree'
 import * as selectors from './selectors.js'
 import { entitySets, referencesLoader } from '../../lib/configuration.js'
 
@@ -172,9 +171,10 @@ export const apiStart = () => ({
   type: ActionTypes.API_START
 })
 
-export const apiFailed = (e) => ({
+export const apiFailed = (e, ignoreModal) => ({
   type: ActionTypes.API_FAILED,
-  error: e
+  error: e,
+  ignoreModal: ignoreModal === true
 })
 
 export const replace = (oldId, entity) => ({

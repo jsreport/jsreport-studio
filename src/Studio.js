@@ -649,7 +649,9 @@ class Studio {
           return v
         }).catch((e) => {
           this.stopProgress()
-          this.store.dispatch(this.entities.actions.apiFailed(e))
+
+          this.store.dispatch(this.entities.actions.apiFailed(e, args[2] === true))
+
           throw e
         })
       }

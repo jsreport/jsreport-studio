@@ -24,9 +24,15 @@ reducer.handleAction(ActionTypes.CLOSE, (state) => ({
   text: null
 }))
 
-reducer.handleAction(EntityActionTypes.API_FAILED, (state, action) => ({
-  ...state,
-  contentId: shortid.generate(),
-  isOpen: true,
-  text: action.error.message
-}))
+reducer.handleAction(EntityActionTypes.API_FAILED, (state, action) => {
+  if (action.ignoreModal === true) {
+    return state
+  }
+
+  return {
+    ...state,
+    contentId: shortid.generate(),
+    isOpen: true,
+    text: action.error.message
+  }
+})

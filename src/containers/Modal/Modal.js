@@ -119,6 +119,12 @@ class Modal extends Component {
   }
 
   componentWillReceiveProps (prevProps) {
+    // if error message from API was set then reset componentOrText and options
+    if (this.props.text != null) {
+      this.componentOrText = undefined
+      this.options = {}
+    }
+
     if (prevProps.contentId !== this.props.contentId) {
       this.setState(this.defaultState())
     }
