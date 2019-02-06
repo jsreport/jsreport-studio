@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import TabTitle from './TabTitle'
+import { getNodeTitleDOMId } from '../EntityTree/utils'
 import { selectors as entitiesSelectors } from '../../redux/entities'
 import { entitySets, collapseEntityHandler } from '../../lib/configuration'
 import style from './Tabs.scss'
@@ -110,6 +111,20 @@ class TabTitles extends Component {
 
   revealInTree (entity) {
     collapseEntityHandler({ _id: entity._id }, false, { parents: true, self: false })
+
+    const entityNodeId = getNodeTitleDOMId(entity)
+
+    if (!entityNodeId) {
+      return
+    }
+
+    const entityNode = document.getElementById(entityNodeId)
+
+    if (!entityNode) {
+      return
+    }
+
+    entityNode.scrollIntoView({ block: 'center', inline: 'center' })
   }
 
   handleTabClick (e, t) {
