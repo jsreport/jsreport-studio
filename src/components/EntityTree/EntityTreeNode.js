@@ -254,7 +254,7 @@ class EntityTreeNode extends Component {
         <input
           key='select-group'
           style={{ marginRight: '5px' }}
-          type='radio'
+          type={selectionMode.mode === 'single' ? 'radio' : 'checkbox'}
           checked={node.data == null || node.data.__selected === true}
           onChange={(v) => {
             const newValue = !!v.target.checked
