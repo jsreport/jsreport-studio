@@ -254,13 +254,13 @@ class EntityTreeNode extends Component {
         <input
           key='select-group'
           style={{ marginRight: '5px' }}
-          type='checkbox'
+          type='radio'
           checked={node.data == null || node.data.__selected === true}
           onChange={(v) => {
             const newValue = !!v.target.checked
 
             if (selectionMode.mode === 'single') {
-              onNodeSelect([node.data._id], newValue)
+              onNodeSelect({ _id: node.data._id }, newValue)
             } else {
               onNodeSelect(getAllEntitiesInHierarchy(node, true), newValue)
             }

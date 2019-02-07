@@ -46,6 +46,9 @@
   overflow: auto;
   position: relative;
   width: auto;
+  // gives a little bit of space to show hierarchy
+  // highlight when dragging over the root
+  padding-top: 4px;
 }
 
 .nodeTitle {
@@ -171,8 +174,8 @@
 }
 
 .contextMenuContainer {
-  position: fixed;
-  z-index: 300;
+  position: absolute;
+  z-index: 9999999;
 }
 
 .contextMenuContainer.nestedLevel {

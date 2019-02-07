@@ -1,7 +1,92 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { selectors as entitiesSelectors } from '../../redux/entities'
+import { actions as entitiesActions, selectors as entitiesSelectors } from '../../redux/entities'
+import EntityTreeButton from '../EntityTree/EntityTreeButton'
 import EntityTree from '../EntityTree/EntityTree.js'
+import api from '../../helpers/api.js'
+
+class NewFolderInline extends Component {
+  constructor (props) {
+    super(props)
+    this.setInputNameNode = this.setInputNameNode.bind(this)
+  }
+
+  componentDidUpdate (prevProps) {
+    if (
+      ((prevProps.editMode == null && this.props.editMode != null) ||
+      (prevProps.editMode && this.props.editMode && prevProps.editMode.parentShortid !== this.props.editMode.parentShortid)) &&
+      this.inputNameNode
+    ) {
+      setTimeout(() => this.inputNameNode.focus(), 0)
+    }
+
+    if (
+      prevProps.editMode &&
+      this.props.editMode &&
+      prevProps.editMode.parentShortid !== this.props.editMode.parentShortid &&
+      this.inputNameNode
+    ) {
+      this.inputNameNode.value = ''
+    }
+  }
+
+  setInputNameNode (el) {
+    this.inputNameNode = el
+  }
+
+  renderEditMode () {
+    const { editMode, onSave, onCancel, getEntityByShortid, resolveEntityPath } = this.props
+    let parentName
+
+    if (editMode.parentShortid != null) {
+      parentName = resolveEntityPath(getEntityByShortid(editMode.parentShortid))
+    }
+
+    return (
+      <div>
+        <div style={{ fontSize: '0.8rem', marginBottom: '5px' }}>
+          Creating new folder <b>{editMode.parentShortid != null ? `inside folder ${parentName}` : 'in the root level'}</b>
+        </div>
+        <input
+          ref={this.setInputNameNode}
+          type='text'
+          placeholder='folder name'
+          defaultValue=''
+          style={{ display: 'inline-block', width: '120px' }}
+        />
+        <div style={{ display: 'inline-block' }}>
+          <button className='button confirmation' onClick={() => onSave(this.inputNameNode.value, editMode.parentShortid)}>
+            Save
+          </button>
+          <button className='button confirmation' onClick={() => onCancel()}>Cancel</button>
+        </div>
+        {editMode.error != null && (
+          <div style={{ color: 'red', marginTop: '3px' }}>
+            Error when creating folder: {editMode.error}
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  render () {
+    const { editMode, onAdd } = this.props
+
+    return (
+      <div title='Add new folder' style={{ display: 'inline-block' }}>
+        {!editMode ? (
+          <EntityTreeButton onClick={onAdd}>
+            <span style={{ display: 'inline-block' }}>
+              <i className='fa fa-folder' />&nbsp;New folder
+            </span>
+          </EntityTreeButton>
+        ) : (
+          this.renderEditMode()
+        )}
+      </div>
+    )
+  }
+}
 
 class EntityTreeSelectionModal extends Component {
   static propTypes = {
@@ -17,6 +102,7 @@ class EntityTreeSelectionModal extends Component {
     ) : []
 
     this.state = {
+      newFolderEdit: null,
       selected: initialSelected.reduce((acu, shortid) => {
         const entity = props.getEntityByShortid(shortid, false)
 
@@ -28,6 +114,7 @@ class EntityTreeSelectionModal extends Component {
       }, {})
     }
 
+    this.createNewFolder = this.createNewFolder.bind(this)
     this.handleTreeNodeSelect = this.handleTreeNodeSelect.bind(this)
   }
 
@@ -94,6 +181,41 @@ class EntityTreeSelectionModal extends Component {
     })
   }
 
+  async createNewFolder (folderName, parentShortid) {
+    const entity = {
+      name: folderName
+    }
+
+    if (parentShortid != null) {
+      entity.folder = {
+        shortid: parentShortid
+      }
+    }
+
+    try {
+      await api.post('/studio/validate-entity-name', { data: entity })
+
+      const response = await api.post('/odata/folders', {
+        data: entity
+      })
+
+      response.__entitySet = 'folders'
+
+      this.props.addExistingEntity(response)
+
+      this.setState({
+        newFolderEdit: null
+      })
+    } catch (e) {
+      this.setState({
+        newFolderEdit: {
+          ...this.state.newFolderEdit,
+          error: e.message
+        }
+      })
+    }
+  }
+
   save () {
     const selected = this.state.selected
     const values = []
@@ -118,7 +240,18 @@ class EntityTreeSelectionModal extends Component {
   }
 
   render () {
-    const { multiple, headingLabel, selectableFilter } = this.props.options
+    const {
+      multiple,
+      headingLabel,
+      selectableFilter,
+      allowNewFolder = false,
+      treeStyle = {}
+    } = this.props.options
+
+    const { getEntityByShortid, resolveEntityPath } = this.props
+
+    const { newFolderEdit } = this.state
+
     const entities = this.filterEntities(this.props.references)
 
     Object.keys(entities).forEach((k) => {
@@ -132,7 +265,24 @@ class EntityTreeSelectionModal extends Component {
             <i className='fa fa-check-square-o' /> {headingLabel != null ? headingLabel : 'Select entity'}
           </h1>
         </div>
-        <div style={{ height: '30rem', overflow: 'auto' }}>
+        {allowNewFolder && (
+          <div>
+            <NewFolderInline
+              onAdd={() => this.setState({
+                newFolderEdit: {}
+              })}
+              onSave={this.createNewFolder}
+              onCancel={() => this.setState({ newFolderEdit: null })}
+              editMode={newFolderEdit}
+              getEntityByShortid={getEntityByShortid}
+              resolveEntityPath={resolveEntityPath}
+            />
+          </div>
+        )}
+        {allowNewFolder && (
+          <br />
+        )}
+        <div style={Object.assign({ height: '30rem', overflow: 'auto' }, treeStyle)}>
           <EntityTree
             entities={entities}
             selectable
@@ -150,6 +300,20 @@ class EntityTreeSelectionModal extends Component {
                 return true
               }
             }}
+            getContextMenuItems={allowNewFolder ? ({ entity, isRoot }) => {
+              if (isRoot) {
+                return
+              }
+
+              return [{
+                key: 'New Folder',
+                title: 'New Folder',
+                icon: 'fa-folder',
+                onClick: () => this.setState({
+                  newFolderEdit: { parentShortid: entity.shortid }
+                })
+              }]
+            } : undefined}
             onNodeSelect={(es, v) => this.handleTreeNodeSelect(entities, es, v)}
             onSelect={(e) => this.handleTreeNodeSelect(entities, e, !e.__selected === true)}
           />
@@ -167,5 +331,6 @@ class EntityTreeSelectionModal extends Component {
 export default connect((state) => ({
   references: entitiesSelectors.getReferences(state),
   getEntityById: (_id, ...params) => entitiesSelectors.getById(state, _id, ...params),
-  getEntityByShortid: (shortid, ...params) => entitiesSelectors.getByShortid(state, shortid, ...params)
-}))(EntityTreeSelectionModal)
+  getEntityByShortid: (shortid, ...params) => entitiesSelectors.getByShortid(state, shortid, ...params),
+  resolveEntityPath: (entity, ...params) => entitiesSelectors.resolveEntityPath(state, entity, ...params)
+}), { addExistingEntity: entitiesActions.addExisting })(EntityTreeSelectionModal)
