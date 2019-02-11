@@ -1046,7 +1046,7 @@ class EntityTree extends Component {
     containerStyle.left = pointCoordinates.x
 
     return (
-      <ContextMenuContainer>
+      <ContextMenuContainer key={isRoot ? '--ROOT--' : ` item-${node.name}`}>
         <div key='entity-contextmenu' ref={this.setContextMenuNode} className={style.contextMenuContainer} style={containerStyle}>
           <div className={style.contextMenu}>
             {menuItems.map(function processItem (item) {
