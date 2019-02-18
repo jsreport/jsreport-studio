@@ -8,13 +8,11 @@ module.exports = {
         properties: {
           startupPage: {
             type: 'boolean',
-            default: true,
-            $exposeToApi: true
+            default: true
           },
           requestLogEnabled: {
             type: 'boolean',
-            default: true,
-            $exposeToApi: true
+            default: true
           },
           flushLogsInterval: {
             type: 'number',
@@ -22,8 +20,7 @@ module.exports = {
           },
           entityTreeOrder: {
             type: 'array',
-            items: { type: 'string' },
-            $exposeToApi: true
+            items: { type: 'string' }
           },
           extensionsInDevMode: {
             anyOf: [
