@@ -8,7 +8,7 @@ import shortid from 'shortid'
 import preview from '../../helpers/preview'
 import resolveUrl from '../../helpers/resolveUrl.js'
 import beautify from 'js-beautify-jsreport'
-import { engines, recipes, entitySets, previewListeners, locationResolver, editorComponents } from '../../lib/configuration.js'
+import { engines, recipes, entitySets, previewListeners, locationResolver, editorComponents, concurrentUpdateModal, modalHandler } from '../../lib/configuration.js'
 
 export function closeTab (id) {
   return (dispatch, getState) => {
@@ -241,16 +241,31 @@ export function hierarchyMove (source, target, shouldCopy = false, replace = fal
 
 export function save () {
   return async function (dispatch, getState) {
+    let entityId
+
     try {
+      entityId = selectors.getActiveTab(getState())._id
+
       dispatch({
         type: ActionTypes.SAVE_STARTED
       })
-      await entities.actions.save(selectors.getActiveTab(getState())._id)(dispatch, getState)
+
+      await entities.actions.save(entityId, { ignoreFailed: true })(dispatch, getState)
+
       dispatch({
         type: ActionTypes.SAVE_SUCCESS
       })
     } catch (e) {
       console.error(e)
+
+      if (e.error && e.error.code === 'CONCURRENT_UPDATE_INVALID') {
+        modalHandler.open(concurrentUpdateModal, {
+          entityId: entityId,
+          modificationDate: e.error.modificationDate
+        })
+      } else {
+        dispatch(entities.actions.apiFailed(e))
+      }
     }
   }
 }
@@ -262,13 +277,23 @@ export function saveAll () {
         type: ActionTypes.SAVE_STARTED
       })
 
-      await Promise.all(getState().editor.tabs.filter((t) => t.type === 'entity' && t.headerOrFooter == null).map((t) => entities.actions.save(t._id)(dispatch, getState)))
+      await Promise.all(getState().editor.tabs.filter((t) => {
+        return t.type === 'entity' && t.headerOrFooter == null
+      }).map((t) => {
+        return entities.actions.save(t._id, { ignoreFailed: true })(dispatch, getState)
+      }))
 
       dispatch({
         type: ActionTypes.SAVE_SUCCESS
       })
     } catch (e) {
-      console.error(e)
+      if (e.error && e.error.code === 'CONCURRENT_UPDATE_INVALID') {
+        modalHandler.open(concurrentUpdateModal, {
+          entityId: e.entityId
+        })
+      } else {
+        dispatch(entities.actions.apiFailed(e))
+      }
     }
   }
 }

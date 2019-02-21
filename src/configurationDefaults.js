@@ -8,6 +8,7 @@ import EntityTreeNavigateButton from './components/EntityTree/EntityTreeNavigate
 import Startup from './containers/Startup/Startup.js'
 import ApiModal from './components/Modals/ApiModal.js'
 import NewFolderModal from './components/Modals/NewFolderModal'
+import ConcurrentUpdateErrorModal from './components/Modals/ConcurrentUpdateErrorModal'
 import { openTab } from './redux/editor/actions'
 
 export default () => {
@@ -113,6 +114,8 @@ export default () => {
       <i className='fa fa-plug'></i> API
     </div>
   ))
+
+  configuration.concurrentUpdateModal = ConcurrentUpdateErrorModal
 
   configuration.initializeListeners.push(() => {
     configuration.entityTreeIconResolvers.push((entity) => {

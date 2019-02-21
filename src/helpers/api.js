@@ -47,10 +47,15 @@ const createError = (err, body) => {
 }
 
 methods.forEach((m) => {
-  requestHandler[m] = (path, { params, data, attach, parseJSON, responseType } = {}) => new Promise((resolve, reject) => {
+  requestHandler[m] = (path, { params, headers, data, attach, parseJSON, responseType } = {}) => new Promise((resolve, reject) => {
     const request = superagent[m](resolveUrl(path))
 
     Object.keys(apiHeaders).forEach((k) => request.set(k, apiHeaders[k]))
+
+    if (headers) {
+      Object.keys(headers).forEach((k) => request.set(k, headers[k]))
+    }
+
     request.set('X-Requested-With', 'XMLHttpRequest')
     request.set('Expires', '-1')
     request.set('Cache-Control', 'no-cache,no-store,must-revalidate,max-age=-1,private')

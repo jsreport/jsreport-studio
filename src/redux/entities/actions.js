@@ -101,10 +101,11 @@ export function load (id, force) {
     let entity = selectors.getById(getState(), id)
 
     if (!force && (entity.__isLoaded || entity.__isNew)) {
-      return
+      return entity
     }
 
     dispatch(apiStart())
+
     try {
       entity = (await api.get(`/odata/${entity.__entitySet}(${id})`)).value[0]
 
@@ -114,6 +115,8 @@ export function load (id, force) {
         type: ActionTypes.LOAD,
         entity: entity
       })
+
+      return entity
     } catch (e) {
       dispatch(apiFailed(e))
       throw e
@@ -183,7 +186,7 @@ export const replace = (oldId, entity) => ({
   entity: entity
 })
 
-export function save (id) {
+export function save (id, { ignoreFailed = false, validateConcurrent = true } = {}) {
   return async function (dispatch, getState) {
     try {
       const entity = Object.assign({}, selectors.getById(getState(), id))
@@ -192,18 +195,53 @@ export function save (id) {
       if (entity.__isNew) {
         const oldId = entity._id
         delete entity._id
+
         const response = await api.post(`/odata/${entity.__entitySet}`, { data: prune(entity) })
+
         entity._id = response._id
+
         dispatch(apiDone())
+
         dispatch({
           type: ActionTypes.SAVE_NEW,
           oldId: oldId,
           entity: response
         })
+
         entity._id = response._id
       } else {
-        await api.patch(`/odata/${entity.__entitySet}(${entity._id})`, { data: prune(entity) })
+        let customHeaders
+
+        if (validateConcurrent === true) {
+          customHeaders = {
+            'X-Validate-Concurrent-Update': true
+          }
+        }
+
+        await api.patch(`/odata/${entity.__entitySet}(${entity._id})`, {
+          headers: customHeaders,
+          data: prune(entity)
+        })
+
+        if (entity.modificationDate != null) {
+          // we need to ensure that after the update the local store gets updated modificationDate too
+          // so next updates can work against the concurrent validation
+          const res = await api.get(`/odata/${entity.__entitySet}(${entity._id})?$select=modificationDate`)
+          const updatedEntity = res.value[0]
+
+          if (updatedEntity && updatedEntity.modificationDate != null) {
+            dispatch({
+              type: ActionTypes.UPDATE,
+              entity: {
+                _id: updatedEntity._id,
+                modificationDate: updatedEntity.modificationDate
+              }
+            })
+          }
+        }
+
         dispatch(apiDone())
+
         dispatch({
           type: ActionTypes.SAVE,
           _id: entity._id
@@ -212,7 +250,12 @@ export function save (id) {
 
       return entity
     } catch (e) {
-      dispatch(apiFailed(e))
+      e.entityId = id
+
+      if (ignoreFailed !== true) {
+        dispatch(apiFailed(e))
+      }
+
       throw e
     }
   }

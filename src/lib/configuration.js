@@ -39,6 +39,8 @@ export let previewHandler = () => {}
 export const registerModalHandler = (fn) => { modalHandler = fn }
 export let modalHandler = () => {}
 
+export let concurrentUpdateModal = () => { return null }
+
 export const registerCollapseEntityHandler = (fn) => { collapseEntityHandler = fn }
 export let collapseEntityHandler = () => {}
 

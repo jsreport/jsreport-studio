@@ -118,14 +118,14 @@ class Modal extends Component {
     this.props.openCallback(this.open.bind(this))
   }
 
-  componentWillReceiveProps (prevProps) {
+  componentWillReceiveProps (nextProps) {
     // if error message from API was set then reset componentOrText and options
-    if (this.props.text != null) {
+    if (nextProps.text != null) {
       this.componentOrText = undefined
       this.options = {}
     }
 
-    if (prevProps.contentId !== this.props.contentId) {
+    if (this.props.contentId !== nextProps.contentId) {
       this.setState(this.defaultState())
     }
   }
