@@ -72,9 +72,13 @@ class EntityFuzzyFinderModal extends Component {
   handleKeyDown (ev) {
     const lastResults = this.lastResults
     const { selectedIndex } = this.state
+    const { close } = this.props
     const scrollOpts = { block: 'nearest', inline: 'nearest' }
 
     if (ev.keyCode === 40 && selectedIndex < lastResults.length - 1) {
+      ev.preventDefault()
+      ev.stopPropagation()
+
       const newIndex = selectedIndex + 1
 
       // up arrow
@@ -84,6 +88,9 @@ class EntityFuzzyFinderModal extends Component {
 
       this[`resultItemNode${newIndex}`].scrollIntoView(scrollOpts)
     } else if (ev.keyCode === 38 && selectedIndex > 0) {
+      ev.preventDefault()
+      ev.stopPropagation()
+
       const newIndex = selectedIndex - 1
 
       // down arrow
@@ -93,6 +100,9 @@ class EntityFuzzyFinderModal extends Component {
 
       this[`resultItemNode${newIndex}`].scrollIntoView(scrollOpts)
     } else if (ev.keyCode === 13) {
+      ev.preventDefault()
+      ev.stopPropagation()
+
       // enter
       if (lastResults[selectedIndex]) {
         this.openEntity(this.getItem(lastResults[selectedIndex]).entity)
@@ -101,6 +111,8 @@ class EntityFuzzyFinderModal extends Component {
       this.setState({
         selectedIndex: 0
       })
+
+      close()
     }
   }
 
