@@ -1,4 +1,5 @@
 import * as entities from '../entities'
+import * as progress from '../progress'
 import * as ActionTypes from './constants.js'
 import uid from '../../helpers/uid.js'
 import api from '../../helpers/api.js'
@@ -259,6 +260,8 @@ export function save () {
       console.error(e)
 
       if (e.error && e.error.code === 'CONCURRENT_UPDATE_INVALID') {
+        dispatch(progress.actions.stop())
+
         modalHandler.open(concurrentUpdateModal, {
           entityId: entityId,
           modificationDate: e.error.modificationDate
@@ -288,6 +291,8 @@ export function saveAll () {
       })
     } catch (e) {
       if (e.error && e.error.code === 'CONCURRENT_UPDATE_INVALID') {
+        dispatch(progress.actions.stop())
+
         modalHandler.open(concurrentUpdateModal, {
           entityId: e.entityId
         })
