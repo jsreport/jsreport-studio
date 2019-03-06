@@ -28,8 +28,21 @@ export default class Modal extends Component {
   async submit (val) {
     const name = val || this.refs.nameInput.value
 
+    let entity = this.props.options.entity || {}
+
+    if (this.props.options.defaults != null) {
+      entity = Object.assign(this.props.options.defaults, entity)
+    }
+
     try {
-      await api.post('/studio/validate-entity-name', { data: { name } })
+      await api.post('/studio/validate-entity-name', {
+        data: {
+          _id: this.props.options.cloning === true ? undefined : entity._id,
+          name: name,
+          entitySet: this.props.options.entitySet,
+          folderShortid: entity.folder != null ? entity.folder.shortid : null
+        }
+      })
     } catch (e) {
       this.setState({
         error: e.message
@@ -43,12 +56,6 @@ export default class Modal extends Component {
     })
 
     this.props.close()
-
-    let entity = this.props.options.entity || {}
-
-    if (this.props.options.defaults != null) {
-      entity = Object.assign(this.props.options.defaults, entity)
-    }
 
     this.props.openNewTab({
       entity,

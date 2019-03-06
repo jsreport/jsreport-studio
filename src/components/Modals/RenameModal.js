@@ -28,7 +28,14 @@ export default class RenameModal extends Component {
     const nameAttribute = entitySets[this.props.entity.__entitySet].nameAttribute
 
     try {
-      await api.post('/studio/validate-entity-name', { data: { name: newName } })
+      await api.post('/studio/validate-entity-name', {
+        data: {
+          _id: this.props.entity._id,
+          name: newName,
+          entitySet: this.props.entity.__entitySet,
+          folderShortid: this.props.entity.folder != null ? this.props.entity.folder.shortid : null
+        }
+      })
     } catch (e) {
       this.setState({
         error: e.message

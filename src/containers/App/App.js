@@ -289,6 +289,7 @@ class App extends Component {
       onRename: (id) => this.openModal(RenameModal, { _id: id }),
       onClone: (entity) => {
         this.openModal(NewEntityModal, {
+          cloning: true,
           entity: entity,
           entitySet: entity.__entitySet,
           initialName: getCloneName(entity[entitySets[entity.__entitySet].nameAttribute])

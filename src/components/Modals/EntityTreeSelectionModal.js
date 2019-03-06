@@ -193,7 +193,13 @@ class EntityTreeSelectionModal extends Component {
     }
 
     try {
-      await api.post('/studio/validate-entity-name', { data: entity })
+      await api.post('/studio/validate-entity-name', {
+        data: {
+          name: entity.name,
+          entitySet: 'folders',
+          folderShortid: entity.folder != null ? entity.folder.shortid : null
+        }
+      })
 
       const response = await api.post('/odata/folders', {
         data: entity
