@@ -638,6 +638,8 @@ class EntityTree extends Component {
         sourceId: sourceInfo.id,
         targetShortId: targetInfo.shortid,
         targetChildren: targetInfo.children,
+        existingEntity: result.existingEntity,
+        existingEntityEntitySet: result.existingEntityEntitySet,
         shouldCopy
       })
     })

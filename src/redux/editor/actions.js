@@ -187,7 +187,7 @@ export function hierarchyMove (source, target, shouldCopy = false, replace = fal
             let childTargetId
             let childTargetChildren = []
 
-            const allFolders = target.children.reduce((acu, childId) => {
+            const allFoldersInsideTarget = target.children.reduce((acu, childId) => {
               const childEntity = entities.selectors.getById(getState(), childId, false)
               const childEntitySetNameAttr = entitySets[childEntity.__entitySet].nameAttribute
 
@@ -209,7 +209,7 @@ export function hierarchyMove (source, target, shouldCopy = false, replace = fal
             target.children.forEach((childId) => {
               const childEntity = entities.selectors.getById(getState(), childId, false)
 
-              if (childEntity.folder && allFolders.indexOf(childEntity.folder.shortid) !== -1) {
+              if (childEntity.folder && allFoldersInsideTarget.indexOf(childEntity.folder.shortid) !== -1) {
                 childTargetChildren.push(childEntity._id)
               }
             })
@@ -228,10 +228,14 @@ export function hierarchyMove (source, target, shouldCopy = false, replace = fal
 
         return response.items
       } catch (e) {
-        if (retry && e.code === 'DUPLICATED_ENTITY') {
+        if (retry && e.code === 'DUPLICATED_ENTITY' && e.existingEntityEntitySet !== 'folders') {
           dispatch(entities.actions.apiDone())
 
-          return { duplicatedEntity: true }
+          return {
+            duplicatedEntity: true,
+            existingEntity: e.existingEntity,
+            existingEntityEntitySet: e.existingEntityEntitySet
+          }
         }
 
         dispatch(entities.actions.apiFailed(e))

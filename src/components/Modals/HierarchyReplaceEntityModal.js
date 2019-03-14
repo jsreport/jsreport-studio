@@ -6,9 +6,10 @@ import { actions } from '../../redux/editor'
 
 @connect((state, props) => ({
   sourceEntity: selectors.getById(state, props.options.sourceId, false),
-  targetEntity: selectors.getByShortid(state, props.options.targetShortId, false)
+  targetEntity: selectors.getByShortid(state, props.options.targetShortId, false),
+  resolveEntityPath: (entity, ...params) => selectors.resolveEntityPath(state, entity, ...params)
 }), { ...actions })
-export default class ReplaceEntityModal extends Component {
+export default class HierarchyReplaceEntityModal extends Component {
   static propTypes = {
     close: PropTypes.func.isRequired,
     options: PropTypes.object.isRequired
@@ -16,6 +17,7 @@ export default class ReplaceEntityModal extends Component {
 
   replace () {
     const { sourceEntity, targetEntity, options, hierarchyMove, close } = this.props
+    const { existingEntity } = options
 
     close()
 
@@ -23,8 +25,8 @@ export default class ReplaceEntityModal extends Component {
       id: sourceEntity._id,
       entitySet: sourceEntity.__entitySet
     }, {
-      shortid: targetEntity.shortid,
-      children: options.targetChildren
+      shortid: targetEntity != null ? targetEntity.shortid : null,
+      children: targetEntity == null ? [existingEntity._id] : options.targetChildren
     }, options.shouldCopy, true, false)
   }
 
@@ -41,21 +43,31 @@ export default class ReplaceEntityModal extends Component {
   }
 
   render () {
-    const { sourceEntity, targetEntity, options } = this.props
+    const { sourceEntity, targetEntity, resolveEntityPath, options } = this.props
+    const { existingEntity, existingEntityEntitySet } = options
 
-    if (!sourceEntity || !targetEntity) {
+    if (!sourceEntity) {
       return <div />
     }
 
     const sourceEntityName = sourceEntity[entitySets[sourceEntity.__entitySet].nameAttribute]
     const sourceEntitySetVisibleName = entitySets[sourceEntity.__entitySet].visibleName || entitySets[sourceEntity.__entitySet].name
-    const targetEntityName = targetEntity[entitySets[targetEntity.__entitySet].nameAttribute]
+    const existingEntityEntitySetVisibleName = entitySets[existingEntityEntitySet].visibleName || entitySets[existingEntityEntitySet].name
     const shouldCopy = options.shouldCopy
 
     return (
       <div>
         <div>
-          <b>{shouldCopy ? 'Copy' : 'Move'}</b> failed. Entity <b>{sourceEntityName}</b> ({sourceEntitySetVisibleName}) already exists in target folder <b>{targetEntityName}</b>.
+          <b>{shouldCopy ? 'Copy' : 'Move'}</b> failed. Entity with name <b>{sourceEntityName}</b> already exists {targetEntity != null ? 'in target folder ' : 'at root level'}{targetEntity != null && (
+            <b>{resolveEntityPath(targetEntity)}</b>
+          )}.
+          <br />
+          <br />
+          <div>
+            <b>source entity: </b> {resolveEntityPath(sourceEntity)} ({sourceEntitySetVisibleName})
+            <br />
+            <b>target entity: </b> {resolveEntityPath(existingEntity)} ({existingEntityEntitySetVisibleName})
+          </div>
           <br />
           Do you want to replace it?
         </div>
