@@ -160,11 +160,15 @@ class App extends Component {
   }
 
   getPreviewWindowOptions () {
-    const { activeTabWithEntity } = this.props
+    const { lastActiveTemplate } = this.props
+
+    if (!lastActiveTemplate) {
+      return {}
+    }
 
     return {
-      id: activeTabWithEntity.entity.shortid,
-      name: 'previewFrame-' + activeTabWithEntity.entity.shortid,
+      id: lastActiveTemplate.shortid,
+      name: 'previewFrame-' + lastActiveTemplate.shortid,
       tab: true
     }
   }
@@ -208,7 +212,13 @@ class App extends Component {
       return
     }
 
-    this.refs.previewPane.collapse(true, this.isPreviewUndockeable(), true)
+    const { lastActiveTemplate } = this.props
+
+    if (!lastActiveTemplate) {
+      return
+    }
+
+    this.refs.previewPane.collapse(true, true, true)
   }
 
   handleSplitDragFinished () {
@@ -377,7 +387,6 @@ class App extends Component {
               canRun={canRun}
               canSave={canSave}
               canSaveAll={canSaveAll}
-              canUndock={this.isPreviewUndockeable()}
               onSave={() => this.save()}
               onSaveAll={() => this.saveAll()}
               isPending={isPending}

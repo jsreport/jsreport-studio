@@ -109,7 +109,7 @@ export default class Toolbar extends Component {
   }
 
   renderRun () {
-    const { onRun, canRun, canUndock, undockPreview } = this.props
+    const { onRun, canRun, undockPreview } = this.props
 
     return <div
       title='Preview report in the right pane (F8)' className={'toolbar-button ' + (canRun ? '' : 'disabled')}
@@ -117,7 +117,7 @@ export default class Toolbar extends Component {
       <i className='fa fa-play' /> Run <span className={style.runCaret} onClick={(e) => { e.stopPropagation(); this.setState({ expandedRun: !this.state.expandedRun }) }} />
       <div className={style.runPopup} style={{display: this.state.expandedRun ? 'block' : 'none'}}>
         {this.renderButton((e) => { e.stopPropagation(); this.tryHide(); onRun('_blank', true) }, canRun, 'Run to new tab', 'fa fa-tablet', 'Preview in new tab')}
-        {this.renderButton((e) => { e.stopPropagation(); this.tryHide(); undockPreview() }, canRun && canUndock, 'Run and undock preview', 'fa fa-window-restore', 'Undock and Preview in new tab')}
+        {this.renderButton((e) => { e.stopPropagation(); this.tryHide(); undockPreview() }, canRun, 'Run and undock preview', 'fa fa-window-restore', 'Undock and Preview in new tab')}
         {this.renderButton((e) => { e.stopPropagation(); this.tryHide(); onRun('_self', true) }, canRun, 'Download', 'fa fa-download', 'Download output')}
       </div>
     </div>

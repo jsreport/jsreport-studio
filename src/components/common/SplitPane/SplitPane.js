@@ -200,7 +200,7 @@ export default class SplitPane extends Component {
       opts.tab ? undefined : windowOptsStr
     )
 
-    if (window.focus) {
+    if (nWindow.focus) {
       nWindow.focus()
     }
 
@@ -250,8 +250,13 @@ export default class SplitPane extends Component {
 
         this.setState(stateToUpdate)
       } else {
-        this.lastSize = ref1.state.size
-        this.lastSize2 = ref2.state.size
+        if (ref1) {
+          this.lastSize = ref1.state.size
+        }
+
+        if (ref2) {
+          this.lastSize2 = ref2.state.size
+        }
 
         stateToUpdate = {
           collapsed: v,
