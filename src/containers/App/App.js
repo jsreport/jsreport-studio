@@ -77,6 +77,7 @@ class App extends Component {
     this.previews = {}
 
     this.openModal = this.openModal.bind(this)
+    this.undockPreview = this.undockPreview.bind(this)
     this.handlePreviewCollapsing = this.handlePreviewCollapsing.bind(this)
     this.handlePreviewDocking = this.handlePreviewDocking.bind(this)
     this.handlePreviewUndocking = this.handlePreviewUndocking.bind(this)
@@ -200,6 +201,14 @@ class App extends Component {
       return this.props.closeTab(key)
     }
     this.openModal(CloseConfirmationModal, { _id: key })
+  }
+
+  undockPreview () {
+    if (!this.refs.previewPane) {
+      return
+    }
+
+    this.refs.previewPane.collapse(true, this.isPreviewUndockeable(), true)
   }
 
   handleSplitDragFinished () {
@@ -368,6 +377,7 @@ class App extends Component {
               canRun={canRun}
               canSave={canSave}
               canSaveAll={canSaveAll}
+              canUndock={this.isPreviewUndockeable()}
               onSave={() => this.save()}
               onSaveAll={() => this.saveAll()}
               isPending={isPending}
@@ -376,6 +386,7 @@ class App extends Component {
               canReformat={canReformat}
               onReformat={reformat}
               onRun={(target, ignoreUndockMode) => this.handleRun(target, ignoreUndockMode ? false : undockMode)}
+              undockPreview={this.undockPreview}
               openStartup={() => this.openStartup()}
             />
 
