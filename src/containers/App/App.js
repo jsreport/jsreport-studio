@@ -74,8 +74,6 @@ class App extends Component {
   constructor (props) {
     super(props)
 
-    this.previews = {}
-
     this.openModal = this.openModal.bind(this)
     this.undockPreview = this.undockPreview.bind(this)
     this.handlePreviewCollapsing = this.handlePreviewCollapsing.bind(this)
@@ -116,7 +114,7 @@ class App extends Component {
       // we can not close all preview tabs when un-collapsing the main pane preview again
       if (undockMode && this.refs.previewPane && target && target.indexOf(request.template.shortid) !== -1) {
         let previewWinOpts = this.getPreviewWindowOptions()
-        this.previews[previewWinOpts.id] = this.refs.previewPane.openWindow(previewWinOpts)
+        this.refs.previewPane.openWindow(previewWinOpts)
       }
     })
 
@@ -259,13 +257,15 @@ class App extends Component {
   }
 
   handlePreviewDocking () {
+    const previews = this.refs.previewPane.windows
+
     // close all preview windows when docking
-    if (Object.keys(this.previews).length) {
-      Object.keys(this.previews)
-      .forEach((id) => this.previews[id] && this.previews[id].close())
+    if (Object.keys(previews).length) {
+      Object.keys(previews)
+      .forEach((id) => previews[id] && previews[id].close())
     }
 
-    this.previews = {}
+    this.refs.previewPane.windows = {}
   }
 
   handlePreviewUndocking () {
@@ -285,7 +285,9 @@ class App extends Component {
   }
 
   handlePreviewUndocked (id, previewWindow) {
-    this.previews[id] = previewWindow
+    const previews = this.refs.previewPane.windows
+
+    previews[id] = previewWindow
 
     this.handleRun(undefined, this.props.undockMode)
   }

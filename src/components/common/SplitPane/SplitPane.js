@@ -8,6 +8,9 @@ import Resizer from './Resizer'
 export default class SplitPane extends Component {
   constructor () {
     super()
+
+    this.windows = {}
+
     this.state = {
       active: false,
       resized: false
@@ -49,6 +52,7 @@ export default class SplitPane extends Component {
     this.setSize(this.props, this.state)
     document.addEventListener('mouseup', this.onMouseUp)
     document.addEventListener('mousemove', this.onMouseMove)
+    this.windows = {}
   }
 
   componentWillReceiveProps (props) {
@@ -68,6 +72,7 @@ export default class SplitPane extends Component {
   componentWillUnmount () {
     document.removeEventListener('mouseup', this.onMouseUp)
     document.removeEventListener('mousemove', this.onMouseMove)
+    this.windows = {}
   }
 
   onMouseDown (event) {
@@ -168,6 +173,14 @@ export default class SplitPane extends Component {
 
     let windowOptsStr
 
+    if (this.windows[opts.id] != null) {
+      if (this.windows[opts.id].closed === true) {
+        delete this.windows[opts.id]
+      } else {
+        return this.windows[opts.id]
+      }
+    }
+
     if (!opts.tab) {
       let windowOpts = assign({}, defaultWindowOpts, opts.windowOpts)
 
@@ -199,6 +212,8 @@ export default class SplitPane extends Component {
       opts.name || '_blank',
       opts.tab ? undefined : windowOptsStr
     )
+
+    this.windows[opts.id] = nWindow
 
     if (nWindow.focus) {
       nWindow.focus()
