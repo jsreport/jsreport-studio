@@ -165,7 +165,7 @@
 
 .contextMenu {
   background-color: $secondaryColor;
-  position: absolute;
+  position: relative;
   min-width: 9rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -181,7 +181,7 @@
 .contextMenuContainer.nestedLevel {
   position: absolute;
   top: 0;
-  right: 0;
+  left: 100%;
   transition: opacity;
   transition-delay: 0.2s;
   opacity: 0;

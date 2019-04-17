@@ -190,8 +190,8 @@ class EntityTreeNode extends Component {
     const dimensions = this.nodeTitle.getBoundingClientRect()
 
     return {
-      x: dimensions.x,
-      y: dimensions.y + dimensions.height
+      x: dimensions.x != null ? dimensions.x : dimensions.left,
+      y: (dimensions.y != null ? dimensions.y : dimensions.top) + dimensions.height
     }
   }
 
