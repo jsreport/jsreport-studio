@@ -113,6 +113,14 @@ class Studio {
   }
 
   /**
+   *  Add a fn to resolve items for the conext menu at Entity Tree
+   *  @param {Function} fn
+   */
+  addEntityTreeContextMenuItemsResolver (fn) {
+    configuration.entityTreeContextMenuItemsResolvers.push(fn)
+  }
+
+  /**
    * Add React component which will be used as tab title
    *
    * @param {String} key used in openTab
@@ -254,7 +262,7 @@ class Studio {
   }
 
   /**
-   * Display custom contnet in the preview pane using http post to the url
+   * Display custom content in the preview pane using http post to the url
    * This is usefull when Studio.setPreviewFrameSrc isn't working because the content to set is too big
    * and hits the iframe src chars limit.
    * @param {String} frameSrc

@@ -80,6 +80,177 @@ export default () => {
     return entityName.indexOf(name) !== -1
   })
 
+  configuration.entityTreeContextMenuItemsResolvers.push(({
+    entity,
+    entitySets,
+    isRoot,
+    isGroupEntity,
+    getVisibleEntitySetsInTree,
+    onNewClick
+  }) => {
+    const items = []
+
+    if (isRoot || isGroupEntity) {
+      items.push({
+        key: 'New Entity',
+        title: 'New Entity',
+        icon: 'fa-file',
+        onClick: () => false,
+        items: getVisibleEntitySetsInTree(entitySets).map((entitySet) => ({
+          key: entitySet.name,
+          title: entitySet.visibleName,
+          icon: entitySet.faIcon != null ? entitySet.faIcon : 'fa-file',
+          onClick: () => {
+            onNewClick(
+              isRoot ? undefined : entity._id,
+              entitySet.name,
+              { defaults: { folder: isRoot ? null : { shortid: entity.shortid } } }
+            )
+          }
+        }))
+      })
+
+      items.push({
+        key: 'New Folder',
+        title: 'New Folder',
+        icon: 'fa-folder',
+        onClick: () => {
+          onNewClick(
+            isRoot ? null : entity._id,
+            'folders',
+            { defaults: { folder: isRoot ? null : { shortid: entity.shortid } } }
+          )
+        }
+      })
+    }
+
+    return {
+      grouped: true,
+      items
+    }
+  })
+
+  configuration.entityTreeContextMenuItemsResolvers.push(({
+    node,
+    clipboard,
+    entity,
+    isRoot,
+    isGroupEntity,
+    disabledClassName,
+    getAllEntitiesInHierarchy,
+    setClipboard,
+    releaseClipboardTo,
+    onNodeClick,
+    onRename,
+    onClone,
+    onRemove
+  }) => {
+    const items = []
+
+    if (isGroupEntity) {
+      items.push({
+        key: 'Edit',
+        title: 'Edit',
+        icon: 'fa-edit',
+        onClick: () => {
+          onNodeClick(entity)
+        }
+      })
+    }
+
+    if (!isRoot) {
+      items.push({
+        key: 'Rename',
+        title: 'Rename',
+        icon: 'fa-pencil',
+        onClick: () => {
+          onRename(entity._id)
+        }
+      })
+    }
+
+    if (!isRoot && isGroupEntity == null) {
+      items.push({
+        key: 'Clone',
+        title: 'Clone',
+        icon: 'fa-clone',
+        onClick: () => {
+          onClone(entity)
+        }
+      })
+    }
+
+    if (!isRoot && (isGroupEntity || isGroupEntity == null)) {
+      items.push({
+        key: 'Cut',
+        title: 'Cut',
+        icon: 'fa-cut',
+        className: entity.__isNew === true ? disabledClassName : '',
+        onClick: () => {
+          if (entity.__isNew === true) {
+            // prevents menu to be hidden
+            return false
+          }
+
+          setClipboard({ action: 'move', entityId: entity._id, entitySet: entity.__entitySet })
+        }
+      })
+    }
+
+    if (!isRoot && (isGroupEntity == null)) {
+      items.push({
+        key: 'Copy',
+        title: 'Copy',
+        icon: 'fa-copy',
+        className: entity.__isNew === true ? disabledClassName : '',
+        onClick: () => {
+          if (entity.__isNew === true) {
+            // prevents menu to be hidden
+            return false
+          }
+
+          setClipboard({ action: 'copy', entityId: entity._id, entitySet: entity.__entitySet })
+        }
+      })
+    }
+
+    if ((isRoot || (isGroupEntity || isGroupEntity == null))) {
+      items.push({
+        key: 'Paste',
+        title: 'Paste',
+        icon: 'fa-paste',
+        className: clipboard == null ? disabledClassName : '',
+        onClick: () => {
+          if (clipboard == null) {
+            // prevents menu to be hidden
+            return false
+          }
+
+          releaseClipboardTo({
+            shortid: isRoot ? null : (isGroupEntity ? entity.shortid : (entity.folder != null ? entity.folder.shortid : null)),
+            children: isRoot ? [] : (isGroupEntity ? getAllEntitiesInHierarchy(node) : [])
+          })
+        }
+      })
+    }
+
+    if (!isRoot) {
+      items.push({
+        key: 'Delete',
+        title: 'Delete',
+        icon: 'fa-trash',
+        onClick: () => {
+          const children = getAllEntitiesInHierarchy(node)
+          onRemove(entity._id, children.length > 0 ? children : undefined)
+        }
+      })
+    }
+
+    return {
+      items
+    }
+  })
+
   configuration.entityTreeToolbarComponents.single.push((props) => (
     <EntityTreeNewButton {...props} />
   ))

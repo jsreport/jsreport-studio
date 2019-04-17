@@ -26,6 +26,7 @@ import {
   entityTreeOrder,
   entityTreeToolbarComponents,
   entityTreeFilterItemResolvers,
+  entityTreeContextMenuItemsResolvers,
   registerCollapseEntityHandler,
   modalHandler
 } from '../../lib/configuration.js'
@@ -887,155 +888,80 @@ class EntityTree extends Component {
     const { getContextMenuItems, onRemove, onClone, onRename } = this.props
     const tryHide = this.tryHide
     const isRoot = childEntity == null
+    const isGroup = isRoot ? false : checkIsGroupNode(node) && !checkIsGroupEntityNode(node)
     const containerStyle = {}
 
     let menuItems = []
 
+    const resolverParam = {
+      node,
+      clipboard,
+      entity: childEntity,
+      entitySets,
+      isRoot,
+      isGroup,
+      isGroupEntity,
+      disabledClassName: style.disabled,
+      getVisibleEntitySetsInTree,
+      getAllEntitiesInHierarchy,
+      setClipboard: this.setClipboard,
+      releaseClipboardTo: this.releaseClipboardTo,
+      onNewClick: this.handleNewClick,
+      onNodeClick: this.handleNodeClick,
+      onRename,
+      onClone,
+      onRemove
+    }
+
     if (getContextMenuItems != null) {
-      menuItems = getContextMenuItems({
-        entity: childEntity,
-        isRoot,
-        isGroup: isRoot ? false : checkIsGroupNode(node) && !checkIsGroupEntityNode(node),
+      menuItems = getContextMenuItems(Object.assign({}, resolverParam, {
         isGroupEntity: isGroupEntity != null ? isGroupEntity : false
-      })
+      }))
     } else {
-      if (isRoot || isGroupEntity) {
-        menuItems.push({
-          key: 'New Entity',
-          title: 'New Entity',
-          icon: 'fa-file',
-          onClick: () => false,
-          items: getVisibleEntitySetsInTree(entitySets).map((entitySet) => ({
-            key: entitySet.name,
-            title: entitySet.visibleName,
-            icon: entitySet.faIcon != null ? entitySet.faIcon : 'fa-file',
-            onClick: () => {
-              this.handleNewClick(
-                isRoot ? undefined : childEntity._id,
-                entitySet.name,
-                { defaults: { folder: isRoot ? null : { shortid: childEntity.shortid } } }
-              )
-            }
-          }))
-        })
+      const contextMenuResults = entityTreeContextMenuItemsResolvers.map((resolver) => {
+        return resolver(resolverParam)
+      })
 
-        menuItems.push({
-          key: 'New Folder',
-          title: 'New Folder',
-          icon: 'fa-folder',
-          onClick: () => {
-            this.handleNewClick(
-              isRoot ? null : childEntity._id,
-              'folders',
-              { defaults: { folder: isRoot ? null : { shortid: childEntity.shortid } } }
-            )
-          }
-        })
+      const groupItems = []
+      const singleItems = []
 
+      contextMenuResults.forEach((r) => {
+        if (r == null) {
+          return
+        }
+
+        if (r.items == null || !Array.isArray(r.items)) {
+          return
+        }
+
+        if (r.grouped === true && r.items.length > 0) {
+          groupItems.push(r)
+        } else if (r.items.length > 0) {
+          singleItems.push(r)
+        }
+      })
+
+      groupItems.forEach((group, idx) => {
+        if (menuItems.length > 0) {
+          menuItems.push({
+            key: `separator-group${idx}`,
+            separator: true
+          })
+        }
+
+        group.items.forEach((item) => menuItems.push(item))
+      })
+
+      if (menuItems.length > 0 && singleItems.length > 0) {
         menuItems.push({
-          key: 'separator',
+          key: 'separator-last-group',
           separator: true
         })
       }
 
-      if (isGroupEntity) {
-        menuItems.push({
-          key: 'Edit',
-          title: 'Edit',
-          icon: 'fa-edit',
-          onClick: () => {
-            this.handleNodeClick(childEntity)
-          }
-        })
-      }
-
-      if (!isRoot) {
-        menuItems.push({
-          key: 'Rename',
-          title: 'Rename',
-          icon: 'fa-pencil',
-          onClick: () => {
-            onRename(childEntity._id)
-          }
-        })
-      }
-
-      if (!isRoot && isGroupEntity == null) {
-        menuItems.push({
-          key: 'Clone',
-          title: 'Clone',
-          icon: 'fa-clone',
-          onClick: () => {
-            onClone(childEntity)
-          }
-        })
-      }
-
-      if (!isRoot && (isGroupEntity || isGroupEntity == null)) {
-        menuItems.push({
-          key: 'Cut',
-          title: 'Cut',
-          icon: 'fa-cut',
-          className: childEntity.__isNew === true ? style.disabled : '',
-          onClick: () => {
-            if (childEntity.__isNew === true) {
-              // prevents menu to be hidden
-              return false
-            }
-
-            this.setClipboard({ action: 'move', entityId: childEntity._id, entitySet: childEntity.__entitySet })
-          }
-        })
-      }
-
-      if (!isRoot && (isGroupEntity == null)) {
-        menuItems.push({
-          key: 'Copy',
-          title: 'Copy',
-          icon: 'fa-copy',
-          className: childEntity.__isNew === true ? style.disabled : '',
-          onClick: () => {
-            if (childEntity.__isNew === true) {
-              // prevents menu to be hidden
-              return false
-            }
-
-            this.setClipboard({ action: 'copy', entityId: childEntity._id, entitySet: childEntity.__entitySet })
-          }
-        })
-      }
-
-      if ((isRoot || (isGroupEntity || isGroupEntity == null))) {
-        menuItems.push({
-          key: 'Paste',
-          title: 'Paste',
-          icon: 'fa-paste',
-          className: clipboard == null ? style.disabled : '',
-          onClick: () => {
-            if (clipboard == null) {
-              // prevents menu to be hidden
-              return false
-            }
-
-            this.releaseClipboardTo({
-              shortid: isRoot ? null : (isGroupEntity ? childEntity.shortid : (childEntity.folder != null ? childEntity.folder.shortid : null)),
-              children: isRoot ? [] : (isGroupEntity ? getAllEntitiesInHierarchy(node) : [])
-            })
-          }
-        })
-      }
-
-      if (!isRoot) {
-        menuItems.push({
-          key: 'Delete',
-          title: 'Delete',
-          icon: 'fa-trash',
-          onClick: () => {
-            const children = getAllEntitiesInHierarchy(node)
-            onRemove(childEntity._id, children.length > 0 ? children : undefined)
-          }
-        })
-      }
+      singleItems.forEach((info) => {
+        info.items.forEach((item) => menuItems.push(item))
+      })
     }
 
     if (menuItems == null || menuItems.length === 0) {
