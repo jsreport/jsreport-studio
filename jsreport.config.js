@@ -22,6 +22,9 @@ module.exports = {
             type: 'array',
             items: { type: 'string' }
           },
+          webpackStatsInDevMode: {
+            type: 'object'
+          },
           extensionsInDevMode: {
             anyOf: [
               {

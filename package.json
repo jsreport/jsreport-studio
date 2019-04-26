@@ -21,7 +21,7 @@
     "parser": "babel-eslint"
   },
   "scripts": {
-    "start": "jsreport-studio-start",
+    "start": "jsreport-studio-start --ignore-jsreport-studio-install",
     "run": "npm run build && jsreport-studio-start --run-only",
     "test": "npm run ui-test && npm run server-test",
     "ui-test": "mocha test/ui/.setup.js test/ui --compilers js:babel-register --recursive --require mocha-clean --require ignore-styles",
@@ -29,7 +29,7 @@
     "test:watch": "npm test -- --watch",
     "prepublish": "in-publish && npm run build || not-in-publish",
     "docs": "jsdoc2md src/Studio.js > static/Studio.md",
-    "build": "jsreport-studio-build --config webpack/prod.config.js --disable-chunks-info"
+    "build": "jsreport-studio-build --config webpack/prod.config.js --stats.modules=false"
   },
   "dependencies": {
     "bluebird": "3.5.4",
