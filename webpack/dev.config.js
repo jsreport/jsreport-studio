@@ -1,15 +1,15 @@
 require('babel-polyfill')
 
 // Webpack config for development
-var fs = require('fs')
-var path = require('path')
-var jsreportStudioDev = require('jsreport-studio-dev')
-var HtmlWebpackPlugin = require('html-webpack-plugin')
-var assetsPath = path.resolve(__dirname, '../static/dist')
-var babelrc = fs.readFileSync(path.join(__dirname, '../.babelrc'))
-var babelrcObject = {}
+const fs = require('fs')
+const path = require('path')
+const jsreportStudioDev = require('jsreport-studio-dev')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const assetsPath = path.resolve(__dirname, '../static/dist')
+const babelrc = fs.readFileSync(path.join(__dirname, '../.babelrc'))
+let babelrcObject = {}
 
-var webpack = jsreportStudioDev.deps.webpack
+const webpack = jsreportStudioDev.deps.webpack
 
 try {
   babelrcObject = JSON.parse(babelrc)
@@ -18,13 +18,14 @@ try {
   console.error(err)
 }
 
-var babelrcObjectDevelopment = babelrcObject.env && babelrcObject.env.development || {}
+const babelrcObjectDevelopment = babelrcObject.env && babelrcObject.env.development || {}
 
 // merge global and dev-only plugins
-var combinedPlugins = babelrcObject.plugins || []
+let combinedPlugins = babelrcObject.plugins || []
+
 combinedPlugins = combinedPlugins.concat(babelrcObjectDevelopment.plugins)
 
-var babelLoaderQuery = Object.assign({}, babelrcObjectDevelopment, babelrcObject, { plugins: combinedPlugins })
+const babelLoaderQuery = Object.assign({}, babelrcObjectDevelopment, babelrcObject, { plugins: combinedPlugins })
 delete babelLoaderQuery.env
 
 // Since we use .babelrc for client and server, and we don't want HMR enabled on the server, we have to add
@@ -32,9 +33,10 @@ delete babelLoaderQuery.env
 
 // make sure react-transform is enabled
 babelLoaderQuery.plugins = babelLoaderQuery.plugins || []
-var reactTransform = null
-for (var i = 0; i < babelLoaderQuery.plugins.length; ++i) {
-  var plugin = babelLoaderQuery.plugins[i]
+let reactTransform = null
+
+for (let i = 0; i < babelLoaderQuery.plugins.length; ++i) {
+  const plugin = babelLoaderQuery.plugins[i]
   if (Array.isArray(plugin) && plugin[0] === 'react-transform') {
     reactTransform = plugin
   }
@@ -45,7 +47,7 @@ if (!reactTransform) {
   babelLoaderQuery.plugins.push(reactTransform)
 }
 
-for (var j = 0; j < babelLoaderQuery.plugins.length; j++) {
+for (let j = 0; j < babelLoaderQuery.plugins.length; j++) {
   if (typeof babelLoaderQuery.plugins[j] === 'string') {
     babelLoaderQuery.plugins[j] = require.resolve('babel-plugin-' + babelLoaderQuery.plugins[j])
   }
@@ -55,7 +57,7 @@ for (var j = 0; j < babelLoaderQuery.plugins.length; j++) {
   }
 }
 
-for (var p = 0; p < babelLoaderQuery.presets.length; p++) {
+for (let p = 0; p < babelLoaderQuery.presets.length; p++) {
   babelLoaderQuery.presets[p] = require.resolve('babel-preset-' + babelLoaderQuery.presets[p])
 }
 
@@ -70,15 +72,20 @@ reactTransform[1].transforms.push({
   locals: ['module']
 })
 
-module.exports = function (extensions, extensionsInNormalMode) {
+module.exports = (extensions, extensionsInNormalMode) => {
   return {
+    mode: 'development',
     devtool: 'eval-source-map',
     context: path.resolve(__dirname, '..'),
     entry: {
       'main': [
         './src/client.js',
         'webpack-hot-middleware/client',
-        'font-awesome-webpack!./src/theme/font-awesome.config.js'
+        // we use a forked font-awesome-webpack (named: font-awesome-webpack-4)
+        // because the original repository does not support webpack 4,
+        // see this issue for a bit of history: https://github.com/gowravshekar/font-awesome-webpack/issues/41#issuecomment-413213495
+        // we should be able to go back to original package when it is updated.
+        'font-awesome-webpack-4!./src/theme/font-awesome.config.js'
       ]
     },
     output: {
@@ -86,22 +93,20 @@ module.exports = function (extensions, extensionsInNormalMode) {
       filename: 'client.js'
     },
     externals: [
-      function (context, request, callback) {
+      (context, request, callback) => {
         if (request === 'jsreport-studio') {
           return callback(null, 'Studio')
         }
 
         callback()
       },
-      'react/addons', 'react/lib/ExecutionEnvironment', 'react/lib/ReactContext'
     ],
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.js$/,
-          loaders: ['babel?' + JSON.stringify(babelLoaderQuery)],
-          exclude: function (modulePath) {
-            for (var key in extensions) {
+          exclude: (modulePath) => {
+            for (let key in extensions) {
               const shouldExcludeExplicitly = (
                 modulePath.indexOf(extensions[key].directory) !== -1
               ) && (
@@ -120,47 +125,162 @@ module.exports = function (extensions, extensionsInNormalMode) {
             }
 
             return true
-          }
+          },
+          use: [{
+            loader: 'babel-loader',
+            options: babelLoaderQuery
+          }]
         },
-        { test: /\.json$/, loader: 'json-loader' },
         {
           test: /\.less$/,
-          loader: 'style!css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!postcss-loader!less?outputStyle=expanded&sourceMap'
+          use: [
+            'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                importLoaders: 2,
+                sourceMap: true,
+                localIdentName: '[local]___[hash:base64:5]'
+              }
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                ident: 'postcss',
+                plugins: getPostcssPlugins
+              }
+            }, {
+              loader: 'less-loader',
+              options: {
+                outputStyle: 'expanded',
+                sourceMap: true
+              }
+            }
+          ]
         },
         {
           test: /\.scss$/,
-          loader: 'style!css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!postcss-loader!sass?outputStyle=expanded&sourceMap',
-          exclude: [/.*theme.*/]
+          exclude: [/.*theme.*/],
+          use: [
+            'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                importLoaders: 2,
+                sourceMap: true,
+                localIdentName: '[local]___[hash:base64:5]'
+              }
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                ident: 'postcss',
+                plugins: getPostcssPlugins
+              }
+            },
+            {
+              loader: 'sass-loader',
+              options: {
+                outputStyle: 'expanded',
+                sourceMap: true
+              }
+            }
+          ]
         },
         {
-          loader: 'style!css?importLoaders=2!postcss-loader!sass?outputStyle=expanded',
-          include: [/.*theme.*\.scss/]
+          include: [/.*theme.*\.scss/],
+          use: [
+            'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                importLoaders: 2
+              }
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                ident: 'postcss',
+                plugins: getPostcssPlugins
+              }
+            },
+            {
+              loader: 'sass-loader',
+              options: {
+                outputStyle: 'expanded'
+              }
+            }
+          ]
         },
-        { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
-        { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
-        { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream' },
-        { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
-        { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml' },
-        { test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192' }
+        {
+          test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+          use: [{
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+              mimetype: 'application/font-woff'
+            }
+          }]
+        },
+        {
+          test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+          use: [{
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+              mimetype: 'application/font-woff'
+            }
+          }]
+        },
+        {
+          test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+          use: [{
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+              mimetype: 'application/octet-stream'
+            }
+          }]
+        },
+        {
+          test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+          use: ['file-loader']
+        },
+        {
+          test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+          use: [{
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+              mimetype: 'image/svg+xml'
+            }
+          }]
+        },
+        {
+          test: /\.(png|jpg)$/,
+          use: [{
+            loader: 'url-loader',
+            options: {
+              limit: 8192
+            }
+          }]
+        }
       ]
     },
-    postcss: function () {
-      return [
-        jsreportStudioDev.deps['postcss-flexbugs-fixes'],
-        jsreportStudioDev.deps.autoprefixer
-      ]
-    },
-    progress: true,
     resolve: {
-      modulesDirectories: [
+      extensions: ['.json', '.js', '.jsx'],
+      modules: [
         'src',
-        'node_modules'
-      ],
-      extensions: ['', '.json', '.js', '.jsx'],
-      fallback: path.join(__dirname, '../node_modules')
+        'node_modules',
+        path.join(__dirname, '../node_modules')
+      ]
     },
     resolveLoader: {
-      root: path.join(__dirname, '../node_modules')
+      modules: [
+        path.join(__dirname, '../node_modules')
+      ]
     },
     plugins: [
       new HtmlWebpackPlugin({
@@ -175,4 +295,11 @@ module.exports = function (extensions, extensionsInNormalMode) {
       })
     ]
   }
+}
+
+function getPostcssPlugins () {
+  return [
+    jsreportStudioDev.deps['postcss-flexbugs-fixes'],
+    jsreportStudioDev.deps.autoprefixer
+  ]
 }
