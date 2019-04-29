@@ -24,7 +24,8 @@ module.exports = {
   },
   output: {
     path: assetsPath,
-    filename: 'client.js'
+    filename: 'client.js',
+    chunkFilename: '[name].client.js'
   },
   module: {
     rules: [

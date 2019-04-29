@@ -91,7 +91,8 @@ module.exports = (extensions, extensionsInNormalMode) => {
     },
     output: {
       path: assetsPath,
-      filename: 'client.js'
+      filename: 'client.js',
+      chunkFilename: '[name].client.js'
     },
     externals: [
       (context, request, callback) => {

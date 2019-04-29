@@ -10,6 +10,6 @@ export default function () {
     require.ensure([], function (require) {
       require('../extensions.js')
       resolve()
-    })
+    }, 'studio-extensions')
   })
 }
