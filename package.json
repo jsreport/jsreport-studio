@@ -59,6 +59,7 @@
     "mocha": "2.4.5",
     "mocha-clean": "1.0.0",
     "monaco-editor-webpack-plugin": "1.7.0",
+    "monaco-themes": "0.2.5",
     "react": "15.6.2",
     "react-dnd": "3.0.2",
     "react-dnd-html5-backend": "3.0.2",
