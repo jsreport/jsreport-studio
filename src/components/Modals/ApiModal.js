@@ -1,8 +1,7 @@
-import React, {Component, PropTypes} from 'react'
-import {connect} from 'react-redux'
-import {selectors} from '../../redux/editor'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { selectors } from '../../redux/editor'
 import style from './ApiModal.scss'
-import 'brace/mode/json'
 
 @connect((state, props) => ({ entity: selectors.getActiveEntity(state) }))
 export default class ApiModal extends Component {
@@ -22,7 +21,9 @@ export default class ApiModal extends Component {
 
   syntaxHighlight (json) {
     json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+
+    // eslint-disable-next-line no-useless-escape
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, (match) => {
       var cls = style.number
       if (/^"/.test(match)) {
         if (/:$/.test(match)) {
@@ -58,7 +59,7 @@ export default class ApiModal extends Component {
       </div>
       <div className={style.row}>
         <span className={style.label + ' ' + style.minor}>BODY:</span>
-        <code dangerouslySetInnerHTML={{__html: this.syntaxHighlight(JSON.stringify(body))}}></code>
+        <code dangerouslySetInnerHTML={{ __html: this.syntaxHighlight(JSON.stringify(body)) }} />
       </div>
       <br />
       <small>You can also identify template with name instead of shortid.</small>
@@ -77,7 +78,7 @@ export default class ApiModal extends Component {
       <h3>all possible overrides</h3>
 
       <div className={style.overridesBox}>
-        <pre dangerouslySetInnerHTML={{__html: this.syntaxHighlight(JSON.stringify(apiSpecs, null, 2))}}></pre>
+        <pre dangerouslySetInnerHTML={{ __html: this.syntaxHighlight(JSON.stringify(apiSpecs, null, 2)) }} />
       </div>
     </div>
   }

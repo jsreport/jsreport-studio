@@ -5,6 +5,7 @@ const fs = require('fs')
 const path = require('path')
 const jsreportStudioDev = require('jsreport-studio-dev')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 const assetsPath = path.resolve(__dirname, '../static/dist')
 const babelrc = fs.readFileSync(path.join(__dirname, '../.babelrc'))
 let babelrcObject = {}
@@ -130,6 +131,11 @@ module.exports = (extensions, extensionsInNormalMode) => {
             loader: 'babel-loader',
             options: babelLoaderQuery
           }]
+        },
+        {
+          test: /\.css$/,
+          include: [path.resolve(__dirname, '../node_modules/monaco-editor')],
+          use: ['style-loader', 'css-loader']
         },
         {
           test: /\.less$/,
@@ -284,15 +290,20 @@ module.exports = (extensions, extensionsInNormalMode) => {
       ]
     },
     plugins: [
-      new HtmlWebpackPlugin({
-        hash: true,
-        template: path.join(__dirname, '../static/index.html')
-      }),
       // hot reload
       new webpack.HotModuleReplacementPlugin(),
       new webpack.IgnorePlugin(/webpack-stats\.json$/),
       new webpack.DefinePlugin({
         __DEVELOPMENT__: true
+      }),
+      new MonacoWebpackPlugin({
+        languages: ['xml', 'html', 'handlebars', 'css', 'json', 'javascript', 'typescript'],
+        // we exclude some features
+        features: ['!iPadShowKeyboard', '!dnd']
+      }),
+      new HtmlWebpackPlugin({
+        hash: true,
+        template: path.join(__dirname, '../static/index.html')
       })
     ]
   }

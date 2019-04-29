@@ -1,8 +1,4 @@
-import React, {Component} from 'react'
-import 'brace/mode/handlebars'
-import 'brace/mode/javascript'
-import 'brace/theme/chrome'
-import 'brace/ext/searchbox'
+import React, { Component } from 'react'
 import TextEditor from './TextEditor.js'
 import _debounce from 'lodash/debounce'
 import SplitPane from '../../components/common/SplitPane/SplitPane.js'
@@ -35,7 +31,9 @@ export default class TemplateEditor extends Component {
   }
 
   componentDidMount () {
-    this.refs.contentEditor.ace.editor.focus()
+    setTimeout(() => {
+      this.refs.contentEditor.mainEditor.editor.focus()
+    }, 150)
   }
 
   render () {
@@ -50,16 +48,16 @@ export default class TemplateEditor extends Component {
           ref='contentEditor'
           name={entity._id}
           mode={this.resolveTemplateEditorMode(entity) || 'handlebars'}
-          onUpdate={(v) => onUpdate(Object.assign({ _id: entity._id }, {content: v}))}
+          onUpdate={(v) => onUpdate(Object.assign({ _id: entity._id }, { content: v }))}
           value={entity.content || ''}
-          />
+        />
         <TextEditor
           name={entity._id + '_helpers'}
           key={entity._id + '_helpers'}
           mode='javascript'
-          onUpdate={(v) => onUpdate(Object.assign({ _id: entity._id }, {helpers: v}))}
+          onUpdate={(v) => onUpdate(Object.assign({ _id: entity._id }, { helpers: v }))}
           value={entity.helpers || ''}
-          />
+        />
       </SplitPane>
     )
   }

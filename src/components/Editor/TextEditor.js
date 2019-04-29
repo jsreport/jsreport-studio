@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
-import AceEditor from 'react-ace'
-import 'brace/mode/handlebars'
-import 'brace/theme/chrome'
-import 'brace/ext/language_tools'
+import MonacoEditor from 'react-monaco-editor'
 import { subscribeToSplitResize } from '../../lib/configuration.js'
 
 export default class TextEditor extends Component {
@@ -13,33 +10,48 @@ export default class TextEditor extends Component {
     name: React.PropTypes.string.isRequired
   }
 
+  constructor (props) {
+    super(props)
+
+    this.editorWillMount = this.editorWillMount.bind(this)
+  }
+
   componentDidMount () {
-    this.refs.ace.editor.renderer.setScrollMargin(5, 0)
-    this.refs.ace.editor.focus()
-    this.unsubscribe = subscribeToSplitResize(() => this.refs.ace.editor.resize())
+    this.refs.monaco.editor.focus()
+
+    this.unsubscribe = subscribeToSplitResize(() => {
+      this.refs.monaco.editor.layout()
+    })
   }
 
   componentWillUnmount () {
     this.unsubscribe()
   }
 
-  get ace () {
-    return this.refs.ace
+  get mainEditor () {
+    return this.refs.monaco
   }
 
   render () {
     const { value, onUpdate, name, mode } = this.props
 
-    return (<AceEditor
-      key={name}
-      name={name}
-      mode={mode}
-      theme='chrome'
-      ref='ace'
-      onChange={(v) => onUpdate(v)}
-      className='ace'
-      width='100%'
-      value={value || ''}
-      editorProps={{$blockScrolling: Infinity}} />)
+    const editorOptions = {
+      roundedSelection: false,
+      automaticLayout: false,
+      dragAndDrop: false
+    }
+
+    return (
+      <MonacoEditor
+        name={name}
+        ref='monaco'
+        width='100%'
+        language={mode}
+        value={value || ''}
+        editorWillMount={this.editorWillMount}
+        options={editorOptions}
+        onChange={(v) => onUpdate(v)}
+      />
+    )
   }
 }

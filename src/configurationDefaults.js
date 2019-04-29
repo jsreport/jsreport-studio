@@ -274,7 +274,7 @@ export default () => {
     return (
       <div
         onClick={() => props.openTab({ key: 'StartupPage', editorComponentKey: 'startup', title: 'Startup' })}>
-        <i className='fa fa-home'></i> Startup page
+        <i className='fa fa-home' /> Startup page
       </div>
     )
   }))
@@ -282,7 +282,7 @@ export default () => {
   configuration.toolbarComponents.settings.push(() => (
     <div
       onClick={() => configuration.modalHandler.open(ApiModal, { apiSpecs: configuration.apiSpecs })}>
-      <i className='fa fa-plug'></i> API
+      <i className='fa fa-plug' /> API
     </div>
   ))
 

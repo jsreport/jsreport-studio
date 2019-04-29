@@ -22,7 +22,13 @@ window.React = React
 
 ReactModal.setAppElement(getAppElement())
 
+// eslint-disable-next-line no-undef, camelcase
 __webpack_public_path__ = configuration.rootPath() + '/studio/assets/'
+// the following is needed because a bug in monaco-editor-webpack-plugin
+// we should be able to remove the next line once this PR is merged and lands in new version
+// https://github.com/Microsoft/monaco-editor-webpack-plugin/pull/63
+// eslint-disable-next-line no-undef, camelcase
+window.__webpack_public_path__ = __webpack_public_path__
 
 defaults()
 

@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import React, {Component, PropTypes} from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -261,8 +261,7 @@ class App extends Component {
 
     // close all preview windows when docking
     if (Object.keys(previews).length) {
-      Object.keys(previews)
-      .forEach((id) => previews[id] && previews[id].close())
+      Object.keys(previews).forEach((id) => previews[id] && previews[id].close())
     }
 
     this.refs.previewPane.windows = {}
@@ -319,8 +318,8 @@ class App extends Component {
       onRemove: (id, children) => removeHandler ? removeHandler(id, children) : this.openModal(DeleteConfirmationModal, { _id: id, childrenIds: children }),
       activeEntity,
       entities: references,
-      onClick: (_id) => openTab({_id: _id}),
-      onNewClick: (es, options) => entitySets[es].onNew ? entitySets[es].onNew(options || {}) : this.openModal(NewEntityModal, {...options, entitySet: es})
+      onClick: (_id) => openTab({ _id: _id }),
+      onNewClick: (es, options) => entitySets[es].onNew ? entitySets[es].onNew(options || {}) : this.openModal(NewEntityModal, { ...options, entitySet: es })
     }
 
     // if there are no components registered, defaults to rendering the EntityTree alone

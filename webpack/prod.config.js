@@ -3,6 +3,7 @@ require('babel-polyfill')
 // Webpack config for creating the production bundle.
 const path = require('path')
 const jsreportStudioDev = require('jsreport-studio-dev')
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 const CleanPlugin = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
@@ -31,6 +32,11 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: ['babel-loader']
+      },
+      {
+        test: /\.css$/,
+        include: [path.resolve(__dirname, '../node_modules/monaco-editor')],
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.less$/,
@@ -192,6 +198,11 @@ module.exports = {
     }),
     // ignore dev config
     new webpack.IgnorePlugin(/\.\/dev/, /\/config$/),
+    new MonacoWebpackPlugin({
+      languages: ['xml', 'html', 'handlebars', 'css', 'json', 'javascript', 'typescript'],
+      // we exclude some features
+      features: ['!iPadShowKeyboard', '!dnd']
+    }),
     new HtmlWebpackPlugin({
       hash: true,
       template: path.join(__dirname, '../static/index.html')
