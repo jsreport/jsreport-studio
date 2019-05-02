@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import assign from 'lodash/assign'
 import Pane from './Pane'
@@ -49,23 +49,28 @@ export default class SplitPane extends Component {
   }
 
   componentDidMount () {
-    this.setSize(this.props, this.state)
+    this.setSize(this.props, this.state, (newSize) => {
+      if (this.props.onChange) {
+        this.props.onChange(newSize)
+      }
+    })
+
     document.addEventListener('mouseup', this.onMouseUp)
     document.addEventListener('mousemove', this.onMouseMove)
+
     this.windows = {}
   }
 
-  componentWillReceiveProps (props) {
-  }
-
-  setSize (props, state) {
+  setSize (props, state, cb) {
     const ref = this.props.primary === 'first' ? this.refs.pane1 : this.refs.pane2
     let newSize
+
     if (ref) {
       newSize = props.size || (state && state.draggedSize) || props.defaultSize || props.minSize
+
       ref.setState({
         size: newSize
-      })
+      }, () => cb(newSize))
     }
   }
 
@@ -119,9 +124,11 @@ export default class SplitPane extends Component {
             if (this.props.onChange) {
               this.props.onChange(newSize)
             }
+
             this.setState({
               draggedSize: newSize
             })
+
             ref.setState({
               size: newSize
             })
@@ -202,8 +209,8 @@ export default class SplitPane extends Component {
 
       windowOptsStr = (
         Object.keys(windowOpts)
-        .map((opt) => `${opt}=${typeof windowOpts[opt] === 'boolean' ? (windowOpts[opt] ? 'yes' : 'no') : windowOpts[opt]}`)
-        .join(',')
+          .map((opt) => `${opt}=${typeof windowOpts[opt] === 'boolean' ? (windowOpts[opt] ? 'yes' : 'no') : windowOpts[opt]}`)
+          .join(',')
       )
     }
 
@@ -227,8 +234,7 @@ export default class SplitPane extends Component {
 
     shouldCollapseAsync = (this.props.onCollapsing != null) ? this.props.onCollapsing(v) : true
 
-    Promise.resolve(shouldCollapseAsync)
-    .then((shouldCollapse) => {
+    Promise.resolve(shouldCollapseAsync).then((shouldCollapse) => {
       let ref1 = this.props.collapsable === 'first' ? this.refs.pane2 : this.refs.pane1
       const ref2 = this.props.collapsable === 'first' ? this.refs.pane1 : this.refs.pane2
 

@@ -10,6 +10,12 @@ export default class TextEditor extends Component {
     name: React.PropTypes.string.isRequired
   }
 
+  constructor (props) {
+    super(props)
+
+    this.editorDidMount = this.editorDidMount.bind(this)
+  }
+
   componentDidMount () {
     this.refs.monaco.editor.focus()
 
@@ -20,6 +26,10 @@ export default class TextEditor extends Component {
 
   componentWillUnmount () {
     this.unsubscribe()
+  }
+
+  editorDidMount (editor) {
+    editor.layout()
   }
 
   get mainEditor () {
@@ -43,8 +53,11 @@ export default class TextEditor extends Component {
         name={name}
         ref='monaco'
         width='100%'
+        height='100%'
         language={mode}
+        theme='vs'
         value={value || ''}
+        editorDidMount={this.editorDidMount}
         options={editorOptions}
         onChange={(v) => onUpdate(v)}
       />
