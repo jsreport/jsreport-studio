@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import ChromeTheme from 'monaco-themes/themes/Chrome DevTools.json'
 import MonacoEditor from 'react-monaco-editor'
 import { subscribeToSplitResize } from '../../lib/configuration.js'
 
@@ -9,12 +8,6 @@ export default class TextEditor extends Component {
     onUpdate: React.PropTypes.func.isRequired,
     mode: React.PropTypes.string.isRequired,
     name: React.PropTypes.string.isRequired
-  }
-
-  constructor (props) {
-    super(props)
-
-    this.editorWillMount = this.editorWillMount.bind(this)
   }
 
   componentDidMount () {
@@ -27,12 +20,6 @@ export default class TextEditor extends Component {
 
   componentWillUnmount () {
     this.unsubscribe()
-  }
-
-  editorWillMount (monaco) {
-    ChromeTheme.colors['editor.lineHighlightBackground'] = '#EDEDED'
-
-    monaco.editor.defineTheme('chrome', ChromeTheme)
   }
 
   get mainEditor () {
@@ -54,9 +41,7 @@ export default class TextEditor extends Component {
         ref='monaco'
         width='100%'
         language={mode}
-        theme='chrome'
         value={value || ''}
-        editorWillMount={this.editorWillMount}
         options={editorOptions}
         onChange={(v) => onUpdate(v)}
       />
