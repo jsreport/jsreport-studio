@@ -32,7 +32,10 @@ export default class TextEditor extends Component {
     const editorOptions = {
       roundedSelection: false,
       automaticLayout: false,
-      dragAndDrop: false
+      dragAndDrop: false,
+      minimap: {
+        enabled: false
+      }
     }
 
     return (
