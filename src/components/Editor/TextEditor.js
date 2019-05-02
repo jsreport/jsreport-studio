@@ -28,7 +28,12 @@ export default class TextEditor extends Component {
     this.unsubscribe()
   }
 
-  editorDidMount (editor) {
+  editorDidMount (editor, monaco) {
+    // adding universal ctrl + y, cmd + y handler
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_Y, () => {
+      editor.trigger('jsreport-studio', 'redo')
+    })
+
     editor.layout()
   }
 
