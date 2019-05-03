@@ -34,6 +34,35 @@ export default class TextEditor extends Component {
       editor.trigger('jsreport-studio', 'redo')
     })
 
+    // disables the default "Format Document" action, we do this to prevent having two
+    // different ways to format the code, we want to use our own formatter for now
+    editor.addAction({
+      id: 'editor.action.formatDocument',
+      label: '',
+      keybindings: [],
+      precondition: null,
+      keybindingContext: null,
+      run: () => {}
+    })
+
+    // monkey path setValue option to make it preserve undo stack
+    // when editing text editor with "Reformat" (or by prop change)
+    editor.setValue = (newValue) => {
+      const model = editor.getModel()
+
+      if (newValue !== model.getValue()) {
+        model.pushEditOperations(
+          [],
+          [
+            {
+              range: model.getFullModelRange(),
+              text: newValue
+            }
+          ]
+        )
+      }
+    }
+
     editor.layout()
   }
 

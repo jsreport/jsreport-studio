@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import Tab from './Tab'
 import TabPane from './TabPane.js'
 import { editorComponents } from '../../lib/configuration.js'
@@ -55,10 +55,14 @@ export default class EditorTabs extends Component {
   render () {
     const { activeTabKey, onUpdate, tabs } = this.props
 
-    return <TabPane
-      activeTabKey={activeTabKey}>{tabs.map((t) =>
-        this.renderEntityTab(t, onUpdate)
-    )}
-    </TabPane>
+    return (
+      <TabPane
+        activeTabKey={activeTabKey}
+      >
+        {tabs.map((t) =>
+          this.renderEntityTab(t, onUpdate)
+        )}
+      </TabPane>
+    )
   }
 }

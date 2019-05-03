@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import EntityFuzzyFinderModal from '../Modals/EntityFuzzyFinderModal.js'
 import { modalHandler, toolbarComponents, toolbarVisibilityResolver } from '../../lib/configuration.js'
 import style from './Toolbar.scss'
@@ -102,10 +102,15 @@ export default class Toolbar extends Component {
       return false
     }
 
-    return <div
-      title={tooltip} className={'toolbar-button ' + ' ' + (enabled ? '' : 'disabled')}
-      onClick={enabled ? onClick : () => {}}>
-      <i className={imageClass} /><span>{text}</span></div>
+    return (
+      <div
+        title={tooltip}
+        className={'toolbar-button ' + ' ' + (enabled ? '' : 'disabled')}
+        onClick={enabled ? onClick : () => {}}
+      >
+        <i className={imageClass} /><span>{text}</span>
+      </div>
+    )
   }
 
   renderRun () {
@@ -115,7 +120,7 @@ export default class Toolbar extends Component {
       title='Preview report in the right pane (F8)' className={'toolbar-button ' + (canRun ? '' : 'disabled')}
       onClick={canRun ? () => onRun() : () => {}}>
       <i className='fa fa-play' /> Run <span className={style.runCaret} onClick={(e) => { e.stopPropagation(); this.setState({ expandedRun: !this.state.expandedRun }) }} />
-      <div className={style.runPopup} style={{display: this.state.expandedRun ? 'block' : 'none'}}>
+      <div className={style.runPopup} style={{ display: this.state.expandedRun ? 'block' : 'none' }}>
         {this.renderButton((e) => { e.stopPropagation(); this.tryHide(); onRun('_blank', true) }, canRun, 'Run to new tab', 'fa fa-tablet', 'Preview in new tab')}
         {this.renderButton((e) => { e.stopPropagation(); this.tryHide(); undockPreview() }, canRun, 'Run and undock preview', 'fa fa-window-restore', 'Undock and Preview in new tab')}
         {this.renderButton((e) => { e.stopPropagation(); this.tryHide(); onRun('_self', true) }, canRun, 'Download', 'fa fa-download', 'Download output')}
@@ -143,7 +148,7 @@ export default class Toolbar extends Component {
       onClick={(e) => { e.stopPropagation(); this.setState({ expandedSettings: !this.state.expandedSettings }) }}>
       <i className='fa fa-cog' />
 
-      <div className={style.popup} style={{display: this.state.expandedSettings ? 'block' : 'none'}}>
+      <div className={style.popup} style={{ display: this.state.expandedSettings ? 'block' : 'none' }}>
         {this.renderToolbarComponents('settings')}
         {toolbarComponents.settingsBottom.length ? <hr /> : ''}
         {this.renderToolbarComponents('settingsBottom')}
@@ -162,7 +167,7 @@ export default class Toolbar extends Component {
       {this.renderButton(onReformat, canReformat, 'Reformat', 'fa fa-indent', 'Reformat code (CTRL+SHIFT+F)')}
       {this.renderToolbarComponents('left')}
       <div className={style.spinner}>
-        {isPending ? <i className='fa fa-spinner fa-spin fa-fw'></i> : ''}
+        {isPending ? <i className='fa fa-spinner fa-spin fa-fw' /> : ''}
       </div>
       {this.renderToolbarComponents('right')}
       {this.renderSettings()}
