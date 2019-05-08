@@ -25,13 +25,36 @@ module.exports = {
   output: {
     path: assetsPath,
     filename: 'client.js',
-    chunkFilename: '[name].client.js'
+    chunkFilename: '[name].client.js',
+    // this makes the worker-loader bundle to work fine at runtime, otherwise you
+    // will see error in the web worker
+    globalObject: 'this'
   },
   module: {
     rules: [
       {
+        test: /\.worker\.js$/,
+        include: [path.resolve(__dirname, '../src/components/Editor/workers')],
+        use: [{
+          loader: 'worker-loader',
+          options: {
+            name: '[name].js'
+          }
+        }]
+      },
+      {
         test: /\.jsx?$/,
-        exclude: /node_modules/,
+        exclude: (modulePath) => {
+          if (modulePath.includes('eslint-browser.js')) {
+            return true
+          }
+
+          if (modulePath.includes('node_modules')) {
+            return true
+          }
+
+          return false
+        },
         use: ['babel-loader']
       },
       {
@@ -176,10 +199,14 @@ module.exports = {
           }
         }]
       }
-    ]
+    ],
+    noParse: /eslint-browser\.js$/
   },
   resolve: {
     extensions: ['.json', '.js', '.jsx'],
+    alias: {
+      'eslint-browser': path.join(__dirname, '../static/dist/eslint-browser.js')
+    },
     modules: [
       'src',
       'node_modules',
@@ -193,7 +220,9 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanPlugin(),
+    new CleanPlugin({
+      cleanOnceBeforeBuildPatterns: ['**/*', '!eslint-browser.js']
+    }),
     new webpack.DefinePlugin({
       __DEVELOPMENT__: false
     }),
