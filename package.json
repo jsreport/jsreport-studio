@@ -21,7 +21,7 @@
     "parser": "babel-eslint"
   },
   "scripts": {
-    "start": "jsreport-studio-start --ignore-jsreport-studio-install",
+    "start": "npm run check-build-eslint-browser && jsreport-studio-start --ignore-jsreport-studio-install",
     "run": "npm run build && jsreport-studio-start --run-only",
     "test": "npm run ui-test && npm run server-test",
     "ui-test": "mocha test/ui/.setup.js test/ui --compilers js:babel-register --recursive --require mocha-clean --require ignore-styles",
@@ -29,7 +29,9 @@
     "test:watch": "npm test -- --watch",
     "prepublish": "in-publish && npm run build || not-in-publish",
     "docs": "jsdoc2md src/Studio.js > static/Studio.md",
-    "build": "jsreport-studio-build --config webpack/prod.config.js --stats.modules=false"
+    "check-build-eslint-browser": "ok-file static/dist/eslint-browser.js && not-in-publish || npm run build-eslint-browser",
+    "build-eslint-browser": "jsreport-studio-build --config webpack/eslint-browser.config.js --stats.modules=false",
+    "build": "npm run build-eslint-browser && jsreport-studio-build --config webpack/prod.config.js --stats.modules=false"
   },
   "dependencies": {
     "bluebird": "3.5.4",
@@ -59,6 +61,7 @@
     "mocha": "2.4.5",
     "mocha-clean": "1.0.0",
     "monaco-editor-webpack-plugin": "1.7.0",
+    "ok-file": "1.4.0",
     "react": "15.6.2",
     "react-dnd": "3.0.2",
     "react-dnd-html5-backend": "3.0.2",
@@ -87,9 +90,11 @@
     "should": "8.4.0",
     "socket.io-client": "1.4.6",
     "standard": "12.0.1",
+    "string-replace-loader": "2.1.1",
     "superagent": "1.8.2",
     "webpack-dev-middleware": "3.6.2",
-    "webpack-hot-middleware": "2.24.4"
+    "webpack-hot-middleware": "2.24.4",
+    "worker-loader": "2.0.0"
   },
   "files": [
     "lib",

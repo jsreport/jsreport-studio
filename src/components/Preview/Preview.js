@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import { registerPreviewFrameChangeHandler } from '../../lib/configuration.js'
 
 export default class Preview extends Component {
@@ -8,7 +8,7 @@ export default class Preview extends Component {
 
   constructor () {
     super()
-    this.state = {src: null}
+    this.state = { src: null }
   }
 
   componentDidMount () {
@@ -28,12 +28,23 @@ export default class Preview extends Component {
   render () {
     const { src } = this.state
 
-    return <div className='block'>
-      <div id='overlay' style={{display: 'none'}}></div>
-      <iframe
-        id='preview' frameBorder='0' onLoad={this.props.onLoad} name='previewFrame' allowTransparency='true'
-        allowFullScreen='true' ref='frame' width='100%' height='100%' src={src}
-        className='block-item'></iframe>
-    </div>
+    return (
+      <div className='block'>
+        <div id='overlay' style={{ display: 'none' }} />
+        <iframe
+          id='preview'
+          frameBorder='0'
+          onLoad={this.props.onLoad}
+          name='previewFrame'
+          allowTransparency='true'
+          allowFullScreen='true'
+          ref='frame'
+          width='100%'
+          height='100%'
+          src={src}
+          className='block-item'
+        />
+      </div>
+    )
   }
 }

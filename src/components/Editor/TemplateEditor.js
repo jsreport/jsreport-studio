@@ -47,13 +47,15 @@ export default class TemplateEditor extends Component {
           key={entity._id}
           ref='contentEditor'
           name={entity._id}
+          getFilename={() => entity.name}
           mode={this.resolveTemplateEditorMode(entity) || 'handlebars'}
           onUpdate={(v) => onUpdate(Object.assign({ _id: entity._id }, { content: v }))}
           value={entity.content || ''}
         />
         <TextEditor
-          name={entity._id + '_helpers'}
           key={entity._id + '_helpers'}
+          name={entity._id + '_helpers'}
+          getFilename={() => `${entity.name} (helpers)`}
           mode='javascript'
           onUpdate={(v) => onUpdate(Object.assign({ _id: entity._id }, { helpers: v }))}
           value={entity.helpers || ''}

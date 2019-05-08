@@ -50,8 +50,12 @@ export default class SplitPane extends Component {
 
   componentDidMount () {
     this.setSize(this.props, this.state, (newSize) => {
-      if (this.props.onChange) {
+      if (typeof this.props.onChange === 'function') {
         this.props.onChange(newSize)
+      }
+
+      if (typeof this.props.onDragFinished === 'function') {
+        this.props.onDragFinished()
       }
     })
 

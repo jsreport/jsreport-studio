@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import MonacoEditor from 'react-monaco-editor'
+import debounce from 'lodash/debounce'
+import LinterWorker from './workers/linter.worker'
 import { subscribeToSplitResize } from '../../lib/configuration.js'
 
 export default class TextEditor extends Component {
@@ -13,6 +15,12 @@ export default class TextEditor extends Component {
   constructor (props) {
     super(props)
 
+    this.lintWorker = null
+    this.oldCode = null
+
+    this.setUpLintWorker = this.setUpLintWorker.bind(this)
+    this.lint = this.lint.bind(this)
+    this.lint = debounce(this.lint, 400)
     this.editorDidMount = this.editorDidMount.bind(this)
   }
 
@@ -25,10 +33,32 @@ export default class TextEditor extends Component {
   }
 
   componentWillUnmount () {
+    this.oldCode = null
+
     this.unsubscribe()
+
+    if (this.lintWorker) {
+      this.lintWorker.terminate()
+    }
   }
 
   editorDidMount (editor, monaco) {
+    monaco.languages.typescript.typescriptDefaults.setMaximumWorkerIdleTime(-1)
+    monaco.languages.typescript.javascriptDefaults.setMaximumWorkerIdleTime(-1)
+
+    monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true)
+    monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true)
+
+    monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+      noSemanticValidation: true,
+      noSyntaxValidation: true
+    })
+
+    monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
+      noSemanticValidation: true,
+      noSyntaxValidation: true
+    })
+
     // adding universal ctrl + y, cmd + y handler
     editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_Y, () => {
       editor.trigger('jsreport-studio', 'redo')
@@ -63,11 +93,78 @@ export default class TextEditor extends Component {
       }
     }
 
+    // auto-size it
     editor.layout()
+
+    window.requestAnimationFrame(() => {
+      this.setUpLintWorker(editor, monaco)
+
+      editor.onDidChangeModelContent((e) => {
+        const newCode = editor.getModel().getValue()
+        const filename = typeof this.props.getFilename === 'function' ? this.props.getFilename() : ''
+
+        if (newCode !== this.oldCode) {
+          this.lint(newCode, filename, editor.getModel().getVersionId())
+        }
+
+        this.oldCode = newCode
+      })
+    })
+
+    this.oldCode = editor.getModel().getValue()
   }
 
   get mainEditor () {
     return this.refs.monaco
+  }
+
+  setUpLintWorker (editor, monaco) {
+    if (this.lintWorker) {
+      return
+    }
+
+    this.lintWorker = new LinterWorker()
+
+    this.lintWorker.addEventListener('message', (event) => {
+      const { markers } = event.data
+
+      window.requestAnimationFrame(() => {
+        if (!editor.getModel()) {
+          return
+        }
+
+        const model = editor.getModel()
+
+        monaco.editor.setModelMarkers(model, 'eslint', markers)
+      })
+    })
+
+    // first lint
+    window.requestAnimationFrame(() => {
+      if (!editor.getModel()) {
+        return
+      }
+
+      const filename = typeof this.props.getFilename === 'function' ? this.props.getFilename() : ''
+
+      this.lint(
+        this.props.value,
+        filename,
+        editor.getModel().getVersionId()
+      )
+    })
+  }
+
+  lint (code, filename, version) {
+    if (!this.lintWorker || this.props.mode !== 'javascript') {
+      return
+    }
+
+    this.lintWorker.postMessage({
+      filename,
+      code,
+      version
+    })
   }
 
   render () {

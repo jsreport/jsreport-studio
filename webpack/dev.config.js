@@ -27,6 +27,7 @@ let combinedPlugins = babelrcObject.plugins || []
 combinedPlugins = combinedPlugins.concat(babelrcObjectDevelopment.plugins)
 
 const babelLoaderQuery = Object.assign({}, babelrcObjectDevelopment, babelrcObject, { plugins: combinedPlugins })
+
 delete babelLoaderQuery.env
 
 // Since we use .babelrc for client and server, and we don't want HMR enabled on the server, we have to add
@@ -92,7 +93,10 @@ module.exports = (extensions, extensionsInNormalMode) => {
     output: {
       path: assetsPath,
       filename: 'client.js',
-      chunkFilename: '[name].client.js'
+      chunkFilename: '[name].client.js',
+      // this makes the worker-loader bundle to work fine at runtime, otherwise you
+      // will see error in the web worker
+      globalObject: 'this'
     },
     externals: [
       (context, request, callback) => {
@@ -101,13 +105,28 @@ module.exports = (extensions, extensionsInNormalMode) => {
         }
 
         callback()
-      },
+      }
     ],
     module: {
       rules: [
         {
+          test: /\.worker\.js$/,
+          include: [path.resolve(__dirname, '../src/components/Editor/workers')],
+          use: [{
+            loader: 'worker-loader',
+            options: {
+              name: '[name].js'
+            }
+          }]
+        },
+        {
           test: /\.js$/,
           exclude: (modulePath) => {
+            // we need to tell babel to exclude the processing of eslint-browser bundle
+            if (modulePath.includes('eslint-browser.js')) {
+              return true
+            }
+
             for (let key in extensions) {
               const shouldExcludeExplicitly = (
                 modulePath.indexOf(extensions[key].directory) !== -1
@@ -274,10 +293,14 @@ module.exports = (extensions, extensionsInNormalMode) => {
             }
           }]
         }
-      ]
+      ],
+      noParse: /eslint-browser\.js$/
     },
     resolve: {
       extensions: ['.json', '.js', '.jsx'],
+      alias: {
+        'eslint-browser': path.join(__dirname, '../static/dist/eslint-browser.js')
+      },
       modules: [
         'src',
         'node_modules',
