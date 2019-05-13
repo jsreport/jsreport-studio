@@ -99,6 +99,82 @@ export default class TextEditor extends Component {
     window.requestAnimationFrame(() => {
       this.setUpLintWorker(editor, monaco)
 
+      let autoCloseTimeout
+
+      // auto-close tag handling
+      editor.onDidChangeModelContent((e) => {
+        if (this.props.mode !== 'html' && this.props.mode !== 'handlebars') {
+          return
+        }
+
+        if (typeof autoCloseTimeout !== 'undefined') {
+          clearTimeout(autoCloseTimeout)
+        }
+
+        const changes = e.changes
+        const lastChange = changes[changes.length - 1]
+        const lastCharacter = lastChange.text[lastChange.text.length - 1]
+
+        if (lastChange.rangeLength > 0 || lastCharacter !== '>') {
+          return
+        }
+
+        autoCloseTimeout = setTimeout(() => {
+          const pos = editor.getPosition()
+          const textInLineAtCursor = editor.getModel().getLineContent(pos.lineNumber).slice(0, lastChange.range.endColumn)
+          let foundValidOpenTag = false
+          let extractIndex = 0
+          let tagName
+          let openTag
+
+          while (textInLineAtCursor.length !== Math.abs(extractIndex) && !foundValidOpenTag) {
+            extractIndex--
+            openTag = textInLineAtCursor.slice(extractIndex)
+
+            if (Math.abs(extractIndex) <= 2) {
+              continue
+            }
+
+            if (
+              openTag[0] === '/' ||
+              openTag[0] === '>' ||
+              openTag[0] === ' '
+            ) {
+              break
+            }
+
+            if (openTag[0] === '<' && openTag[openTag.length - 1] === '>') {
+              tagName = openTag.slice(1, -1)
+              foundValidOpenTag = true
+            }
+          }
+
+          if (!foundValidOpenTag) {
+            return
+          }
+
+          const targetRange = new monaco.Range(
+            pos.lineNumber,
+            pos.column - openTag.length,
+            pos.lineNumber,
+            pos.column
+          )
+
+          const op = {
+            identifier: { major: 1, minor: 1 },
+            range: targetRange,
+            text: `${openTag}</${tagName}>`,
+            forceMoveMarkers: true
+          }
+
+          editor.executeEdits('auto-close-tag', [op])
+
+          editor.setPosition(pos)
+
+          autoCloseTimeout = undefined
+        }, 100)
+      })
+
       editor.onDidChangeModelContent((e) => {
         const newCode = editor.getModel().getValue()
         const filename = typeof this.props.getFilename === 'function' ? this.props.getFilename() : ''
