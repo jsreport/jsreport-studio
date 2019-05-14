@@ -59,6 +59,14 @@ class Studio {
     return configuration.previewListeners
   }
 
+  get textEditorInitializeListeners () {
+    return configuration.textEditorInitializeListeners
+  }
+
+  get textEditorCreatedListeners () {
+    return configuration.textEditorCreatedListeners
+  }
+
   /** /event listeners **/
 
   /** initial configuration **/

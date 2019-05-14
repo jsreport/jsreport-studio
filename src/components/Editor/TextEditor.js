@@ -3,7 +3,7 @@ import ChromeTheme from 'monaco-themes/themes/Chrome DevTools.json'
 import MonacoEditor from 'react-monaco-editor'
 import debounce from 'lodash/debounce'
 import LinterWorker from './workers/linter.worker'
-import { subscribeToSplitResize } from '../../lib/configuration.js'
+import { textEditorInitializeListeners, textEditorCreatedListeners, subscribeToSplitResize } from '../../lib/configuration.js'
 
 export default class TextEditor extends Component {
   static propTypes = {
@@ -48,25 +48,29 @@ export default class TextEditor extends Component {
     ChromeTheme.colors['editor.lineHighlightBackground'] = '#EDEDED'
 
     // js updates
-    this.updateThemeRule('string', '1f19a6')
-    this.updateThemeRule('number', '1f19a6')
-    this.updateThemeRule('regexp', '1f19a6')
-    this.updateThemeRule('regexp.escape', '687587')
-    this.updateThemeRule('regexp.escape.control', '585CF6')
-    this.updateThemeRule('string.escape', '585CF6')
+    this.updateThemeRule(ChromeTheme, 'string', '1f19a6')
+    this.updateThemeRule(ChromeTheme, 'number', '1f19a6')
+    this.updateThemeRule(ChromeTheme, 'regexp', '1f19a6')
+    this.updateThemeRule(ChromeTheme, 'regexp.escape', '687587')
+    this.updateThemeRule(ChromeTheme, 'regexp.escape.control', '585CF6')
+    this.updateThemeRule(ChromeTheme, 'string.escape', '585CF6')
     // html updates
-    this.updateThemeRule('tag.html', 'aa0d91')
-    this.updateThemeRule('delimiter.handlebars', 'aa0d91')
-    this.updateThemeRule('variable.parameter.handlebars', 'F6971F')
-    this.updateThemeRule('keyword.helper.handlebars', 'F6971F')
-    this.updateThemeRule('attribute.name', '994407')
-    this.updateThemeRule('attribute.value', '1f19a6')
+    this.updateThemeRule(ChromeTheme, 'tag.html', 'aa0d91')
+    this.updateThemeRule(ChromeTheme, 'delimiter.handlebars', 'aa0d91')
+    this.updateThemeRule(ChromeTheme, 'variable.parameter.handlebars', 'F6971F')
+    this.updateThemeRule(ChromeTheme, 'keyword.helper.handlebars', 'F6971F')
+    this.updateThemeRule(ChromeTheme, 'attribute.name', '994407')
+    this.updateThemeRule(ChromeTheme, 'attribute.value', '1f19a6')
     // css updates
-    this.updateThemeRule('tag.css', '318495')
-    this.updateThemeRule('attribute.name.css', '6D78DE')
-    this.updateThemeRule('attribute.value.css', '27950C')
-    this.updateThemeRule('attribute.value.number.css', '2900CD')
-    this.updateThemeRule('attribute.value.unit.css', '920F80')
+    this.updateThemeRule(ChromeTheme, 'tag.css', '318495')
+    this.updateThemeRule(ChromeTheme, 'attribute.name.css', '6D78DE')
+    this.updateThemeRule(ChromeTheme, 'attribute.value.css', '27950C')
+    this.updateThemeRule(ChromeTheme, 'attribute.value.number.css', '2900CD')
+    this.updateThemeRule(ChromeTheme, 'attribute.value.unit.css', '920F80')
+
+    textEditorInitializeListeners.forEach((fn) => {
+      fn({ monaco, theme: ChromeTheme })
+    })
 
     monaco.editor.defineTheme('chrome', ChromeTheme)
   }
@@ -217,21 +221,25 @@ export default class TextEditor extends Component {
     })
 
     this.oldCode = editor.getModel().getValue()
+
+    textEditorCreatedListeners.forEach((fn) => {
+      fn({ monaco, editor })
+    })
   }
 
   get mainEditor () {
     return this.refs.monaco
   }
 
-  updateThemeRule (tokenName, foregroundColor) {
+  updateThemeRule (theme, tokenName, foregroundColor) {
     let r
 
-    r = ChromeTheme.rules.find((i) => i.token === tokenName)
+    r = theme.rules.find((i) => i.token === tokenName)
 
     if (r) {
       r.foreground = foregroundColor
     } else {
-      ChromeTheme.rules.push({
+      theme.rules.push({
         foreground: foregroundColor,
         token: tokenName
       })
@@ -306,8 +314,9 @@ export default class TextEditor extends Component {
         width='100%'
         height='100%'
         language={mode}
-        theme='vs'
+        theme='chrome'
         value={value || ''}
+        editorWillMount={this.editorWillMount}
         editorDidMount={this.editorDidMount}
         options={editorOptions}
         onChange={(v) => onUpdate(v)}
