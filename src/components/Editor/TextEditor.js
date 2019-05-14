@@ -67,6 +67,9 @@ export default class TextEditor extends Component {
     this.updateThemeRule(ChromeTheme, 'attribute.value.css', '27950C')
     this.updateThemeRule(ChromeTheme, 'attribute.value.number.css', '2900CD')
     this.updateThemeRule(ChromeTheme, 'attribute.value.unit.css', '920F80')
+    // json updates
+    this.updateThemeRule(ChromeTheme, 'string.key.json', '1f19a6')
+    this.updateThemeRule(ChromeTheme, 'string.value.json', '1f19a6')
 
     textEditorInitializeListeners.forEach((fn) => {
       fn({ monaco, theme: ChromeTheme })
