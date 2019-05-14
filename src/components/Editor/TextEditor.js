@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ChromeTheme from 'monaco-themes/themes/Chrome DevTools.json'
 import MonacoEditor from 'react-monaco-editor'
 import debounce from 'lodash/debounce'
 import LinterWorker from './workers/linter.worker'
@@ -21,6 +22,7 @@ export default class TextEditor extends Component {
     this.setUpLintWorker = this.setUpLintWorker.bind(this)
     this.lint = this.lint.bind(this)
     this.lint = debounce(this.lint, 400)
+    this.editorWillMount = this.editorWillMount.bind(this)
     this.editorDidMount = this.editorDidMount.bind(this)
   }
 
@@ -40,6 +42,33 @@ export default class TextEditor extends Component {
     if (this.lintWorker) {
       this.lintWorker.terminate()
     }
+  }
+
+  editorWillMount (monaco) {
+    ChromeTheme.colors['editor.lineHighlightBackground'] = '#EDEDED'
+
+    // js updates
+    this.updateThemeRule('string', '1f19a6')
+    this.updateThemeRule('number', '1f19a6')
+    this.updateThemeRule('regexp', '1f19a6')
+    this.updateThemeRule('regexp.escape', '687587')
+    this.updateThemeRule('regexp.escape.control', '585CF6')
+    this.updateThemeRule('string.escape', '585CF6')
+    // html updates
+    this.updateThemeRule('tag.html', 'aa0d91')
+    this.updateThemeRule('delimiter.handlebars', 'aa0d91')
+    this.updateThemeRule('variable.parameter.handlebars', 'F6971F')
+    this.updateThemeRule('keyword.helper.handlebars', 'F6971F')
+    this.updateThemeRule('attribute.name', '994407')
+    this.updateThemeRule('attribute.value', '1f19a6')
+    // css updates
+    this.updateThemeRule('tag.css', '318495')
+    this.updateThemeRule('attribute.name.css', '6D78DE')
+    this.updateThemeRule('attribute.value.css', '27950C')
+    this.updateThemeRule('attribute.value.number.css', '2900CD')
+    this.updateThemeRule('attribute.value.unit.css', '920F80')
+
+    monaco.editor.defineTheme('chrome', ChromeTheme)
   }
 
   editorDidMount (editor, monaco) {
@@ -192,6 +221,21 @@ export default class TextEditor extends Component {
 
   get mainEditor () {
     return this.refs.monaco
+  }
+
+  updateThemeRule (tokenName, foregroundColor) {
+    let r
+
+    r = ChromeTheme.rules.find((i) => i.token === tokenName)
+
+    if (r) {
+      r.foreground = foregroundColor
+    } else {
+      ChromeTheme.rules.push({
+        foreground: foregroundColor,
+        token: tokenName
+      })
+    }
   }
 
   setUpLintWorker (editor, monaco) {
