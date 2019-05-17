@@ -60,7 +60,6 @@ export default class SplitPane extends Component {
     })
 
     document.addEventListener('mouseup', this.onMouseUp)
-    document.addEventListener('mousemove', this.onMouseMove)
 
     this.windows = {}
   }
@@ -80,7 +79,6 @@ export default class SplitPane extends Component {
 
   componentWillUnmount () {
     document.removeEventListener('mouseup', this.onMouseUp)
-    document.removeEventListener('mousemove', this.onMouseMove)
     this.windows = {}
   }
 
@@ -95,6 +93,8 @@ export default class SplitPane extends Component {
         active: true,
         position: position
       })
+
+      document.addEventListener('mousemove', this.onMouseMove)
     }
   }
 
@@ -143,6 +143,8 @@ export default class SplitPane extends Component {
   }
 
   onMouseUp () {
+    document.removeEventListener('mousemove', this.onMouseMove)
+
     if (this.props.allowResize && !this.props.size) {
       if (this.state.active) {
         if (typeof this.props.onDragFinished === 'function') {

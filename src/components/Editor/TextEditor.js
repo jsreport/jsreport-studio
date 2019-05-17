@@ -305,6 +305,8 @@ export default class TextEditor extends Component {
       roundedSelection: false,
       automaticLayout: false,
       dragAndDrop: false,
+      lineNumbersMinChars: 4,
+      fontSize: 11.8,
       minimap: {
         enabled: false
       }
