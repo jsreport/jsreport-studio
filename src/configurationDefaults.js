@@ -6,6 +6,7 @@ import EntityTreeNewButton from './components/EntityTree/EntityTreeNewButton'
 import EntityTreeInputSearch from './components/EntityTree/EntityTreeInputSearch.js'
 import EntityTreeNavigateButton from './components/EntityTree/EntityTreeNavigateButton.js'
 import Startup from './containers/Startup/Startup.js'
+import AboutModal from './components/Modals/AboutModal.js'
 import ApiModal from './components/Modals/ApiModal.js'
 import NewFolderModal from './components/Modals/NewFolderModal'
 import ConcurrentUpdateErrorModal from './components/Modals/ConcurrentUpdateErrorModal'
@@ -278,6 +279,20 @@ export default () => {
       </div>
     )
   }))
+
+  configuration.aboutModal = AboutModal
+
+  configuration.toolbarComponents.settings.push(() => (
+    <div
+      onClick={() => configuration.modalHandler.open(configuration.aboutModal, {
+        version: configuration.version,
+        engines: configuration.engines,
+        recipes: configuration.recipes,
+        extensions: configuration.extensions
+      })}>
+      <i className='fa fa-info-circle' /> About
+    </div>
+  ))
 
   configuration.toolbarComponents.settings.push(() => (
     <div

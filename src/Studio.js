@@ -32,7 +32,6 @@ import io from 'socket.io-client'
  * @public
  */
 class Studio {
-
   /** event listeners **/
 
   /**

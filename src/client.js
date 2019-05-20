@@ -2,7 +2,7 @@ import 'babel-polyfill'
 import Promise from 'bluebird'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import { Router, browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import ReactModal from 'react-modal'
@@ -14,7 +14,7 @@ import './theme/style.scss'
 import * as entities from './redux/entities'
 import * as settings from './redux/settings'
 import * as configuration from './lib/configuration.js'
-import { createStudio as createStudio } from './Studio'
+import { createStudio } from './Studio'
 import defaults from './configurationDefaults.js'
 import getEntityTreeOrder from './helpers/getEntityTreeOrder'
 
@@ -65,6 +65,7 @@ const start = async () => {
   await Promise.all(
     [
       ...Object.keys(Studio.entitySets).map((t) => entities.actions.loadReferences(t)(store.dispatch)),
+      Studio.api.get('/api/version', { parseJSON: false }).then((version) => (configuration.version = version)),
       Studio.api.get('/api/engine').then((engs) => (configuration.engines = engs)),
       Studio.api.get('/api/recipe').then((recs) => (configuration.recipes = recs)),
       settings.actions.load()(store.dispatch)

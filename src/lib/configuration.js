@@ -1,3 +1,4 @@
+export let version = null
 export let engines = []
 export let recipes = []
 export const initializeListeners = []
@@ -43,6 +44,8 @@ export const registerModalHandler = (fn) => { modalHandler = fn }
 export let modalHandler = () => {}
 
 export let concurrentUpdateModal = () => { return null }
+
+export let aboutModal = () => { return null }
 
 export const registerCollapseEntityHandler = (fn) => { collapseEntityHandler = fn }
 export let collapseEntityHandler = () => {}
