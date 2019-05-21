@@ -4,6 +4,8 @@ import { modalHandler, toolbarComponents, toolbarVisibilityResolver } from '../.
 import style from './Toolbar.scss'
 import logo from './js-logo.png'
 
+const isMac = () => window.navigator.platform.toUpperCase().indexOf('MAC') >= 0
+
 export default class Toolbar extends Component {
   static propTypes = {
     openStartup: React.PropTypes.func.isRequired,
@@ -56,7 +58,11 @@ export default class Toolbar extends Component {
   }
 
   handleShortcut (e) {
-    if (e.ctrlKey && e.shiftKey && e.which === 83) {
+    if (
+      (e.ctrlKey && e.shiftKey && e.which === 83) ||
+      // handles CMD + SHIFT + S on Mac
+      (isMac() && e.metaKey && e.shiftKey && e.which === 83)
+    ) {
       e.preventDefault()
 
       if (this.props.canSaveAll && toolbarVisibilityResolver('SaveAll')) {
@@ -65,13 +71,23 @@ export default class Toolbar extends Component {
       }
     }
 
-    if (e.ctrlKey && e.shiftKey && e.which === 70 && this.props.canReformat && toolbarVisibilityResolver('Reformat')) {
+    if (
+      (
+        (e.ctrlKey && e.shiftKey && e.which === 70) ||
+        // handles CMD + SHIFT + F on Mac
+        (isMac() && e.metaKey && e.shiftKey && e.which === 70)
+      ) && this.props.canReformat && toolbarVisibilityResolver('Reformat')
+    ) {
       e.preventDefault()
       this.props.onReformat()
       return false
     }
 
-    if (e.ctrlKey && e.which === 83) {
+    if (
+      (e.ctrlKey && e.which === 83) ||
+      // handles CMD + S on Mac
+      (isMac() && e.metaKey && e.which === 83)
+    ) {
       e.preventDefault()
 
       if (this.props.canSave && toolbarVisibilityResolver('SaveAll')) {
@@ -157,20 +173,23 @@ export default class Toolbar extends Component {
   }
 
   render () {
+    const metaKey = isMac() ? 'CMD' : 'CTRL'
     const { onSave, canSave, onSaveAll, canSaveAll, isPending, openStartup, onReformat, canReformat } = this.props
 
-    return <div className={style.toolbar}>
-      <div className={style.logo} onClick={() => openStartup()}><img src={logo} /></div>
-      {this.renderRun()}
-      {this.renderButton(onSave, canSave, 'Save', 'fa fa-floppy-o', 'Save current tab (CTRL+S)')}
-      {this.renderButton(onSaveAll, canSaveAll, 'SaveAll', 'fa fa-floppy-o', 'Save all tabs (CTRL+SHIFT+S')}
-      {this.renderButton(onReformat, canReformat, 'Reformat', 'fa fa-indent', 'Reformat code (CTRL+SHIFT+F)')}
-      {this.renderToolbarComponents('left')}
-      <div className={style.spinner}>
-        {isPending ? <i className='fa fa-spinner fa-spin fa-fw' /> : ''}
+    return (
+      <div className={style.toolbar}>
+        <div className={style.logo} onClick={() => openStartup()}><img src={logo} /></div>
+        {this.renderRun()}
+        {this.renderButton(onSave, canSave, 'Save', 'fa fa-floppy-o', `Save current tab (${metaKey}+S)`)}
+        {this.renderButton(onSaveAll, canSaveAll, 'SaveAll', 'fa fa-floppy-o', `Save all tabs (${metaKey}+SHIFT+S`)}
+        {this.renderButton(onReformat, canReformat, 'Reformat', 'fa fa-indent', `Reformat code (${metaKey}+SHIFT+F)`)}
+        {this.renderToolbarComponents('left')}
+        <div className={style.spinner}>
+          {isPending ? <i className='fa fa-spinner fa-spin fa-fw' /> : ''}
+        </div>
+        {this.renderToolbarComponents('right')}
+        {this.renderSettings()}
       </div>
-      {this.renderToolbarComponents('right')}
-      {this.renderSettings()}
-    </div>
+    )
   }
 }
