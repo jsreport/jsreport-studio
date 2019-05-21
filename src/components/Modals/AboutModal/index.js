@@ -1,8 +1,17 @@
 import React, { Component, PropTypes } from 'react'
+import logo from './jsreport-bg.png'
 
 class AboutModal extends Component {
   static propTypes = {
     options: PropTypes.object.isRequired
+  }
+
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      collapsed: true
+    }
   }
 
   render () {
@@ -11,6 +20,9 @@ class AboutModal extends Component {
     return (
       <div>
         <h2>About</h2>
+        <div>
+          <img src={logo} style={{ width: '100px', height: 'auto' }} />
+        </div>
         <div>
           version: <b>{version}</b>
         </div>
@@ -45,16 +57,23 @@ class AboutModal extends Component {
         </div>
         <hr />
         <div>
-          extensions:
-          <ul style={{ listStyle: 'none', paddingLeft: '5px' }}>
-            {Object.keys(extensions).sort().map((name) => {
-              const extension = extensions[name]
+          <span
+            style={{ display: 'inline-block', cursor: 'pointer' }}
+            onClick={() => this.setState((state) => ({ collapsed: !state.collapsed }))}
+          >
+            <i className={`fa ${this.state.collapsed ? 'fa-caret-right' : 'fa-caret-down'}`} /> extensions
+          </span>
+          <div style={{ display: this.state.collapsed ? 'none' : 'block' }}>
+            <ul style={{ listStyle: 'none', paddingLeft: '5px', maxHeight: '220px', overflow: 'auto' }}>
+              {Object.keys(extensions).sort().map((name) => {
+                const extension = extensions[name]
 
-              return (
-                <li key={extension.name}><b>{extension.name}:</b> {extension.version}</li>
-              )
-            })}
-          </ul>
+                return (
+                  <li key={extension.name}><b>{extension.name}:</b> {extension.version}</li>
+                )
+              })}
+            </ul>
+          </div>
         </div>
       </div>
     )
