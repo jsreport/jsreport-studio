@@ -247,6 +247,10 @@ class Studio {
     configuration.apiHeaders[key] = value
   }
 
+  setAboutModal (AboutModalComponent) {
+    configuration.aboutModal = AboutModalComponent
+  }
+
   /**
    * Merges in the object defining the api which is used in api fialog
    * @param {Object} obj
