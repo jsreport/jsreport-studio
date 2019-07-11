@@ -61,8 +61,11 @@
   background: linear-gradient(to left, $tertiaryBackgroundColor 0%, #323c47 100%);
   background-size: auto 100%;
   background-repeat: no-repeat;
-  padding: 0.4rem 2rem 0.4rem 0.2rem;
-  display: inline-block;
+  padding-left: 0.2rem;
+  padding-right: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   cursor: pointer;
   height: 2.5rem;
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import EntityFuzzyFinderModal from '../Modals/EntityFuzzyFinderModal.js'
-import { modalHandler, toolbarComponents, toolbarVisibilityResolver } from '../../lib/configuration.js'
+import { modalHandler, toolbarComponents, toolbarVisibilityResolver, extensions } from '../../lib/configuration.js'
+import resolveUrl from '../../helpers/resolveUrl'
 import style from './Toolbar.scss'
 import logo from './js-logo.png'
 
@@ -178,7 +179,12 @@ export default class Toolbar extends Component {
 
     return (
       <div className={style.toolbar}>
-        <div className={style.logo} onClick={() => openStartup()}><img src={logo} /></div>
+        <div className={style.logo} onClick={() => openStartup()}>
+          <img
+            src={extensions.studio.options.customLogo === true ? resolveUrl('/studio/assets/custom-logo') : logo}
+            style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%', display: 'inline-block' }}
+          />
+        </div>
         {this.renderRun()}
         {this.renderButton(onSave, canSave, 'Save', 'fa fa-floppy-o', `Save current tab (${metaKey}+S)`)}
         {this.renderButton(onSaveAll, canSaveAll, 'SaveAll', 'fa fa-floppy-o', `Save all tabs (${metaKey}+SHIFT+S`)}

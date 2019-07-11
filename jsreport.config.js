@@ -6,6 +6,10 @@ module.exports = {
       studio: {
         type: 'object',
         properties: {
+          logoPath: {
+            type: 'string',
+            description: 'specifies the path to a custom logo to use in the studio UI'
+          },
           startupPage: {
             type: 'boolean',
             default: true
