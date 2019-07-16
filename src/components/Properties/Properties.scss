@@ -1,11 +1,10 @@
-@import "../../theme/common";
 
 .propertiesPanel {
   flex: 1;
   display: flex;
   flex-direction: column;
   background-color: $secondaryBackgroundColor;
-  @include no-select();
+  user-select: none;
 }
 
 .title {

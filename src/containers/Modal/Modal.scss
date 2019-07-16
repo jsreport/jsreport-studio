@@ -1,4 +1,3 @@
-@import "../../theme/common";
 
 .overlay {
   position: fixed;
@@ -21,7 +20,7 @@
   position: fixed;
   width: auto;
   z-index: 1050;
-  font-weight: 200;  
+  font-weight: 200;
   min-width: 30%;
   border-radius: 0.1rem;
 }

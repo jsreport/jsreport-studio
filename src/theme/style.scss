@@ -1,6 +1,5 @@
-@import "common";
-@import "controls";
-@import "resizer";
+@import "./controls.scss";
+@import "./resizer.scss";
 
 *, *:before, *:after {
   box-sizing: inherit;

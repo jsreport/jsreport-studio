@@ -1,43 +1,42 @@
-@import "../../../theme/common";
 
 .heading {
   margin-bottom: 0.2rem;
 }
 
-.select {           
+.select {
   overflow-y: auto;
-  overflow-x: auto;    
+  overflow-x: auto;
   background-color: $primarySelectionColor
 }
 
 .select > ul {
   margin: 0rem;
-  padding: 0rem;  
-  list-style: none;  
+  padding: 0rem;
+  list-style: none;
 }
 
 .select > ul > li {
-  cursor: pointer;  
+  cursor: pointer;
   padding: 0.3rem;
   border-bottom: 0.1rem solid $secondaryColor;
 }
 
-.select > ul > li:hover {   
+.select > ul > li:hover {
   background-color: $secondaryHoverBackgroundColor;
-  color: $primaryHoverColor; 
+  color: $primaryHoverColor;
 }
 
-.selectInput {        
-  cursor: pointer;  
-  font-size: 0.9rem;    
-  background-color: $primarySelectionColor;       
+.selectInput {
+  cursor: pointer;
+  font-size: 0.9rem;
+  background-color: $primarySelectionColor;
   border-bottom: solid 0.2rem $secondaryColor;
   transition: border 0.3s;
-  padding: 0.5rem;  
+  padding: 0.5rem;
   width: 100%;
   display: flex;
-  color: black;    
-  margin-top: 2px;  
+  color: black;
+  margin-top: 2px;
 }
 
 .selectInput:hover, .selectInput:focus, .selectInput:active {
@@ -48,18 +47,18 @@
   margin-top: 0.1rem;
 }
 
-.selectInput > i:hover {      
-  color: $primarySelectionBackgroundColor;  
+.selectInput > i:hover {
+  color: $primarySelectionBackgroundColor;
 }
 
-.selectInput > span {  
-  margin-left: 0.5rem;  
+.selectInput > span {
+  margin-left: 0.5rem;
   white-space: nowrap;
   overflow-x: hidden;
 }
 
-.selectInput > span.link:hover {  
-  margin-left: 0.5rem;  
+.selectInput > span.link:hover {
+  margin-left: 0.5rem;
   color: $primarySelectionBackgroundColor;
   text-decoration: underline;
 }

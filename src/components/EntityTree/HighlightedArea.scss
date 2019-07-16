@@ -1,9 +1,6 @@
-@import "../../theme/common";
-
-$highlight-color: #3397ea;
 
 .label {
-  background-color: $highlight-color;
+  background-color: $highlightColor;
   border-radius: 2px;
   position: absolute;
   pointer-events: none;
@@ -11,15 +8,15 @@ $highlight-color: #3397ea;
 }
 
 .hierarchy {
-  border-left: 1px dotted $highlight-color;
-  border-top: 1px dotted $highlight-color;
-  border-bottom: 1px dotted $highlight-color;
+  border-left: 1px dotted $highlightColor;
+  border-top: 1px dotted $highlightColor;
+  border-bottom: 1px dotted $highlightColor;
   position: absolute;
   pointer-events: none;
 }
 
 .hierarchyTop {
-  background-color: $highlight-color;
+  background-color: $highlightColor;
   border-radius: 100%;
   height: 5px;
   position: absolute;
@@ -29,7 +26,7 @@ $highlight-color: #3397ea;
 }
 
 .hierarchyBottom {
-  background-color: $highlight-color;
+  background-color: $highlightColor;
   border-radius: 100%;
   bottom: -2.5px;
   height: 5px;

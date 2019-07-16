@@ -1,13 +1,11 @@
 
-@import "../../theme/common";
-
 .entityTreeButton {
   background-color: $secondaryBackgroundColor;
   border: none;
   color: lighten($primaryColor, 10%);
   cursor: pointer;
   padding: 0.2rem;
-  @include no-select();
+  user-select: none;
   border: 0.1rem solid lighten($primaryColor, 70%);
   font-size: 0.75rem;
 }

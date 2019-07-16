@@ -1,4 +1,3 @@
-@import "common";
 
 .resizer {
   width: 11px;
@@ -53,7 +52,7 @@
 .resizer:hover .docker {
   display: block;
   opacity:1;
-  //transition:0s 1s;
+  /*transition:0s 1s;*/
   transition: 2s opacity;
 }
 

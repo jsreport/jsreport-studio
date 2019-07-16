@@ -10,6 +10,11 @@ module.exports = {
             type: 'string',
             description: 'specifies the path to a custom logo to use in the studio UI'
           },
+          themeVars: {
+            type: 'object',
+            description: 'specifies the value of some variables to customize the studio UI theme',
+            default: null
+          },
           startupPage: {
             type: 'boolean',
             default: true

@@ -1,16 +1,15 @@
-@import "../../theme/common";
 
 .container {
   margin: 0;
-  width: 560px;  
-  height: 280px;  
+  width: 560px;
+  height: 280px;
   overflow: hidden;
 }
 
 .input {
   width: 100%;
   padding-top: 0.7rem;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 5px 2px;  
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 5px 2px;
 }
 
 .input:hover, .input:focus, .input:active {

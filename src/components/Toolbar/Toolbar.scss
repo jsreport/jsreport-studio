@@ -1,7 +1,6 @@
-@import "../../theme/common";
 
 .toolbar {
-  background-color: $tertiaryBackgroundColor;;
+  background-color: $tertiaryBackgroundColor;
   color: $tertiaryColor;
   display: flex;
   align-items: center;
@@ -12,11 +11,11 @@
   padding: 0.7rem;
   font-size: 1rem;
   cursor: pointer;
-  @include no-select();
+  user-select: none;
 }
 
 :global .toolbar-button > i:nth-child(1) {
-   margin-right:0.3rem;
+   margin-right: 0.3rem;
 }
 
 :global .toolbar-button.disabled {
