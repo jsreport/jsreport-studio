@@ -12,8 +12,7 @@ module.exports = {
           },
           themeVars: {
             type: 'object',
-            description: 'specifies the value of some variables to customize the studio UI theme',
-            default: null
+            description: 'specifies the value of some variables to customize the studio UI theme'
           },
           startupPage: {
             type: 'boolean',
