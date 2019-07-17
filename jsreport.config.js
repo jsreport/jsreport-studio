@@ -6,13 +6,18 @@ module.exports = {
       studio: {
         type: 'object',
         properties: {
-          logoPath: {
-            type: 'string',
-            description: 'specifies the path to a custom logo to use in the studio UI'
-          },
-          themeVars: {
+          theme: {
             type: 'object',
-            description: 'specifies the value of some variables to customize the studio UI theme'
+            properties: {
+              logo: {
+                type: 'string',
+                description: 'specifies the path to a custom logo to use in the studio UI'
+              },
+              variables: {
+                type: 'object',
+                description: 'specifies the value of some variables to customize the studio UI theme'
+              }
+            }
           },
           startupPage: {
             type: 'boolean',
