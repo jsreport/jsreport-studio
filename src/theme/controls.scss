@@ -13,7 +13,9 @@
 
 select {
   border: none;
-  border-bottom: solid 0.2rem $secondaryColor;
+  background-color: $controlsBackgroundColor;
+  color: $controlsColor;
+  border-bottom: solid 0.2rem $controlsBorderColor;
   transition: border 0.3s;
   padding: 0.5rem;
 }
@@ -24,7 +26,9 @@ select:hover, select:focus, select:active {
 
 input {
   border: none;
-  border-bottom: solid 0.2rem $secondaryColor;
+  background-color: $controlsBackgroundColor;
+  color: $controlsColor;
+  border-bottom: solid 0.2rem $controlsBorderColor;
   transition: border 0.3s;
   padding: 0.3rem;
 }

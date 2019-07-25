@@ -6,7 +6,8 @@
 .select {
   overflow-y: auto;
   overflow-x: auto;
-  background-color: $primarySelectionColor
+  color: $controlsColor;
+  background-color: $controlsBackgroundColor
 }
 
 .select > ul {
@@ -18,7 +19,7 @@
 .select > ul > li {
   cursor: pointer;
   padding: 0.3rem;
-  border-bottom: 0.1rem solid $secondaryColor;
+  border-bottom: 0.1rem solid $controlsBorderColor;
 }
 
 .select > ul > li:hover {
@@ -29,13 +30,13 @@
 .selectInput {
   cursor: pointer;
   font-size: 0.9rem;
-  background-color: $primarySelectionColor;
-  border-bottom: solid 0.2rem $secondaryColor;
+  background-color: $controlsBackgroundColor;
+  border-bottom: solid 0.2rem $controlsBorderColor;
   transition: border 0.3s;
   padding: 0.5rem;
   width: 100%;
   display: flex;
-  color: black;
+  color: $controlsColor;
   margin-top: 2px;
 }
 

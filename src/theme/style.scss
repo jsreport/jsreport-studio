@@ -12,11 +12,32 @@ html, body {
   height: 100%;
   margin: 0;
   font-size: 0.9em;
+  background-color: $primaryBackgroundColor;
   color: $primaryColor;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $scrollBarThumbBackgroundColor;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: $scrollBarThumbHoverBackgroundColor;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $scrollBarThumbHoverBackgroundColor;
+}
+
+::-webkit-scrollbar-track {
+  background: $scrollBarTrackBackgroundColor;
+}
+
 .container {
-  display:         flex;
+  display: flex;
   flex-direction: column;
   min-width: 0;
   min-height: 0;
@@ -43,7 +64,7 @@ html, body {
 
 h1,h2,h3,h4 {
   text-transform: lowercase;
-  font-weight: 100;
+  font-weight: 150;
   color: $primarySelectionBackgroundColor
 }
 
@@ -111,6 +132,6 @@ h1,h2,h3,h4 {
 }
 
 .table > tbody> tr:not(:hover):not(.active) > td.selection {
-  background-color: $secondaryBackgroundColor;
+  background-color: darken($secondaryBackgroundColor, 3%);
   color: $primaryColor;
 }

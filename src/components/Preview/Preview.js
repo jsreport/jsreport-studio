@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { registerPreviewFrameChangeHandler } from '../../lib/configuration.js'
+import styles from './Preview.scss'
 
 export default class Preview extends Component {
   static propTypes = {
@@ -29,7 +30,7 @@ export default class Preview extends Component {
     const { src } = this.state
 
     return (
-      <div className='block'>
+      <div className={`block ${styles.container}`}>
         <div id='overlay' style={{ display: 'none' }} />
         <iframe
           id='preview'

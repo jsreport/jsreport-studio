@@ -19,21 +19,21 @@
   overflow: auto;
 }
 
- .propertyTitle {
+.propertyTitle {
   cursor: pointer;
   padding: 0.5rem 0.5rem 0.5rem 1.2rem;
-  background-color: $secondaryColor;
-  color: $primaryColor;
+  background-color: $propertyTitleBackgroundColor;
+  color: $propertyTitleColor;
 }
 
 .propertyTitle.expanded {
-  background-color: $primarySelectionBackgroundColor;
-  color: $secondaryBackgroundColor;
+  background-color: $propertyTitleExpandedBackgroundColor;
+  color: $propertyTitleExpandedColor;
 }
 
 .propertyTitle:hover {
-  background-color: $primaryHoverBackgroundColor;
-  color: $primaryHoverColor;
+  background-color: $propertyTitleHoverBackgroundColor;
+  color: $propertyTitleHoverColor;
 }
 
 .propertyBox {

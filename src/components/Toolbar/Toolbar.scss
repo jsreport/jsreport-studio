@@ -57,7 +57,7 @@
 }
 
 .logo {
-  background: linear-gradient(to left, $tertiaryBackgroundColor 0%, #323c47 100%);
+  background: linear-gradient(to left, $tertiaryBackgroundColor 0%, $tertiaryBackgroundColorTarget 100%);
   background-size: auto 100%;
   background-repeat: no-repeat;
   padding-left: 0.2rem;

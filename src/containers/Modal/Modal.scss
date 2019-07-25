@@ -11,9 +11,9 @@
 }
 
 .content {
-  background-color: #F6F6F6;
+  background-color: $secondaryBackgroundColor;
   box-shadow: 1rem 1rem 1rem 0 rgba(0, 0, 0, 0.3);
-  color: #1d1d1d;
+  color: $primaryColor;
   display: block;
   float: left;
   height: auto;

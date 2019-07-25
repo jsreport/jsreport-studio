@@ -2,6 +2,7 @@
 .treeListContainer {
   flex: 1;
   background-color: $secondaryBackgroundColor;
+  color: $primaryColor;
   display: flex;
   flex-direction: column;
   /*firefox needs min-height and min-width explicitly declared to allow descendants flex items to be scrollable (overflow)*/
@@ -163,7 +164,7 @@
 }
 
 .contextMenu {
-  background-color: $secondaryColor;
+  background-color: $contextMenuBackgroundColor;
   position: relative;
   min-width: 9rem;
   padding-top: 0.5rem;
@@ -190,7 +191,7 @@
 
 .contextButton {
   position: relative;
-  color: $primaryColor;
+  color: $contextMenuButtonColor;
   padding: 0.5rem 1rem 0.5rem 1rem;
   font-size: 0.8rem;
   cursor: pointer;
@@ -204,7 +205,7 @@
 }
 
 .contextButton.disabled {
-  color: #7d8a98;
+  color: $contextMenuButtonDisabledColor;
 }
 
 .contextButton.hasNestedLevels:after {
@@ -217,8 +218,8 @@
 }
 
 .contextButton:hover:not(.disabled) {
-  background-color: $primaryHoverBackgroundColor;
-  color: $primaryHoverColor;
+  background-color: $contextMenuButtonHoverBackgroundColor;
+  color: $contextMenuButtonHoverColor;
 }
 
 .contextButton.hasNestedLevels:hover > .contextMenuContainer.nestedLevel {

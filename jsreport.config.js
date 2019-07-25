@@ -13,6 +13,10 @@ module.exports = {
                 type: 'string',
                 description: 'specifies the path to a custom logo to use in the studio UI'
               },
+              editorThemeName: {
+                type: 'string',
+                description: 'specifies the theme name to use for the editor'
+              },
               variables: {
                 type: 'object',
                 description: 'specifies the value of some variables to customize the studio UI theme'

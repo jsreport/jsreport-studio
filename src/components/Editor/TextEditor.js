@@ -3,7 +3,7 @@ import ChromeTheme from 'monaco-themes/themes/Chrome DevTools.json'
 import MonacoEditor from 'react-monaco-editor'
 import debounce from 'lodash/debounce'
 import LinterWorker from './workers/linter.worker'
-import { textEditorInitializeListeners, textEditorCreatedListeners, subscribeToSplitResize } from '../../lib/configuration.js'
+import { extensions, textEditorInitializeListeners, textEditorCreatedListeners, subscribeToSplitResize } from '../../lib/configuration.js'
 
 export default class TextEditor extends Component {
   static propTypes = {
@@ -319,7 +319,7 @@ export default class TextEditor extends Component {
         width='100%'
         height='100%'
         language={mode}
-        theme='chrome'
+        theme={extensions.studio.options.editorTheme}
         value={value || ''}
         editorWillMount={this.editorWillMount}
         editorDidMount={this.editorDidMount}

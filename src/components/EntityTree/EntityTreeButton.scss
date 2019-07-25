@@ -1,17 +1,18 @@
 
 .entityTreeButton {
-  background-color: $secondaryBackgroundColor;
+  background-color: $entityTreeButtonBackgroundColor;
   border: none;
-  color: lighten($primaryColor, 10%);
+  color: $entityTreeButtonColor;
   cursor: pointer;
   padding: 0.2rem;
   user-select: none;
-  border: 0.1rem solid lighten($primaryColor, 70%);
+  border: 0.1rem solid $entityTreeButtonBorderColor;
   font-size: 0.75rem;
 }
 
 .entityTreeButton:hover {
-  background-color: $primaryHoverColor;
+  background-color: $entityTreeButtonHoverBackgroundColor;
+  color: $entityTreeButtonHoverColor
 }
 
 .entityTreeButton.active {

@@ -1,12 +1,12 @@
 
 .tabPane {
-  background-color: #FEFEFE;
+  background-color: $tabPaneBackgroundColor;
 }
 
 .tabTitles {
   display: flex;
   flex-wrap: wrap;
-  background-color: #FEFEFE;
+  background-color: $tabTitlesBackgroundColor;
   border-bottom: 0.2rem $primaryHoverBackgroundColor solid;
   padding-top: 0.5rem;
   min-height: 2.4rem;
@@ -26,9 +26,9 @@
   min-height: 1.7rem;
   white-space: nowrap;
   display:flex;
-  background-color: #FEFEFE;
+  background-color: $tabTitleBackgroundColor;
   padding: 0.3rem 0.3rem 0.3rem 0.9rem;
-  border-right: 1px #E6E6E6 solid;
+  border-right: 1px $tabTitleBorderColor solid;
   cursor: pointer;
   font-size: 0.91rem;
   user-select: none;
@@ -76,7 +76,7 @@
 }
 
 .contextMenu {
-  background-color: $secondaryColor;
+  background-color: $contextMenuBackgroundColor;
   position: absolute;
   padding: 0.5rem;
   min-width: 9rem;
@@ -91,7 +91,7 @@
 }
 
 .contextButton {
-  color: $primaryColor;
+  color: $contextMenuButtonColor;
   padding: 0.5rem;
   font-size: 0.8rem;
   cursor: pointer;
@@ -99,6 +99,6 @@
 }
 
 .contextButton:hover {
-  background-color: $primaryHoverBackgroundColor;
-  color: $primaryHoverColor
+  background-color: $contextMenuButtonHoverBackgroundColor;
+  color: $contextMenuButtonHoverColor;
 }
