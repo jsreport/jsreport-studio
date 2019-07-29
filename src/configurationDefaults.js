@@ -7,7 +7,8 @@ import EntityTreeInputSearch from './components/EntityTree/EntityTreeInputSearch
 import EntityTreeNavigateButton from './components/EntityTree/EntityTreeNavigateButton.js'
 import Startup from './containers/Startup/Startup.js'
 import AboutModal from './components/Modals/AboutModal'
-import ApiModal from './components/Modals/ApiModal.js'
+import ThemeModal from './components/Modals/ThemeModal'
+import ApiModal from './components/Modals/ApiModal'
 import NewFolderModal from './components/Modals/NewFolderModal'
 import ConcurrentUpdateErrorModal from './components/Modals/ConcurrentUpdateErrorModal'
 import { openTab } from './redux/editor/actions'
@@ -291,6 +292,16 @@ export default () => {
         extensions: configuration.extensions
       })}>
       <i className='fa fa-info-circle' /> About
+    </div>
+  ))
+
+  configuration.toolbarComponents.settings.push(() => (
+    <div
+      onClick={() => configuration.modalHandler.open(ThemeModal, {
+        availableThemes: configuration.extensions.studio.options.availableThemes
+      })}
+    >
+      <i className='fa fa-paint-brush' /> Theme
     </div>
   ))
 

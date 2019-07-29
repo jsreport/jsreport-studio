@@ -5,6 +5,7 @@ const path = require('path')
 const jsreportStudioDev = require('jsreport-studio-dev')
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 const CleanPlugin = require('clean-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const webpack = jsreportStudioDev.deps.webpack
@@ -59,7 +60,6 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        include: [path.resolve(__dirname, '../node_modules/monaco-editor')],
         use: ['style-loader', 'css-loader']
       },
       {
@@ -92,17 +92,15 @@ module.exports = {
         ]
       },
       {
-        test: /\.scss$/,
-        exclude: [/.*theme.*/],
+        include: [/.*theme.*\.scss/],
         use: [
-          'style-loader',
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
           {
             loader: 'css-loader',
             options: {
-              modules: true,
-              importLoaders: 2,
-              sourceMap: true,
-              localIdentName: '[local]___[hash:base64:5]'
+              importLoaders: 1
             }
           },
           {
@@ -110,25 +108,24 @@ module.exports = {
             options: {
               ident: 'postcss',
               plugins: getPostcssPlugins
-            }
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              outputStyle: 'expanded',
-              sourceMap: true
             }
           }
         ]
       },
       {
-        include: [/.*theme.*\.scss/],
+        test: /\.scss$/,
+        exclude: [/.*theme.*/],
         use: [
-          'style-loader',
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
           {
             loader: 'css-loader',
             options: {
-              importLoaders: 2
+              modules: true,
+              importLoaders: 1,
+              sourceMap: true,
+              localIdentName: 'JSREPORT-STUDIO-[path]-[name]--[local]'
             }
           },
           {
@@ -136,12 +133,6 @@ module.exports = {
             options: {
               ident: 'postcss',
               plugins: getPostcssPlugins
-            }
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              outputStyle: 'expanded'
             }
           }
         ]
@@ -228,6 +219,12 @@ module.exports = {
     }),
     // ignore dev config
     new webpack.IgnorePlugin(/\.\/dev/, /\/config$/),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename:  '[name].css', // '[name].[hash].css'
+      chunkFilename: '[id].css' // '[id].[hash].css'
+    }),
     new MonacoWebpackPlugin({
       languages: ['xml', 'html', 'handlebars', 'css', 'json', 'javascript', 'typescript'],
       // we exclude some features
@@ -235,6 +232,7 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       hash: true,
+      inject: false,
       template: path.join(__dirname, '../static/index.html')
     }),
     new webpack.ProgressPlugin()

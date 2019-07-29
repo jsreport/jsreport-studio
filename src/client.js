@@ -62,6 +62,16 @@ const start = async () => {
     Studio.entitySets
   )
 
+  // check is user theme preference is another than the default one, if yes change the theme
+  if (Studio.getCurrentTheme() !== configuration.extensions.studio.options.theme) {
+    await new Promise((resolve) => {
+      Studio.setCurrentTheme(Studio.getCurrentTheme(), {
+        onLoad: resolve,
+        onError: resolve
+      })
+    })
+  }
+
   await Promise.all(
     [
       ...Object.keys(Studio.entitySets).map((t) => entities.actions.loadReferences(t)(store.dispatch)),

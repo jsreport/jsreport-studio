@@ -1,0 +1,1323 @@
+
+.JSREPORT-STUDIO-src-components-Preview--Preview--container {
+  background-color: $previewBackgroundColor;
+}
+
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeBox--boxContainer {
+  flex: 1 1;
+  background-color: $secondaryBackgroundColor;
+  display: flex;
+  flex-direction: column;
+  /*firefox needs min-height and min-width explicitly declared to allow descendants flex items to be scrollable (overflow)*/
+  min-height: 0;
+  min-width: 0;
+}
+
+
+.JSREPORT-STUDIO-src-components-EntityTree--HighlightedArea--label {
+  background-color: $highlightColor;
+  border-radius: 2px;
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--HighlightedArea--hierarchy {
+  border-left: 1px dotted $highlightColor;
+  border-top: 1px dotted $highlightColor;
+  border-bottom: 1px dotted $highlightColor;
+  position: absolute;
+  pointer-events: none;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--HighlightedArea--hierarchyTop {
+  background-color: $highlightColor;
+  border-radius: 100%;
+  height: 5px;
+  position: absolute;
+  right: 0px;
+  top: -2.5px;
+  width: 5px;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--HighlightedArea--hierarchyBottom {
+  background-color: $highlightColor;
+  border-radius: 100%;
+  bottom: -2.5px;
+  height: 5px;
+  position: absolute;
+  right: 0px;
+  width: 5px;
+}
+
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--treeListContainer {
+  flex: 1 1;
+  background-color: $secondaryBackgroundColor;
+  color: $primaryColor;
+  display: flex;
+  flex-direction: column;
+  /*firefox needs min-height and min-width explicitly declared to allow descendants flex items to be scrollable (overflow)*/
+  min-height: 0;
+  min-width: 0;
+  height: 100%;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--toolbar {
+  padding: 0.3rem;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeBox {
+  flex: 1 1;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeBoxItem {
+  margin-top: 0;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeBoxItemContent {
+  display: inline-block;
+  outline: 1px dashed transparent;
+  outline-offset: 1px;
+  opacity: 1;
+  margin-left: 0.2rem;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeBoxItemContent.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--dragging,
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeContainer.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--dragging .JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeBoxItemContent {
+  opacity: 0.5;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeBoxItemContent.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--dragging {
+  outline-color: $tertiaryBackgroundColor;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodesBox {
+  flex: 1 1;
+  height: auto;
+  overflow: auto;
+  position: relative;
+  width: auto;
+  /*gives a little bit of space to show hierarchy*/
+  /*highlight when dragging over the root*/
+  padding-top: 4px;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeTitle {
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: 0.2rem;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeTitle:before {
+  font-size: 1rem;
+  font-family: FontAwesome;
+  color: $secondaryHoverColor;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeTitle:not(.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--collapsed):before {
+  content: "\F0DA";
+  -webkit-transform: rotateZ(45deg);
+          transform: rotateZ(45deg);
+  display: inline-block;
+  margin-right: 0.3rem;
+  color: $primarySelectionBackgroundColor;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeTitle.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--collapsed:before {
+  content: "\F0DA";
+  display: inline-block;
+  margin-right: 0.3rem;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeTitle:hover:before {
+  color: $primarySelectionBackgroundColor;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeContainer:not(.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--collapsed) {
+  max-height: 15999px;
+  transition: 0.15s;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeContainer.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--collapsed {
+  max-height: 0;
+  overflow: hidden;
+  transition: 0.15s;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--link {
+  padding: 0.3rem;
+  padding-left: 1.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--link.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--active {
+  background: $primarySelectionBackgroundColor;
+  color: $primarySelectionColor;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--link:hover, .JSREPORT-STUDIO-src-components-EntityTree--EntityTree--link.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--focused {
+  background: $secondaryHoverBackgroundColor;
+  color: $primarySelectionColor;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--link.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--dragging {
+  background-color: inherit;
+  color: inherit;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--entityIcon {
+  margin-right: 0.4rem;
+  width: 0.9rem;
+  color: #F16220;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--entityDefaultIcon:after {
+  font-family: FontAwesome;
+  content: "\F1FE";
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--add {
+  cursor: pointer;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--add:after {
+  content: "\F067";
+  font-family: FontAwesome;
+  color: $secondaryColor;
+  padding: 0.1rem;
+  font-size: 1rem;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--add:hover:after {
+  color: $primaryHoverBackgroundColor;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--help {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--help:after {
+  content: "\F128";
+  font-family: FontAwesome;
+  color: $secondaryColor;
+  padding: 0.1rem;
+  font-size: 1rem;
+  visibility: hidden;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeBox:hover .JSREPORT-STUDIO-src-components-EntityTree--EntityTree--help:after {
+  visibility: visible;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--help:hover:after {
+  color: $primaryHoverBackgroundColor;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextMenu {
+  background-color: $contextMenuBackgroundColor;
+  position: relative;
+  min-width: 9rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  z-index: 200;
+  box-shadow: 0.1rem 0.1rem 0.1rem 0.05rem rgba(0, 0, 0, 0.6);
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextMenuContainer {
+  position: absolute;
+  z-index: 9999999;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextMenuContainer.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nestedLevel {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  transition: opacity;
+  transition-delay: 0.2s;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextButton {
+  position: relative;
+  color: $contextMenuButtonColor;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextButton i {
+  width: 0.8rem;
+  margin-right: 0.6rem;
+  display: inline-block;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextButton.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--disabled {
+  color: $contextMenuButtonDisabledColor;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextButton.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--hasNestedLevels:after {
+  font-family: FontAwesome;
+  font-size: 0.9rem;
+  padding-right: 0.5rem;
+  content: "\F0DA";
+  position: absolute;
+  right: 0;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextButton:hover:not(.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--disabled) {
+  background-color: $contextMenuButtonHoverBackgroundColor;
+  color: $contextMenuButtonHoverColor;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextButton.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--hasNestedLevels:hover > .JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextMenuContainer.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nestedLevel {
+  opacity: 1;
+  height: auto;
+  overflow: visible;
+}
+
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeButton--entityTreeButton {
+  background-color: $entityTreeButtonBackgroundColor;
+  border: none;
+  color: $entityTreeButtonColor;
+  cursor: pointer;
+  padding: 0.2rem;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  border: 0.1rem solid $entityTreeButtonBorderColor;
+  font-size: 0.75rem;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeButton--entityTreeButton:hover {
+  background-color: $entityTreeButtonHoverBackgroundColor;
+  color: $entityTreeButtonHoverColor
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeButton--entityTreeButton.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeButton--active {
+  border: 0.1rem solid $primarySelectionBackgroundColor;
+}
+
+
+.JSREPORT-STUDIO-src-components-Properties--Properties--propertiesPanel {
+  flex: 1 1;
+  display: flex;
+  flex-direction: column;
+  background-color: $secondaryBackgroundColor;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.JSREPORT-STUDIO-src-components-Properties--Properties--title {
+  background-color: $primaryHoverBackgroundColor;
+  color: $primaryHoverColor;
+  min-height: 1.7rem;
+  font-size: 0.9rem;
+  padding: 0.3rem;
+}
+
+.JSREPORT-STUDIO-src-components-Properties--Properties--propertiesContainer {
+  overflow: auto;
+}
+
+.JSREPORT-STUDIO-src-components-Properties--Properties--propertyTitle {
+  cursor: pointer;
+  padding: 0.5rem 0.5rem 0.5rem 1.2rem;
+  background-color: $propertyTitleBackgroundColor;
+  color: $propertyTitleColor;
+}
+
+.JSREPORT-STUDIO-src-components-Properties--Properties--propertyTitle.JSREPORT-STUDIO-src-components-Properties--Properties--expanded {
+  background-color: $propertyTitleExpandedBackgroundColor;
+  color: $propertyTitleExpandedColor;
+}
+
+.JSREPORT-STUDIO-src-components-Properties--Properties--propertyTitle:hover {
+  background-color: $propertyTitleHoverBackgroundColor;
+  color: $propertyTitleHoverColor;
+}
+
+.JSREPORT-STUDIO-src-components-Properties--Properties--propertyBox {
+  margin: 0.3rem 0.3rem;
+  min-width: 9rem;
+}
+
+.JSREPORT-STUDIO-src-components-Properties--Properties--propertyContentBox {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s;
+}
+
+.JSREPORT-STUDIO-src-components-Properties--Properties--propertyContentBox.JSREPORT-STUDIO-src-components-Properties--Properties--expanded {
+  max-height: 95rem;
+}
+
+.properties-section {
+  box-shadow: 0 0.1rem 0.1rem 0 rgba(0, 0, 0, 0.2);
+  border-radius: 0.1rem;
+  padding-bottom: 0.5rem;
+}
+
+
+.JSREPORT-STUDIO-src-components-Properties--Properties--propertiesNodes {
+  padding: 0.5em;
+  overflow: auto;
+  flex-direction: column;
+  display: flex;
+}
+
+.JSREPORT-STUDIO-src-containers-App--App--appContent {
+  flex: 1 1;
+}
+
+.JSREPORT-STUDIO-src-containers-App--App--navbar {
+  width: 100%;
+  position: fixed;
+  z-index: 99;
+  background: deepskyblue;
+  padding: 1em;
+}
+
+.JSREPORT-STUDIO-src-containers-App--App--nav-link {
+  color: white;
+  text-decoration: none;
+  padding: 1em;
+}
+
+.JSREPORT-STUDIO-src-containers-App--App--properties {
+  background-color: red;
+}
+
+
+.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--container {
+  margin: 0;
+  width: 560px;
+  height: 280px;
+  overflow: hidden;
+}
+
+.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--input {
+  width: 100%;
+  padding-top: 0.7rem;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 5px 2px;
+}
+
+.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--input:hover, .JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--input:focus, .JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--input:active {
+  border-bottom: solid 0.2rem #d9d9d9 !important;
+}
+
+.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--results {
+  border-width: 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 12px 30px 2px;
+  border-top-style: initial;
+  border-right-style: solid;
+  border-bottom-style: solid;
+  border-left-style: solid;
+  border-top-color: initial;
+  border-right-color: $secondaryColor;
+  border-bottom-color: $secondaryColor;
+  border-left-color: $secondaryColor;
+  -o-border-image: initial;
+     border-image: initial;
+  font-size: 0.8rem;
+  margin: 0px;
+  max-height: 250px;
+  width: 100%;
+  overflow: auto;
+  position: relative;
+}
+
+.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--resultsItem {
+  position: relative;
+  padding: 0.6rem;
+  border-top: 1px solid $secondaryColor;
+  cursor: pointer;
+}
+
+.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--resultsItem::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--resultsItem.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--active {
+  background-color: $primarySelectionBackgroundColor;
+  color: #fff;
+}
+
+.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--resultsItemIcon {
+  margin-right: 0.2rem;
+  width: 0.9rem;
+  color: #F16220;
+}
+
+.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--resultsItemDefaultIcon:after {
+  font-family: FontAwesome;
+  content: "\F1FE";
+}
+
+.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--resultsItemPath {
+  float: right;
+  opacity: 0.5;
+}
+
+.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--emptyResults {
+  opacity: 0.5;
+}
+
+
+.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--toolbar {
+  background-color: $tertiaryBackgroundColor;
+  color: $tertiaryColor;
+  display: flex;
+  align-items: center;
+  min-height: 2.5rem;
+}
+
+.toolbar-button {
+  padding: 0.7rem;
+  font-size: 1rem;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.toolbar-button > i:nth-child(1) {
+   margin-right: 0.3rem;
+}
+
+.toolbar-button.disabled {
+  color: $secondaryColor
+}
+
+.toolbar-button:hover:not(.disabled) {
+  background: $primaryHoverBackgroundColor;
+  color: $primaryHoverColor;
+}
+
+.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--run:before {
+  content: "\F04B";
+  font-family: FontAwesome;
+}
+
+.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--save:before {
+  content: "\F0C7";
+  font-family: FontAwesome;
+}
+
+.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--saveAll:before {
+  content: "\F0C7";
+  font-family: FontAwesome;
+}
+
+.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--spinner {
+  flex: 1 1;
+  color: #ffc40d;
+  font-size: 1.5rem;
+}
+
+.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--spinner > i {
+}
+
+.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--delete:before {
+  content: "\F014";
+  font-family: FontAwesome;
+}
+
+.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--logo {
+  background: linear-gradient(to left, $tertiaryBackgroundColor 0%, $tertiaryBackgroundColorTarget 100%);
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+  padding-left: 0.2rem;
+  padding-right: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+  height: 2.5rem;
+}
+
+.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--popup {
+  background-color: #424c57;
+  position: absolute;
+  right: 0;
+  padding: 0.5rem;
+  top: 2.4rem;
+  z-index: 200
+}
+
+.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--popup > div  {
+  padding: 0.5rem;
+}
+
+.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--popup > div:hover {
+  background-color: $primaryHoverBackgroundColor;
+}
+
+.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--runCaret {
+  font-family: FontAwesome;
+  padding: 0.5rem;
+  font-size: 0.7rem;
+}
+
+.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--runCaret:hover {
+  color: $formPrimaryColor;
+}
+
+.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--runCaret:after {
+  content: "\F0D7   "
+}
+
+.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--runPopup {
+  background-color: #424c57;
+  top: 2.4rem;
+  position: absolute;
+  padding: 0.5rem;
+  z-index: 200;
+}
+
+
+.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabPane {
+  background-color: $tabPaneBackgroundColor;
+}
+
+.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabTitles {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: $tabTitlesBackgroundColor;
+  border-bottom: 0.2rem $primaryHoverBackgroundColor solid;
+  padding-top: 0.5rem;
+  min-height: 2.4rem;
+}
+
+.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabContainer {
+  display: inline-block;
+}
+
+.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabTitle {
+  position: relative;
+  flex: 0 1;
+  /*flexbox workaround some browsers (mostly Safari) needs to have some properties defined explicitly to handle auto sizing correctly*/
+  flex-basis: auto;
+  flex-shrink: 0;
+  /*end flexbox workaround*/
+  min-height: 1.7rem;
+  white-space: nowrap;
+  display:flex;
+  background-color: $tabTitleBackgroundColor;
+  padding: 0.3rem 0.3rem 0.3rem 0.9rem;
+  border-right: 1px $tabTitleBorderColor solid;
+  cursor: pointer;
+  font-size: 0.91rem;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabTitle.JSREPORT-STUDIO-src-components-Tabs--Tabs--active {
+  background: $primarySelectionBackgroundColor;
+  color: $primarySelectionColor;
+}
+
+.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabTitle:hover {
+  background: $primaryHoverBackgroundColor;
+  color: $primaryHoverColor;
+}
+
+.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabMainTitle {
+  vertical-align: middle;
+}
+
+.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabComplementTitle {
+  display: inline-block;
+  max-width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  opacity: 0.5;
+  font-size: 0.8rem;
+}
+
+.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabClose {
+  display: inline-block;
+  margin-left: 0.3rem;
+}
+
+.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabClose:after {
+  content: "\F00D";
+  color: $secondaryColor;
+  padding: 0.1rem;
+  font-family: FontAwesome;
+  font-size: 0.9rem;
+}
+
+.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabClose:hover {
+  background-color: $secondaryHoverBackgroundColor;
+}
+
+.JSREPORT-STUDIO-src-components-Tabs--Tabs--contextMenu {
+  background-color: $contextMenuBackgroundColor;
+  position: absolute;
+  padding: 0.5rem;
+  min-width: 9rem;
+  z-index: 200;
+}
+
+.JSREPORT-STUDIO-src-components-Tabs--Tabs--contextMenuContainer {
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+  z-index: 200;
+}
+
+.JSREPORT-STUDIO-src-components-Tabs--Tabs--contextButton {
+  color: $contextMenuButtonColor;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.JSREPORT-STUDIO-src-components-Tabs--Tabs--contextButton:hover {
+  background-color: $contextMenuButtonHoverBackgroundColor;
+  color: $contextMenuButtonHoverColor;
+}
+
+
+.JSREPORT-STUDIO-src-containers-Modal--Modal--overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 99999;
+  opacity:1;
+}
+
+.JSREPORT-STUDIO-src-containers-Modal--Modal--content {
+  background-color: $secondaryBackgroundColor;
+  box-shadow: 1rem 1rem 1rem 0 rgba(0, 0, 0, 0.3);
+  color: $primaryColor;
+  display: block;
+  float: left;
+  height: auto;
+  position: fixed;
+  width: auto;
+  z-index: 1050;
+  font-weight: 200;
+  min-width: 30%;
+  border-radius: 0.1rem;
+}
+
+
+.JSREPORT-STUDIO-src-containers-Modal--Modal--close {
+  position: absolute;
+  right: 1rem;
+  top: 0.5rem;
+}
+
+.JSREPORT-STUDIO-src-containers-Modal--Modal--close:after {
+  color: $secondaryColor;
+  font-family: FontAwesome;
+  content: '\F00D'
+}
+
+.JSREPORT-STUDIO-src-containers-Modal--Modal--close:hover:after {
+  color: $primaryColor;
+  cursor: pointer;
+}
+
+
+.form-group {
+  display: block;
+  margin: 0.5rem 1rem;
+  min-width: 8rem;
+}
+
+.form-group > * {
+  display: block;
+  width: 100%;
+  margin-top: 0.3rem;
+}
+
+select {
+  border: none;
+  background-color: $controlsBackgroundColor;
+  color: $controlsColor;
+  border-bottom: solid 0.2rem $controlsBorderColor;
+  transition: border 0.3s;
+  padding: 0.5rem;
+}
+
+select:hover, select:focus, select:active {
+  border-bottom: solid 0.2rem $primarySelectionBackgroundColor;
+}
+
+input {
+  border: none;
+  background-color: $controlsBackgroundColor;
+  color: $controlsColor;
+  border-bottom: solid 0.2rem $controlsBorderColor;
+  transition: border 0.3s;
+  padding: 0.3rem;
+}
+
+input:hover, input:focus, input:active {
+  border-bottom: solid 0.2rem $primarySelectionBackgroundColor;
+}
+
+input[type=text] {
+  width: 100%;
+}
+
+input[type=checkbox] {
+  width: auto;
+  /*fix for slow checks (blinks) in Safari*/
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+}
+
+.button-bar {
+  display: flex;
+  margin-top: 2rem;
+  flex-direction: row-reverse;
+}
+
+.button {
+  margin-left: 1rem;
+  flex: 0.1 1;
+  border: none;
+  color: $primarySelectionColor;
+  padding: 0.5rem;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+}
+
+.button:hover, .button:focus, button:active {
+  box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.6);
+}
+
+.button.confirmation {
+  background-color: #008CBA;
+}
+
+.button.danger {
+  background-color: #FCBE59;
+}
+
+:focus {
+  outline: 0;
+}
+
+
+.resizer {
+  width: 11px;
+  display: flex;
+  position: relative;
+  margin: 0 -5px;
+}
+
+.resizer-line {
+  background: #000;
+  opacity: .2;
+  /*z-index: 1000;*/
+  box-sizing: border-box;
+  background-clip: padding-box;
+  width: 11px;
+  border-left: 5px solid rgba(255, 255, 255, 0);
+  border-right: 5px solid rgba(255, 255, 255, 0);
+  cursor: col-resize;
+}
+
+.resizer-horizontal {
+  background: #000;
+  opacity: .2;
+  /*z-index: 1000;*/
+  box-sizing: border-box;
+  background-clip: padding-box;
+  height: 15px;
+  margin: -5px 0;
+  border-top: 5px solid rgba(255, 255, 255, 0);
+  border-bottom: 5px solid rgba(255, 255, 255, 0);
+  cursor: row-resize;
+  width: 100%;
+}
+
+
+.resizer-horizontal:hover {
+  transition: all 2s ease;
+  border-top: 5px solid rgba(0, 0, 0, 0.5);
+  border-bottom: 5px solid rgba(0, 0, 0, 0.5);
+}
+
+.resizer-line:hover {
+  transition: all 2s ease;
+  border-left: 5px solid rgba(0, 0, 0, 0.5);
+  border-right: 5px solid rgba(0, 0, 0, 0.5);
+}
+
+.resizer-line:hover {
+  transition: all 2s ease;
+}
+
+.resizer:hover .docker {
+  display: block;
+  opacity:1;
+  /*transition:0s 1s;*/
+  transition: 2s opacity;
+}
+
+.docker {
+  opacity:0;
+  font-size: 2rem;
+  color: $secondaryColor;
+  position: absolute;
+  transition:0s 1s;
+  cursor: pointer;
+}
+
+.docker.left {
+  margin-left: -3rem;
+}
+
+.docker:hover {
+  color: $primarySelectionBackgroundColor;
+}
+
+.resizer.collapsed {
+  min-width: 2.5rem;
+  background-color: $secondaryColor;
+  cursor: pointer;
+}
+
+.resizer.collapsed:hover {
+  background-color: $primaryHoverBackgroundColor;
+}
+
+.pane-holder {
+  color: $primarySelectionColor;
+  flex: 0 1;
+  padding-top: 1rem;
+  -webkit-writing-mode: vertical-lr;
+      -ms-writing-mode: tb-lr;
+          writing-mode: vertical-lr;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+html, body {
+  box-sizing: border-box;
+  font-family: proxima-nova, Helvetica Neue, Helvetica, Arial, sans-serif;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  font-size: 0.9em;
+  background-color: $primaryBackgroundColor;
+  color: $primaryColor;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $scrollBarThumbBackgroundColor;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: $scrollBarThumbHoverBackgroundColor;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $scrollBarThumbHoverBackgroundColor;
+}
+
+::-webkit-scrollbar-track {
+  background: $scrollBarTrackBackgroundColor;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.block {
+  display: flex;
+  flex: 1 1;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+
+.block-item {
+  flex: 1 1;
+
+}
+
+.custom-editor {
+  padding: 1rem;
+}
+
+h1,h2,h3,h4 {
+  text-transform: lowercase;
+  font-weight: 150;
+  color: $primarySelectionBackgroundColor
+}
+
+.table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.table > thead {
+  width: 100%;
+}
+
+.table > thead > tr {
+  width: 100%;
+}
+
+.table > thead > tr > th {
+   font-weight: bold;
+   text-transform: uppercase;
+   text-align: left;
+   padding: 0.2rem 1rem 0.5rem 1rem;
+   vertical-align: bottom;
+   border-bottom: 0.1rem solid #ddd;
+   border-right: 0.1rem solid #ddd;
+   font-size: 0.8rem;
+ }
+
+.table > tbody > tr {
+  vertical-align: middle;
+  cursor: pointer;
+  width: 100%;
+  border-bottom: 0.2rem solid $primarySelectionColor;
+  cursor: pointer;
+}
+
+.table > tbody > tr.active {
+  background-color: $primaryHoverBackgroundColor;
+  color: $primaryHoverColor;
+}
+
+.table > tbody > tr:hover {
+  background-color: $secondaryHoverBackgroundColor;
+  color: $primaryHoverColor;
+}
+
+.table > tbody > tr > td > a:link {
+  text-decoration: inherit;
+  display: block;
+  color: inherit;
+  cursor: pointer;
+}
+
+.table > tbody > tr > td > a:visited {
+  text-decoration: inherit;
+  display: block;
+  color: inherit;
+  cursor: pointer;
+}
+
+.table > tbody > tr > td {
+  font-weight: normal;
+  padding: 0.6rem;
+  border: 0;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.table > tbody> tr:not(:hover):not(.active) > td.selection {
+  background-color: darken($secondaryBackgroundColor, 3%);
+  color: $primaryColor;
+}
+
+
+.JSREPORT-STUDIO-src-components-common-Popover--Popover--popoverDisplayLayer {
+  display: none;
+  position: fixed;
+  z-index: 2;
+}
+
+.JSREPORT-STUDIO-src-components-common-Popover--Popover--popoverContainer {
+  position: absolute;
+  z-index: 2;
+}
+
+.JSREPORT-STUDIO-src-components-common-Popover--Popover--popoverCloseLayer {
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+
+.JSREPORT-STUDIO-src-components-common-Popover--Popover--popoverContent {
+  position: relative;
+  z-index: 2;
+}
+
+.JSREPORT-STUDIO-src-components-common-Popover--Popover--popoverContentWrapper {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.2);
+  box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+  border-radius: 4px;
+  padding: 0.3rem;
+}
+
+.JSREPORT-STUDIO-src-components-common-Popover--Popover--popoverTriangle {
+  border: 7px solid transparent;
+  border-bottom-color: #fff;
+  left: 10px;
+  position: absolute;
+  top: -14px;
+}
+
+.JSREPORT-STUDIO-src-components-common-Popover--Popover--popoverTriangleShadow {
+  border: 8px solid transparent;
+  border-bottom-color: rgba(0,0,0,0.15);
+  left: 9px;
+  position: absolute;
+  top: -16px;
+}
+
+
+.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--multiSelect {
+  background-color: $controlsBackgroundColor;
+  border: none;
+  letter-spacing: normal;
+  word-spacing: normal;
+  border-bottom: .2rem solid $controlsBorderColor;
+  color: $controlsColor;
+  transition: border .3s;
+  padding: .5rem;
+  font: 400 11px system-ui;
+  overflow-y: scroll;
+}
+
+.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--multiSelect:active, .JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--multiSelect:focus, .JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--multiSelect:hover {
+  border-bottom: .2rem solid $primarySelectionBackgroundColor;
+}
+
+.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--allCheckContainer {
+  margin-bottom: 0.2rem;
+}
+
+.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--allCheck {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--allCheck * {
+  cursor: inherit;
+}
+
+.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--list {
+  cursor: pointer;
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+}
+
+.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--list * {
+  cursor: inherit;
+}
+
+.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--listOption {
+  white-space: pre;
+  padding: 0px 2px 1px;
+  min-height: 1.2em;
+}
+
+.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--listOptionSelected {
+  background-color: rgb(212, 212, 212);
+}
+
+.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--list:active .JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--listOptionSelected, .JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--list:focus .JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--listOptionSelected {
+  background-color: rgb(0, 105, 217);
+  color: #fff;
+}
+
+.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--listOptionLabel {
+  display: block;
+}
+
+
+.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--heading {
+  margin-bottom: 0.2rem;
+}
+
+.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--select {
+  overflow-y: auto;
+  overflow-x: auto;
+  color: $controlsColor;
+  background-color: $controlsBackgroundColor
+}
+
+.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--select > ul {
+  margin: 0rem;
+  padding: 0rem;
+  list-style: none;
+}
+
+.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--select > ul > li {
+  cursor: pointer;
+  padding: 0.3rem;
+  border-bottom: 0.1rem solid $controlsBorderColor;
+}
+
+.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--select > ul > li:hover {
+  background-color: $secondaryHoverBackgroundColor;
+  color: $primaryHoverColor;
+}
+
+.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--selectInput {
+  cursor: pointer;
+  font-size: 0.9rem;
+  background-color: $controlsBackgroundColor;
+  border-bottom: solid 0.2rem $controlsBorderColor;
+  transition: border 0.3s;
+  padding: 0.5rem;
+  width: 100%;
+  display: flex;
+  color: $controlsColor;
+  margin-top: 2px;
+}
+
+.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--selectInput:hover, .JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--selectInput:focus, .JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--selectInput:active {
+  border-bottom: solid 0.2rem $primarySelectionBackgroundColor;
+}
+
+.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--selectInput > i {
+  margin-top: 0.1rem;
+}
+
+.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--selectInput > i:hover {
+  color: $primarySelectionBackgroundColor;
+}
+
+.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--selectInput > span {
+  margin-left: 0.5rem;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--selectInput > span.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--link:hover {
+  margin-left: 0.5rem;
+  color: $primarySelectionBackgroundColor;
+  text-decoration: underline;
+}
+
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeInputSeach--container {
+  display: inline-block;
+  margin-left: 0.2rem;
+  margin-right: 0.2rem;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeInputSeach--search {
+  display: inline-block;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeInputSeach--search > input {
+  border: none;
+  border-bottom: solid 0.2rem $secondaryColor;
+  transition: border 0.3s;
+  padding: 0.2rem;
+  width: 10rem;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeInputSeach--search > input:focus {
+  border-bottom: solid 0.2rem $primarySelectionBackgroundColor;
+}
+
+.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeInputSeach--search:before {
+  content: "\F002";
+  margin-right: 0.3rem;
+  color: $secondaryColor;
+  font-family: FontAwesome;
+}
+
+
+.JSREPORT-STUDIO-src-components-Modals--ThemeModal--item {
+  display: inline-block;
+  width: 80px;
+  padding: 8px;
+}
+
+.JSREPORT-STUDIO-src-components-Modals--ThemeModal--itemLabel {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.JSREPORT-STUDIO-src-components-Modals--ThemeModal--itemPreview {
+  border: 1px solid $tertiaryBackgroundColor;
+  height: 65px;
+}
+
+
+.JSREPORT-STUDIO-src-components-Modals--ApiModal--label {
+  background-color: $primaryHoverBackgroundColor;
+  color: $primaryHoverColor;
+  padding: 0.2rem;
+  font-weight: lighter;
+  font-size: 0.8rem;
+  margin-right: 0.5rem;
+}
+
+.JSREPORT-STUDIO-src-components-Modals--ApiModal--label.JSREPORT-STUDIO-src-components-Modals--ApiModal--minor {
+  background-color: $secondaryColor
+}
+
+.JSREPORT-STUDIO-src-components-Modals--ApiModal--url {
+  color: $secondaryHoverBackgroundColor
+}
+
+.JSREPORT-STUDIO-src-components-Modals--ApiModal--row {
+  margin: 0.7rem 0 0.7rem 0;
+}
+
+.JSREPORT-STUDIO-src-components-Modals--ApiModal--string { color: green; }
+.JSREPORT-STUDIO-src-components-Modals--ApiModal--number { color: darkorange; }
+.JSREPORT-STUDIO-src-components-Modals--ApiModal--boolean { color: blue; }
+.JSREPORT-STUDIO-src-components-Modals--ApiModal--null { color: magenta; }
+.JSREPORT-STUDIO-src-components-Modals--ApiModal--key { color: red; }
+
+.JSREPORT-STUDIO-src-components-Modals--ApiModal--overridesBox {
+  height: 17rem;
+  overflow: auto;
+  width: 100%;
+}
+
+.JSREPORT-STUDIO-src-components-Modals--ApiModal--link {
+  text-decoration: none;
+}
+

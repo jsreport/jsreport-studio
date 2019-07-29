@@ -191,8 +191,7 @@ module.exports = (extensions, extensionsInNormalMode) => {
             {
               loader: MiniCssExtractPlugin.loader,
               options: {
-                // publicPath: '/studio/assets/', // DOES NOT WORK
-                // hmr: true
+                hmr: true
               }
             },
             {
@@ -217,8 +216,7 @@ module.exports = (extensions, extensionsInNormalMode) => {
             {
               loader: MiniCssExtractPlugin.loader,
               options: {
-                // publicPath: '/studio/assets/', // DOES NOT WORK
-                // hmr: true
+                hmr: true
               }
             },
             {
@@ -332,6 +330,7 @@ module.exports = (extensions, extensionsInNormalMode) => {
       }),
       new HtmlWebpackPlugin({
         hash: true,
+        inject: false,
         template: path.join(__dirname, '../static/index.html')
       })
     ]

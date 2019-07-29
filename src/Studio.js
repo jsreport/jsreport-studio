@@ -6,6 +6,7 @@ import shortid from 'shortid'
 import fileSaver from 'filesaver.js-npm'
 import _merge from 'lodash/merge'
 import api, { methods } from './helpers/api.js'
+import { getCurrentTheme, setCurrentTheme } from './helpers/theme.js'
 import SplitPane from './components/common/SplitPane/SplitPane.js'
 import Popover from './components/common/Popover/index.js'
 import MultiSelect from './components/common/MultiSelect/index.js'
@@ -472,6 +473,18 @@ class Studio {
     await this.store.dispatch(editor.actions.updateHistory())
     await this.store.dispatch(settings.actions.load())
     await bluebird.all(Object.keys(this.entitySets).map((t) => this.store.dispatch(entities.actions.loadReferences(t))))
+  }
+
+  /**
+   * Get the current theme (it will check localstorage for user preference and fallback to the default theme configured)
+   * @returns {Object[]}
+   */
+  getCurrentTheme () {
+    return getCurrentTheme()
+  }
+
+  setCurrentTheme (themeName, opts) {
+    return setCurrentTheme(themeName, opts)
   }
 
   /**
