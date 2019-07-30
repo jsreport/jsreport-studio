@@ -154,7 +154,20 @@ module.exports = (extensions, extensionsInNormalMode) => {
           }]
         },
         {
+          test: /extensions_dev\.css$/,
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                hmr: true
+              }
+            },
+            'css-loader'
+          ]
+        },
+        {
           test: /\.css$/,
+          exclude: [/extensions_dev\.css$/],
           use: ['style-loader', 'css-loader']
         },
         {

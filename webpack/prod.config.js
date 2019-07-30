@@ -59,7 +59,17 @@ module.exports = {
         use: ['babel-loader']
       },
       {
+        test: /extensions\.css$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          'css-loader'
+        ]
+      },
+      {
         test: /\.css$/,
+        exclude: [/extensions\.css$/],
         use: ['style-loader', 'css-loader']
       },
       {
@@ -223,7 +233,7 @@ module.exports = {
       // Options similar to the same options in webpackOptions.output
       // both options are optional
       filename:  '[name].css', // '[name].[hash].css'
-      chunkFilename: '[id].css' // '[id].[hash].css'
+      chunkFilename: '[name].client.css' // '[id].[hash].css'
     }),
     new MonacoWebpackPlugin({
       languages: ['xml', 'html', 'handlebars', 'css', 'json', 'javascript', 'typescript'],
