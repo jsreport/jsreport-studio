@@ -118,8 +118,7 @@
 
 .JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeTitle:not(.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--collapsed):before {
   content: "\F0DA";
-  -webkit-transform: rotateZ(45deg);
-          transform: rotateZ(45deg);
+  transform: rotateZ(45deg);
   display: inline-block;
   margin-right: 0.3rem;
   color: $primarySelectionBackgroundColor;
@@ -793,8 +792,7 @@ input[type=text] {
 input[type=checkbox] {
   width: auto;
   /*fix for slow checks (blinks) in Safari*/
-  -webkit-transform: translateZ(0);
-          transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .button-bar {
