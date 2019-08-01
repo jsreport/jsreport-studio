@@ -483,8 +483,8 @@ class Studio {
     return getCurrentTheme()
   }
 
-  setCurrentTheme (themeName, opts) {
-    return setCurrentTheme(themeName, opts)
+  setCurrentTheme (themeInfo, opts) {
+    return setCurrentTheme(themeInfo, opts)
   }
 
   /**

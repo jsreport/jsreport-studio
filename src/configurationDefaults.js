@@ -298,7 +298,8 @@ export default () => {
   configuration.toolbarComponents.settings.push(() => (
     <div
       onClick={() => configuration.modalHandler.open(ThemeModal, {
-        availableThemes: configuration.extensions.studio.options.availableThemes
+        availableThemes: configuration.extensions.studio.options.availableThemes,
+        availableEditorThemes: configuration.extensions.studio.options.availableEditorThemes
       })}
     >
       <i className='fa fa-paint-brush' /> Theme

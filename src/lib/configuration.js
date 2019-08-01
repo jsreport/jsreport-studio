@@ -6,6 +6,7 @@ export const readyListeners = []
 export const previewListeners = []
 export const textEditorInitializeListeners = []
 export const textEditorCreatedListeners = []
+export let _themeChangedListeners = []
 export const entitySets = {}
 export const templateEditorModeResolvers = []
 export const entityTreeOrder = []
@@ -61,10 +62,19 @@ export let shouldOpenStartupPage = true
 export let apiHeaders = {}
 
 export let _splitResizeHandlers = []
+
 export const subscribeToSplitResize = (fn) => {
   _splitResizeHandlers.push(fn)
   return () => { _splitResizeHandlers = _splitResizeHandlers.filter((s) => s !== fn) }
 }
+
+export const subscribeToThemeChange = (fn) => {
+  _themeChangedListeners.push(fn)
+  return () => { _themeChangedListeners = _themeChangedListeners.filter((s) => s !== fn) }
+}
+
+export const triggerThemeChange = (data) => { _themeChangedListeners.forEach((fn) => fn(data)) }
+
 export const triggerSplitResize = () => { _splitResizeHandlers.forEach((fn) => fn()) }
 
 export let referencesLoader = null

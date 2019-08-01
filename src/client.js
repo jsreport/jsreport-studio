@@ -63,10 +63,12 @@ const start = async () => {
   )
 
   // check is user theme preference is another than the default one, if yes change the theme
-  if (Studio.getCurrentTheme() !== configuration.extensions.studio.options.theme) {
+  if (Studio.getCurrentTheme().theme !== configuration.extensions.studio.options.theme) {
     await new Promise((resolve) => {
-      Studio.setCurrentTheme(Studio.getCurrentTheme(), {
-        onLoad: resolve,
+      Studio.setCurrentTheme({
+        theme: Studio.getCurrentTheme().theme
+      }, {
+        onComplete: resolve,
         onError: resolve
       })
     })

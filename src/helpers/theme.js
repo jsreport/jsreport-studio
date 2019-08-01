@@ -1,40 +1,86 @@
 import { extensions } from '../lib/configuration.js'
 import resolveUrl from './resolveUrl.js'
 
+function getDefaultTheme () {
+  return {
+    theme: extensions.studio.options.theme,
+    editorTheme: extensions.studio.options.editorTheme
+  }
+}
+
 function getCurrentTheme () {
   const defaultTheme = extensions.studio.options.theme
-  let currentTheme = defaultTheme
-  let userTheme = window.localStorage.getItem('studioTheme')
+  const defaultEditorTheme = extensions.studio.options.editorTheme
 
-  if (userTheme != null) {
+  let currentTheme = defaultTheme
+  let currentEditorTheme = defaultEditorTheme
+  let userTheme = window.localStorage.getItem('studioTheme')
+  let userEditorTheme = window.localStorage.getItem('studioEditorTheme')
+
+  if (userTheme != null && extensions.studio.options.availableThemes[userTheme] != null) {
     currentTheme = userTheme
   }
 
-  return currentTheme
+  if (userEditorTheme != null && extensions.studio.options.availableEditorThemes[userEditorTheme] != null) {
+    currentEditorTheme = userEditorTheme
+  }
+
+  if (currentEditorTheme == null) {
+    currentEditorTheme = extensions.studio.options.availableThemes[currentTheme].editorTheme
+  }
+
+  return { theme: currentTheme, editorTheme: currentEditorTheme }
 }
 
-function setCurrentTheme (themeName, { onLoad, onError } = {}) {
+function setCurrentTheme ({ theme, editorTheme }, { onComplete, onError } = {}) {
+  if (theme == null && editorTheme == null) {
+    if (onComplete) {
+      onComplete()
+    }
+
+    return getCurrentTheme()
+  }
+
+  if (theme == null && editorTheme != null) {
+    changeEditorTheme(editorTheme)
+
+    if (onComplete) {
+      onComplete()
+    }
+
+    return getCurrentTheme()
+  }
+
   const themeLinks = Array.prototype.slice.call(document.querySelectorAll('link[data-jsreport-studio-theme]'))
   const defaultThemeLink = themeLinks.find((l) => l.dataset.defaultJsreportStudioTheme === 'true' || l.dataset.defaultJsreportStudioTheme === true)
-  let targetThemeLink = themeLinks.find((l) => l.dataset.jsreportStudioTheme === themeName)
+  let targetThemeLink = themeLinks.find((l) => l.dataset.jsreportStudioTheme === theme)
 
   if (!defaultThemeLink) {
-    return
+    return getCurrentTheme()
+  }
+
+  let newEditorTheme
+
+  if (editorTheme != null) {
+    newEditorTheme = editorTheme
+  } else {
+    newEditorTheme = getCurrentTheme().editorTheme
   }
 
   if (!targetThemeLink) {
     const newThemeLink = document.createElement('link')
 
     newThemeLink.rel = 'stylesheet'
-    newThemeLink.href = resolveUrl(`/studio/assets/alternativeTheme.css?name=${themeName}`)
+    newThemeLink.href = resolveUrl(`/studio/assets/alternativeTheme.css?name=${theme}`)
     newThemeLink.disabled = false
-    newThemeLink.dataset.jsreportStudioTheme = themeName
+    newThemeLink.dataset.jsreportStudioTheme = theme
 
     newThemeLink.onload = () => {
-      changeTheme()
+      changeTheme(theme)
+      changeEditorTheme(newEditorTheme)
 
-      if (onLoad) {
-        onLoad()
+      if (onComplete) {
+        onComplete()
       }
     }
 
@@ -49,30 +95,62 @@ function setCurrentTheme (themeName, { onLoad, onError } = {}) {
     themeLinks.push(newThemeLink)
 
     targetThemeLink = newThemeLink
-  } else {
-    changeTheme()
 
-    if (onLoad) {
-      onLoad()
+    return {
+      theme: theme,
+      editorTheme: newEditorTheme
     }
+  } else {
+    changeTheme(theme)
+    changeEditorTheme(newEditorTheme)
+
+    if (onComplete) {
+      onComplete()
+    }
+
+    return getCurrentTheme()
   }
 
-  function changeTheme () {
-    const currentTheme = getCurrentTheme()
+  function changeTheme (newTheme) {
+    targetThemeLink.disabled = false
 
-    if (targetThemeLink.dataset.jsreportStudioTheme !== currentTheme) {
-      targetThemeLink.disabled = false
+    themeLinks.forEach((l) => {
+      if (l.dataset.jsreportStudioTheme !== newTheme) {
+        l.disabled = true
+      }
+    })
 
-      themeLinks.forEach((l) => {
-        if (l.dataset.jsreportStudioTheme !== themeName) {
-          l.disabled = true
-        }
-      })
+    window.localStorage.setItem('studioTheme', newTheme)
+  }
+
+  function changeEditorTheme (newEditorTheme) {
+    window.localStorage.setItem('studioEditorTheme', newEditorTheme)
+  }
+}
+
+function setCurrentThemeToDefault (opts = {}) {
+  setCurrentTheme({
+    theme: extensions.studio.options.theme,
+    editorTheme: extensions.studio.options.editorTheme
+  }, {
+    ...opts,
+    onComplete: () => {
+      window.localStorage.removeItem('studioTheme')
+      window.localStorage.removeItem('studioEditorTheme')
+
+      if (opts.onComplete) {
+        opts.onComplete()
+      }
     }
+  })
 
-    window.localStorage.setItem('studioTheme', themeName)
+  return {
+    theme: extensions.studio.options.theme,
+    editorTheme: extensions.studio.options.editorTheme
   }
 }
 
 export { getCurrentTheme }
+export { getDefaultTheme }
 export { setCurrentTheme }
+export { setCurrentThemeToDefault }

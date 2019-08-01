@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import ChromeTheme from 'monaco-themes/themes/Chrome DevTools.json'
 import MonacoEditor from 'react-monaco-editor'
 import debounce from 'lodash/debounce'
+import { getCurrentTheme } from '../../helpers/theme'
 import LinterWorker from './workers/linter.worker'
-import { extensions, textEditorInitializeListeners, textEditorCreatedListeners, subscribeToSplitResize } from '../../lib/configuration.js'
+import { textEditorInitializeListeners, textEditorCreatedListeners, subscribeToThemeChange, subscribeToSplitResize } from '../../lib/configuration.js'
 
 export default class TextEditor extends Component {
   static propTypes = {
@@ -24,6 +25,10 @@ export default class TextEditor extends Component {
     this.lint = debounce(this.lint, 400)
     this.editorWillMount = this.editorWillMount.bind(this)
     this.editorDidMount = this.editorDidMount.bind(this)
+
+    this.state = {
+      editorTheme: getCurrentTheme().editorTheme
+    }
   }
 
   componentDidMount () {
@@ -32,12 +37,19 @@ export default class TextEditor extends Component {
     this.unsubscribe = subscribeToSplitResize(() => {
       this.refs.monaco.editor.layout()
     })
+
+    this.unsubscribeThemeChange = subscribeToThemeChange(({ newEditorTheme }) => {
+      this.setState({
+        editorTheme: newEditorTheme
+      })
+    })
   }
 
   componentWillUnmount () {
     this.oldCode = null
 
     this.unsubscribe()
+    this.unsubscribeThemeChange()
 
     if (this.lintWorker) {
       this.lintWorker.terminate()
@@ -299,6 +311,7 @@ export default class TextEditor extends Component {
   }
 
   render () {
+    const { editorTheme } = this.state
     const { value, onUpdate, name, mode } = this.props
 
     const editorOptions = {
@@ -319,7 +332,7 @@ export default class TextEditor extends Component {
         width='100%'
         height='100%'
         language={mode}
-        theme={extensions.studio.options.editorTheme}
+        theme={editorTheme}
         value={value || ''}
         editorWillMount={this.editorWillMount}
         editorDidMount={this.editorDidMount}
