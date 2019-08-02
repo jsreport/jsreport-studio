@@ -17,8 +17,28 @@ module.exports = {
                 default: 'light'
               },
               logo: {
-                type: 'string',
-                description: 'specifies the path to a custom logo to use in the studio UI'
+                type: 'object',
+                default: {},
+                properties: {
+                  path: {
+                    type: 'string',
+                    description: 'specifies the path to a custom logo to use in the studio UI'
+                  },
+                  base64: {
+                    type: 'object',
+                    description: 'specifies the base64 representation of a custom logo to use in the studio UI',
+                    properties: {
+                      type: {
+                        type: 'string',
+                        description: 'specifies the type of image of the custom logo. For example "png"'
+                      },
+                      content: {
+                        type: 'string',
+                        description: 'specifies the base64 string of a custom logo'
+                      }
+                    }
+                  }
+                }
               },
               editorThemeName: {
                 type: 'string',
@@ -29,18 +49,20 @@ module.exports = {
                 type: 'object',
                 description: 'specifies the value of some variables to customize the studio UI theme'
               },
-              cssFiles: {
-                description: 'specifies the css files that will be loaded with studio styles',
-                anyOf: [
-                  {
+              customCss: {
+                type: 'object',
+                default: {},
+                description: 'specifies the custom css that will be loaded with studio styles',
+                properties: {
+                  path: {
                     type: 'string',
-                    '$jsreport-constantOrArray': []
+                    description: 'specifies the path to the custom css file'
                   },
-                  {
-                    type: 'array',
-                    items: { type: 'string' }
+                  content: {
+                    type: 'string',
+                    description: 'specifies the custom css as string content'
                   }
-                ]
+                }
               }
             }
           },

@@ -52,6 +52,7 @@ function setCurrentTheme ({ theme, editorTheme }, { onComplete, onError } = {}) 
   }
 
   const themeLinks = Array.prototype.slice.call(document.querySelectorAll('link[data-jsreport-studio-theme]'))
+  const customCssLink = document.querySelector('link[data-jsreport-studio-custom-css]')
   const defaultThemeLink = themeLinks.find((l) => l.dataset.defaultJsreportStudioTheme === 'true' || l.dataset.defaultJsreportStudioTheme === true)
   let targetThemeLink = themeLinks.find((l) => l.dataset.jsreportStudioTheme === theme)
 
@@ -79,8 +80,10 @@ function setCurrentTheme ({ theme, editorTheme }, { onComplete, onError } = {}) 
       changeTheme(theme)
       changeEditorTheme(newEditorTheme)
 
-      if (onComplete) {
-        onComplete()
+      if (customCssLink) {
+        changeCustomCss(theme, onComplete, onError)
+      } else {
+        onComplete && onComplete()
       }
     }
 
@@ -104,8 +107,10 @@ function setCurrentTheme ({ theme, editorTheme }, { onComplete, onError } = {}) 
     changeTheme(theme)
     changeEditorTheme(newEditorTheme)
 
-    if (onComplete) {
-      onComplete()
+    if (customCssLink) {
+      changeCustomCss(theme, onComplete, onError)
+    } else {
+      onComplete && onComplete()
     }
 
     return getCurrentTheme()
@@ -125,6 +130,27 @@ function setCurrentTheme ({ theme, editorTheme }, { onComplete, onError } = {}) 
 
   function changeEditorTheme (newEditorTheme) {
     window.localStorage.setItem('studioEditorTheme', newEditorTheme)
+  }
+
+  function changeCustomCss (newTheme, onLoad, onError) {
+    const clonedLink = customCssLink.cloneNode()
+
+    clonedLink.href = resolveUrl(`/studio/assets/customCss.css?theme=${newTheme}`)
+
+    clonedLink.onload = () => {
+      if (onLoad) {
+        onLoad()
+      }
+    }
+
+    clonedLink.onerror = () => {
+      if (onError) {
+        onError()
+      }
+    }
+
+    customCssLink.parentNode.insertBefore(clonedLink, customCssLink.nextSibling)
+    customCssLink.remove()
   }
 }
 
