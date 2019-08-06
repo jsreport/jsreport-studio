@@ -11,9 +11,9 @@
 }
 
 .content {
-  background-color: $secondaryBackgroundColor;
+  background-color: $secondary-backgroundColor;
   box-shadow: 1rem 1rem 1rem 0 rgba(0, 0, 0, 0.3);
-  color: $primaryColor;
+  color: $primary-color;
   display: block;
   float: left;
   height: auto;
@@ -33,12 +33,12 @@
 }
 
 .close:after {
-  color: $secondaryColor;
+  color: $secondary-color;
   font-family: FontAwesome;
   content: '\f00d'
 }
 
 .close:hover:after {
-  color: $primaryColor;
+  color: $primary-color;
   cursor: pointer;
 }

@@ -59,7 +59,7 @@
 .docker {
   opacity:0;
   font-size: 2rem;
-  color: $secondaryColor;
+  color: $secondary-color;
   position: absolute;
   transition:0s 1s;
   cursor: pointer;
@@ -70,21 +70,21 @@
 }
 
 .docker:hover {
-  color: $primarySelectionBackgroundColor;
+  color: $primary-selection-backgroundColor;
 }
 
 .resizer.collapsed {
   min-width: 2.5rem;
-  background-color: $secondaryColor;
+  background-color: $secondary-color;
   cursor: pointer;
 }
 
 .resizer.collapsed:hover {
-  background-color: $primaryHoverBackgroundColor;
+  background-color: $primary-hover-backgroundColor;
 }
 
 .pane-holder {
-  color: $primarySelectionColor;
+  color: $primary-selection-color;
   flex: 0;
   padding-top: 1rem;
   writing-mode: vertical-lr;

@@ -1,13 +1,13 @@
 
 .tabPane {
-  background-color: $tabPaneBackgroundColor;
+  background-color: $tab-pane-backgroundColor;
 }
 
 .tabTitles {
   display: flex;
   flex-wrap: wrap;
-  background-color: $tabTitlesBackgroundColor;
-  border-bottom: 0.2rem $primaryHoverBackgroundColor solid;
+  background-color: $tab-titles-backgroundColor;
+  border-bottom: 0.2rem $primary-hover-backgroundColor solid;
   padding-top: 0.5rem;
   min-height: 2.4rem;
 }
@@ -26,22 +26,22 @@
   min-height: 1.7rem;
   white-space: nowrap;
   display:flex;
-  background-color: $tabTitleBackgroundColor;
+  background-color: $tab-title-backgroundColor;
   padding: 0.3rem 0.3rem 0.3rem 0.9rem;
-  border-right: 1px $tabTitleBorderColor solid;
+  border-right: 1px $tab-title-borderColor solid;
   cursor: pointer;
   font-size: 0.91rem;
   user-select: none;
 }
 
 .tabTitle.active {
-  background: $primarySelectionBackgroundColor;
-  color: $primarySelectionColor;
+  background: $primary-selection-backgroundColor;
+  color: $primary-selection-color;
 }
 
 .tabTitle:hover {
-  background: $primaryHoverBackgroundColor;
-  color: $primaryHoverColor;
+  background: $primary-hover-backgroundColor;
+  color: $primary-hover-color;
 }
 
 .tabMainTitle {
@@ -65,18 +65,18 @@
 
 .tabClose:after {
   content: "\f00d";
-  color: $secondaryColor;
+  color: $secondary-color;
   padding: 0.1rem;
   font-family: FontAwesome;
   font-size: 0.9rem;
 }
 
 .tabClose:hover {
-  background-color: $secondaryHoverBackgroundColor;
+  background-color: $secondary-hover-backgroundColor;
 }
 
 .contextMenu {
-  background-color: $contextMenuBackgroundColor;
+  background-color: $contextMenu-backgroundColor;
   position: absolute;
   padding: 0.5rem;
   min-width: 9rem;
@@ -91,7 +91,7 @@
 }
 
 .contextButton {
-  color: $contextMenuButtonColor;
+  color: $contextMenu-button-color;
   padding: 0.5rem;
   font-size: 0.8rem;
   cursor: pointer;
@@ -99,6 +99,6 @@
 }
 
 .contextButton:hover {
-  background-color: $contextMenuButtonHoverBackgroundColor;
-  color: $contextMenuButtonHoverColor;
+  background-color: $contextMenu-button-hover-backgroundColor;
+  color: $contextMenu-button-hover-color;
 }

@@ -12,8 +12,8 @@ html, body {
   height: 100%;
   margin: 0;
   font-size: 0.9em;
-  background-color: $primaryBackgroundColor;
-  color: $primaryColor;
+  background-color: $primary-backgroundColor;
+  color: $primary-color;
 }
 
 ::-webkit-scrollbar {
@@ -21,19 +21,19 @@ html, body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: $scrollBarThumbBackgroundColor;
+  background: $scrollBar-thumb-backgroundColor;
 }
 
 ::-webkit-scrollbar-thumb:active {
-  background-color: $scrollBarThumbHoverBackgroundColor;
+  background-color: $scrollBar-thumb-hover-backgroundColor;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: $scrollBarThumbHoverBackgroundColor;
+  background: $scrollBar-thumb-hover-backgroundColor;
 }
 
 ::-webkit-scrollbar-track {
-  background: $scrollBarTrackBackgroundColor;
+  background: $scrollBar-track-backgroundColor;
 }
 
 .container {
@@ -65,7 +65,7 @@ html, body {
 h1,h2,h3,h4 {
   text-transform: lowercase;
   font-weight: 150;
-  color: $primarySelectionBackgroundColor
+  color: $primary-selection-backgroundColor
 }
 
 .table {
@@ -95,18 +95,18 @@ h1,h2,h3,h4 {
   vertical-align: middle;
   cursor: pointer;
   width: 100%;
-  border-bottom: 0.2rem solid $primarySelectionColor;
+  border-bottom: 0.2rem solid $primary-selection-color;
   cursor: pointer;
 }
 
 .table > tbody > tr.active {
-  background-color: $primaryHoverBackgroundColor;
-  color: $primaryHoverColor;
+  background-color: $primary-hover-backgroundColor;
+  color: $primary-hover-color;
 }
 
 .table > tbody > tr:hover {
-  background-color: $secondaryHoverBackgroundColor;
-  color: $primaryHoverColor;
+  background-color: $secondary-hover-backgroundColor;
+  color: $primary-hover-color;
 }
 
 .table > tbody > tr > td > a:link {
@@ -132,6 +132,6 @@ h1,h2,h3,h4 {
 }
 
 .table > tbody> tr:not(:hover):not(.active) > td.selection {
-  background-color: darken($secondaryBackgroundColor, 3%);
-  color: $primaryColor;
+  background-color: darken($secondary-backgroundColor, 3%);
+  color: $primary-color;
 }

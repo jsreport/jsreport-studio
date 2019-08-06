@@ -1,7 +1,7 @@
 
 .toolbar {
-  background-color: $tertiaryBackgroundColor;
-  color: $tertiaryColor;
+  background-color: $tertiary-backgroundColor;
+  color: $tertiary-color;
   display: flex;
   align-items: center;
   min-height: 2.5rem;
@@ -19,12 +19,12 @@
 }
 
 :global .toolbar-button.disabled {
-  color: $secondaryColor
+  color: $secondary-color
 }
 
 :global .toolbar-button:hover:not(.disabled) {
-  background: $primaryHoverBackgroundColor;
-  color: $primaryHoverColor;
+  background: $primary-hover-backgroundColor;
+  color: $primary-hover-color;
 }
 
 .run:before {
@@ -57,7 +57,7 @@
 }
 
 .logo {
-  background: linear-gradient(to left, $tertiaryBackgroundColor 0%, $tertiaryBackgroundColorTarget 100%);
+  background: linear-gradient(to left, $tertiary-backgroundColor 0%, $tertiary-target-backgroundColor 100%);
   background-size: auto 100%;
   background-repeat: no-repeat;
   padding-left: 0.2rem;
@@ -83,7 +83,7 @@
 }
 
 .popup > div:hover {
-  background-color: $primaryHoverBackgroundColor;
+  background-color: $primary-hover-backgroundColor;
 }
 
 .runCaret {
@@ -93,7 +93,7 @@
 }
 
 .runCaret:hover {
-  color: $formPrimaryColor;
+  color: $formPrimary-color;
 }
 
 .runCaret:after {

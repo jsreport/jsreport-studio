@@ -1,7 +1,7 @@
 
 .label {
-  background-color: $primaryHoverBackgroundColor;
-  color: $primaryHoverColor;
+  background-color: $primary-hover-backgroundColor;
+  color: $primary-hover-color;
   padding: 0.2rem;
   font-weight: lighter;
   font-size: 0.8rem;
@@ -9,11 +9,11 @@
 }
 
 .label.minor {
-  background-color: $secondaryColor
+  background-color: $secondary-color;
 }
 
 .url {
-  color: $secondaryHoverBackgroundColor
+  color: $secondary-hover-backgroundColor;
 }
 
 .row {

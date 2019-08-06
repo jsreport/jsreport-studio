@@ -11,19 +11,19 @@
 
 .search > input {
   border: none;
-  border-bottom: solid 0.2rem $secondaryColor;
+  border-bottom: solid 0.2rem $secondary-color;
   transition: border 0.3s;
   padding: 0.2rem;
   width: 10rem;
 }
 
 .search > input:focus {
-  border-bottom: solid 0.2rem $primarySelectionBackgroundColor;
+  border-bottom: solid 0.2rem $primary-selection-backgroundColor;
 }
 
 .search:before {
   content: "\f002";
   margin-right: 0.3rem;
-  color: $secondaryColor;
+  color: $secondary-color;
   font-family: FontAwesome;
 }

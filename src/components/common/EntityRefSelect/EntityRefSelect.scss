@@ -6,8 +6,8 @@
 .select {
   overflow-y: auto;
   overflow-x: auto;
-  color: $controlsColor;
-  background-color: $controlsBackgroundColor
+  color: $controls-color;
+  background-color: $controls-backgroundColor
 }
 
 .select > ul {
@@ -19,29 +19,29 @@
 .select > ul > li {
   cursor: pointer;
   padding: 0.3rem;
-  border-bottom: 0.1rem solid $controlsBorderColor;
+  border-bottom: 0.1rem solid $controls-borderColor;
 }
 
 .select > ul > li:hover {
-  background-color: $secondaryHoverBackgroundColor;
-  color: $primaryHoverColor;
+  background-color: $secondary-hover-backgroundColor;
+  color: $primary-hover-color;
 }
 
 .selectInput {
   cursor: pointer;
   font-size: 0.9rem;
-  background-color: $controlsBackgroundColor;
-  border-bottom: solid 0.2rem $controlsBorderColor;
+  background-color: $controls-backgroundColor;
+  border-bottom: solid 0.2rem $controls-borderColor;
   transition: border 0.3s;
   padding: 0.5rem;
   width: 100%;
   display: flex;
-  color: $controlsColor;
+  color: $controls-color;
   margin-top: 2px;
 }
 
 .selectInput:hover, .selectInput:focus, .selectInput:active {
-  border-bottom: solid 0.2rem $primarySelectionBackgroundColor;
+  border-bottom: solid 0.2rem $primary-selection-backgroundColor;
 }
 
 .selectInput > i {
@@ -49,7 +49,7 @@
 }
 
 .selectInput > i:hover {
-  color: $primarySelectionBackgroundColor;
+  color: $primary-selection-backgroundColor;
 }
 
 .selectInput > span {
@@ -60,6 +60,6 @@
 
 .selectInput > span.link:hover {
   margin-left: 0.5rem;
-  color: $primarySelectionBackgroundColor;
+  color: $primary-selection-backgroundColor;
   text-decoration: underline;
 }

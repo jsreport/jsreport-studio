@@ -13,28 +13,28 @@
 
 select {
   border: none;
-  background-color: $controlsBackgroundColor;
-  color: $controlsColor;
-  border-bottom: solid 0.2rem $controlsBorderColor;
+  background-color: $controls-backgroundColor;
+  color: $controls-color;
+  border-bottom: solid 0.2rem $controls-borderColor;
   transition: border 0.3s;
   padding: 0.5rem;
 }
 
 select:hover, select:focus, select:active {
-  border-bottom: solid 0.2rem $primarySelectionBackgroundColor;
+  border-bottom: solid 0.2rem $primary-selection-backgroundColor;
 }
 
 input {
   border: none;
-  background-color: $controlsBackgroundColor;
-  color: $controlsColor;
-  border-bottom: solid 0.2rem $controlsBorderColor;
+  background-color: $controls-backgroundColor;
+  color: $controls-color;
+  border-bottom: solid 0.2rem $controls-borderColor;
   transition: border 0.3s;
   padding: 0.3rem;
 }
 
 input:hover, input:focus, input:active {
-  border-bottom: solid 0.2rem $primarySelectionBackgroundColor;
+  border-bottom: solid 0.2rem $primary-selection-backgroundColor;
 }
 
 input[type=text] {
@@ -57,7 +57,7 @@ input[type=checkbox] {
   margin-left: 1rem;
   flex: 0.1;
   border: none;
-  color: $primarySelectionColor;
+  color: $primary-selection-color;
   padding: 0.5rem;
   text-align: center;
   text-decoration: none;

@@ -24,9 +24,9 @@
   border-bottom-style: solid;
   border-left-style: solid;
   border-top-color: initial;
-  border-right-color: $secondaryColor;
-  border-bottom-color: $secondaryColor;
-  border-left-color: $secondaryColor;
+  border-right-color: $secondary-color;
+  border-bottom-color: $secondary-color;
+  border-left-color: $secondary-color;
   border-image: initial;
   font-size: 0.8rem;
   margin: 0px;
@@ -39,7 +39,7 @@
 .resultsItem {
   position: relative;
   padding: 0.6rem;
-  border-top: 1px solid $secondaryColor;
+  border-top: 1px solid $secondary-color;
   cursor: pointer;
 }
 
@@ -50,7 +50,7 @@
 }
 
 .resultsItem.active {
-  background-color: $primarySelectionBackgroundColor;
+  background-color: $primary-selection-backgroundColor;
   color: #fff;
 }
 

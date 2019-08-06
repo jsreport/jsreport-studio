@@ -1,8 +1,8 @@
 
 .treeListContainer {
   flex: 1;
-  background-color: $secondaryBackgroundColor;
-  color: $primaryColor;
+  background-color: $secondary-backgroundColor;
+  color: $primary-color;
   display: flex;
   flex-direction: column;
   /*firefox needs min-height and min-width explicitly declared to allow descendants flex items to be scrollable (overflow)*/
@@ -37,7 +37,7 @@
 }
 
 .nodeBoxItemContent.dragging {
-  outline-color: $tertiaryBackgroundColor;
+  outline-color: $tertiary-backgroundColor;
 }
 
 .nodesBox {
@@ -60,7 +60,7 @@
 .nodeTitle:before {
   font-size: 1rem;
   font-family: FontAwesome;
-  color: $secondaryHoverColor;
+  color: $secondary-hover-color;
 }
 
 .nodeTitle:not(.collapsed):before {
@@ -68,7 +68,7 @@
   transform: rotateZ(45deg);
   display: inline-block;
   margin-right: 0.3rem;
-  color: $primarySelectionBackgroundColor;
+  color: $primary-selection-backgroundColor;
 }
 
 .nodeTitle.collapsed:before {
@@ -78,7 +78,7 @@
 }
 
 .nodeTitle:hover:before {
-  color: $primarySelectionBackgroundColor;
+  color: $primary-selection-backgroundColor;
 }
 
 .nodeContainer:not(.collapsed) {
@@ -100,13 +100,13 @@
 }
 
 .link.active {
-  background: $primarySelectionBackgroundColor;
-  color: $primarySelectionColor;
+  background: $primary-selection-backgroundColor;
+  color: $primary-selection-color;
 }
 
 .link:hover, .link.focused {
-  background: $secondaryHoverBackgroundColor;
-  color: $primarySelectionColor;
+  background: $secondary-hover-backgroundColor;
+  color: $primary-selection-color;
 }
 
 .link.dragging {
@@ -132,13 +132,13 @@
 .add:after {
   content: "\f067";
   font-family: FontAwesome;
-  color: $secondaryColor;
+  color: $secondary-color;
   padding: 0.1rem;
   font-size: 1rem;
 }
 
 .add:hover:after {
-  color: $primaryHoverBackgroundColor;
+  color: $primary-hover-backgroundColor;
 }
 
 .help {
@@ -149,7 +149,7 @@
 .help:after {
   content: "\f128";
   font-family: FontAwesome;
-  color: $secondaryColor;
+  color: $secondary-color;
   padding: 0.1rem;
   font-size: 1rem;
   visibility: hidden;
@@ -160,11 +160,11 @@
 }
 
 .help:hover:after {
-  color: $primaryHoverBackgroundColor;
+  color: $primary-hover-backgroundColor;
 }
 
 .contextMenu {
-  background-color: $contextMenuBackgroundColor;
+  background-color: $contextMenu-backgroundColor;
   position: relative;
   min-width: 9rem;
   padding-top: 0.5rem;
@@ -191,7 +191,7 @@
 
 .contextButton {
   position: relative;
-  color: $contextMenuButtonColor;
+  color: $contextMenu-button-color;
   padding: 0.5rem 1rem 0.5rem 1rem;
   font-size: 0.8rem;
   cursor: pointer;
@@ -205,7 +205,7 @@
 }
 
 .contextButton.disabled {
-  color: $contextMenuButtonDisabledColor;
+  color: $contextMenu-button-disabled-color;
 }
 
 .contextButton.hasNestedLevels:after {
@@ -218,8 +218,8 @@
 }
 
 .contextButton:hover:not(.disabled) {
-  background-color: $contextMenuButtonHoverBackgroundColor;
-  color: $contextMenuButtonHoverColor;
+  background-color: $contextMenu-button-hover-backgroundColor;
+  color: $contextMenu-button-hover-color;
 }
 
 .contextButton.hasNestedLevels:hover > .contextMenuContainer.nestedLevel {

@@ -1,11 +1,11 @@
 
 .multiSelect {
-  background-color: $controlsBackgroundColor;
+  background-color: $controls-backgroundColor;
   border: none;
   letter-spacing: normal;
   word-spacing: normal;
-  border-bottom: .2rem solid $controlsBorderColor;
-  color: $controlsColor;
+  border-bottom: .2rem solid $controls-borderColor;
+  color: $controls-color;
   transition: border .3s;
   padding: .5rem;
   font: 400 11px system-ui;
@@ -13,7 +13,7 @@
 }
 
 .multiSelect:active, .multiSelect:focus, .multiSelect:hover {
-  border-bottom: .2rem solid $primarySelectionBackgroundColor;
+  border-bottom: .2rem solid $primary-selection-backgroundColor;
 }
 
 .allCheckContainer {

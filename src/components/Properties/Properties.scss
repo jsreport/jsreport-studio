@@ -3,13 +3,13 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: $secondaryBackgroundColor;
+  background-color: $secondary-backgroundColor;
   user-select: none;
 }
 
 .title {
-  background-color: $primaryHoverBackgroundColor;
-  color: $primaryHoverColor;
+  background-color: $primary-hover-backgroundColor;
+  color: $primary-hover-color;
   min-height: 1.7rem;
   font-size: 0.9rem;
   padding: 0.3rem;
@@ -22,18 +22,18 @@
 .propertyTitle {
   cursor: pointer;
   padding: 0.5rem 0.5rem 0.5rem 1.2rem;
-  background-color: $propertyTitleBackgroundColor;
-  color: $propertyTitleColor;
+  background-color: $property-title-backgroundColor;
+  color: $property-title-color;
 }
 
 .propertyTitle.expanded {
-  background-color: $propertyTitleExpandedBackgroundColor;
-  color: $propertyTitleExpandedColor;
+  background-color: $property-title-expanded-backgroundColor;
+  color: $property-title-expanded-color;
 }
 
 .propertyTitle:hover {
-  background-color: $propertyTitleHoverBackgroundColor;
-  color: $propertyTitleHoverColor;
+  background-color: $property-title-hover-backgroundColor;
+  color: $property-title-hover-color;
 }
 
 .propertyBox {

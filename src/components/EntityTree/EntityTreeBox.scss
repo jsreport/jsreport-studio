@@ -1,7 +1,7 @@
 
 .boxContainer {
   flex: 1;
-  background-color: $secondaryBackgroundColor;
+  background-color: $secondary-backgroundColor;
   display: flex;
   flex-direction: column;
   /*firefox needs min-height and min-width explicitly declared to allow descendants flex items to be scrollable (overflow)*/
