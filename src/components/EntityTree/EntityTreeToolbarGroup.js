@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import EntityTreeButton from './EntityTreeButton'
 import { entityTreeToolbarComponents } from '../../lib/configuration.js'
 import style from './EntityTree.scss'

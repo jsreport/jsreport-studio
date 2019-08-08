@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import EntityTreeButton from './EntityTreeButton'
 import NewFolderModal from '../Modals/NewFolderModal'
 import getVisibleEntitySetsInTree from '../../helpers/getVisibleEntitySetsInTree'

@@ -5,15 +5,15 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: $modal-overlay-backgroundColor;
   z-index: 99999;
   opacity:1;
 }
 
 .content {
-  background-color: $secondary-backgroundColor;
-  box-shadow: 1rem 1rem 1rem 0 rgba(0, 0, 0, 0.3);
-  color: $primary-color;
+  background-color: $modal-backgroundColor;
+  box-shadow: 1rem 1rem 1rem 0 $modal-shadowColor;
+  color: $modal-color;
   display: block;
   float: left;
   height: auto;
@@ -33,12 +33,12 @@
 }
 
 .close:after {
-  color: $secondary-color;
+  color: $modal-close-color;
   font-family: FontAwesome;
   content: '\f00d'
 }
 
 .close:hover:after {
-  color: $primary-color;
+  color: $modal-close-hover-color;
   cursor: pointer;
 }

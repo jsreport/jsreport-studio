@@ -1,7 +1,7 @@
 
 .toolbar {
-  background-color: $tertiary-backgroundColor;
-  color: $tertiary-color;
+  background-color: $toolbar-backgroundColor;
+  color: $toolbar-color;
   display: flex;
   align-items: center;
   min-height: 2.5rem;
@@ -19,12 +19,12 @@
 }
 
 :global .toolbar-button.disabled {
-  color: $secondary-color
+  color: $toolbar-button-disabled-color;
 }
 
 :global .toolbar-button:hover:not(.disabled) {
-  background: $primary-hover-backgroundColor;
-  color: $primary-hover-color;
+  background: $toolbar-button-hover-backgroundColor;
+  color: $toolbar-button-hover-color;
 }
 
 .run:before {
@@ -44,7 +44,7 @@
 
 .spinner {
   flex: 1;
-  color: #ffc40d;
+  color: $formPrimary-color;
   font-size: 1.5rem;
 }
 
@@ -57,7 +57,7 @@
 }
 
 .logo {
-  background: linear-gradient(to left, $tertiary-backgroundColor 0%, $tertiary-target-backgroundColor 100%);
+  background: linear-gradient(to left, $toolbar-backgroundColor 0%, $toolbar-target-backgroundColor 100%);
   background-size: auto 100%;
   background-repeat: no-repeat;
   padding-left: 0.2rem;
@@ -70,7 +70,7 @@
 }
 
 .popup {
-  background-color: #424c57;
+  background-color: $toolbar-popup-backgroundColor;
   position: absolute;
   right: 0;
   padding: 0.5rem;
@@ -83,7 +83,7 @@
 }
 
 .popup > div:hover {
-  background-color: $primary-hover-backgroundColor;
+  background-color: $toolbar-popup-hover-backgroundColor;
 }
 
 .runCaret {
@@ -101,7 +101,7 @@
 }
 
 .runPopup {
-  background-color: #424c57;
+  background-color: $toolbar-popup-backgroundColor;
   top: 2.4rem;
   position: absolute;
   padding: 0.5rem;

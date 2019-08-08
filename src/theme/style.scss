@@ -55,7 +55,6 @@ html, body {
 
 .block-item {
   flex: 1;
-
 }
 
 .custom-editor {
@@ -65,13 +64,27 @@ html, body {
 h1,h2,h3,h4 {
   text-transform: lowercase;
   font-weight: 150;
-  color: $primary-selection-backgroundColor
+  color: $headings-color;
 }
 
 .table {
   border-collapse: collapse;
   width: 100%;
 }
+
+.table td,
+.table th {
+  color: $table-color;
+}
+
+.table th {
+  background-color: $table-heading-backgroundColor;
+}
+
+.table td {
+  background-color: $table-row-backgroundColor;
+}
+
 .table > thead {
   width: 100%;
 }
@@ -84,10 +97,10 @@ h1,h2,h3,h4 {
    font-weight: bold;
    text-transform: uppercase;
    text-align: left;
-   padding: 0.2rem 1rem 0.5rem 1rem;
+   padding: 0.4rem 1rem 0.5rem 1rem;
    vertical-align: bottom;
-   border-bottom: 0.1rem solid #ddd;
-   border-right: 0.1rem solid #ddd;
+   border-bottom: 0.1rem solid $table-heading-borderColor;
+   border-right: 0.1rem solid $table-heading-borderColor;
    font-size: 0.8rem;
  }
 
@@ -95,18 +108,17 @@ h1,h2,h3,h4 {
   vertical-align: middle;
   cursor: pointer;
   width: 100%;
-  border-bottom: 0.2rem solid $primary-selection-color;
-  cursor: pointer;
+  border-bottom: 0.2rem solid $table-row-borderColor;
 }
 
 .table > tbody > tr.active {
-  background-color: $primary-hover-backgroundColor;
-  color: $primary-hover-color;
+  background-color: $table-row-active-backgroundColor;
+  color: $table-row-active-color;
 }
 
 .table > tbody > tr:hover {
-  background-color: $secondary-hover-backgroundColor;
-  color: $primary-hover-color;
+  background-color: $table-row-hover-backgroundColor;
+  color: $table-row-hover-color;
 }
 
 .table > tbody > tr > td > a:link {
@@ -131,7 +143,7 @@ h1,h2,h3,h4 {
   cursor: pointer;
 }
 
-.table > tbody> tr:not(:hover):not(.active) > td.selection {
-  background-color: darken($secondary-backgroundColor, 3%);
-  color: $primary-color;
+.table > tbody > tr:not(:hover):not(.active) > td.selection {
+  background-color: $table-selection-backgroundColor;
+  color: $table-selection-color;
 }

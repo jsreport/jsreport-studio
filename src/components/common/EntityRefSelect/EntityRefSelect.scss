@@ -23,8 +23,8 @@
 }
 
 .select > ul > li:hover {
-  background-color: $secondary-hover-backgroundColor;
-  color: $primary-hover-color;
+  background-color: $controls-list-hover-backgroundColor;
+  color: $controls-list-hover-color;
 }
 
 .selectInput {
@@ -41,7 +41,7 @@
 }
 
 .selectInput:hover, .selectInput:focus, .selectInput:active {
-  border-bottom: solid 0.2rem $primary-selection-backgroundColor;
+  border-bottom: solid 0.2rem $controls-hover-borderColor;
 }
 
 .selectInput > i {
@@ -49,7 +49,7 @@
 }
 
 .selectInput > i:hover {
-  color: $primary-selection-backgroundColor;
+  color: $controls-hover-borderColor;
 }
 
 .selectInput > span {
@@ -60,6 +60,6 @@
 
 .selectInput > span.link:hover {
   margin-left: 0.5rem;
-  color: $primary-selection-backgroundColor;
+  color: $controls-hover-borderColor;
   text-decoration: underline;
 }

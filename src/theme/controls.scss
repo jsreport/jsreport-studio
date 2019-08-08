@@ -21,7 +21,7 @@ select {
 }
 
 select:hover, select:focus, select:active {
-  border-bottom: solid 0.2rem $primary-selection-backgroundColor;
+  border-bottom: solid 0.2rem $controls-hover-borderColor;
 }
 
 input {
@@ -34,7 +34,7 @@ input {
 }
 
 input:hover, input:focus, input:active {
-  border-bottom: solid 0.2rem $primary-selection-backgroundColor;
+  border-bottom: solid 0.2rem $controls-hover-borderColor;
 }
 
 input[type=text] {
@@ -57,24 +57,24 @@ input[type=checkbox] {
   margin-left: 1rem;
   flex: 0.1;
   border: none;
-  color: $primary-selection-color;
+  color: $button-color;
   padding: 0.5rem;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  box-shadow: 0 0 1px $button-shadowColor;
 }
 
 .button:hover, .button:focus, button:active {
-  box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 0.1rem $button-active-shadowColor;
 }
 
 .button.confirmation {
-  background-color: #008CBA;
+  background-color: $button-confirmation-backgroundColor;
 }
 
 .button.danger {
-  background-color: #FCBE59;
+  background-color: $button-danger-backgroundColor;
 }
 
 :focus {

@@ -24,16 +24,16 @@
 }
 
 .popoverContentWrapper {
-  background: #fff;
-  border: 1px solid rgba(0,0,0,0.2);
-  box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+  background: $popover-backgroundColor;
+  border: 1px solid $popover-borderColor;
+  box-shadow: 0 3px 12px $popover-shadowColor;
   border-radius: 4px;
   padding: 0.3rem;
 }
 
 .popoverTriangle {
   border: 7px solid transparent;
-  border-bottom-color: #fff;
+  border-bottom-color: $popover-backgroundColor;
   left: 10px;
   position: absolute;
   top: -14px;
@@ -41,7 +41,7 @@
 
 .popoverTriangleShadow {
   border: 8px solid transparent;
-  border-bottom-color: rgba(0,0,0,0.15);
+  border-bottom-color: $popover-shadowColor;
   left: 9px;
   position: absolute;
   top: -16px;

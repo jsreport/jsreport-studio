@@ -1,8 +1,8 @@
 
 .treeListContainer {
   flex: 1;
-  background-color: $secondary-backgroundColor;
-  color: $primary-color;
+  background-color: $entityTree-backgroundColor;
+  color: $entityTree-color;
   display: flex;
   flex-direction: column;
   /*firefox needs min-height and min-width explicitly declared to allow descendants flex items to be scrollable (overflow)*/
@@ -37,7 +37,7 @@
 }
 
 .nodeBoxItemContent.dragging {
-  outline-color: $tertiary-backgroundColor;
+  outline-color: $entityTree-outlineColor;
 }
 
 .nodesBox {
@@ -60,7 +60,7 @@
 .nodeTitle:before {
   font-size: 1rem;
   font-family: FontAwesome;
-  color: $secondary-hover-color;
+  color: $entityTree-collapseIcon-collapsed-color;
 }
 
 .nodeTitle:not(.collapsed):before {
@@ -68,7 +68,7 @@
   transform: rotateZ(45deg);
   display: inline-block;
   margin-right: 0.3rem;
-  color: $primary-selection-backgroundColor;
+  color: $entityTree-collapseIcon-color;
 }
 
 .nodeTitle.collapsed:before {
@@ -78,7 +78,7 @@
 }
 
 .nodeTitle:hover:before {
-  color: $primary-selection-backgroundColor;
+  color: $entityTree-collapseIcon-hover-color;
 }
 
 .nodeContainer:not(.collapsed) {
@@ -100,13 +100,13 @@
 }
 
 .link.active {
-  background: $primary-selection-backgroundColor;
-  color: $primary-selection-color;
+  background: $entityTree-node-active-backgroundColor;
+  color: $entityTree-node-active-color;
 }
 
 .link:hover, .link.focused {
-  background: $secondary-hover-backgroundColor;
-  color: $primary-selection-color;
+  background: $entityTree-node-hover-backgroundColor;
+  color: $entityTree-node-hover-color;
 }
 
 .link.dragging {
@@ -117,7 +117,7 @@
 .entityIcon {
   margin-right: 0.4rem;
   width: 0.9rem;
-  color: #F16220;
+  color: $entityIcon-color;
 }
 
 .entityDefaultIcon:after {
@@ -132,13 +132,13 @@
 .add:after {
   content: "\f067";
   font-family: FontAwesome;
-  color: $secondary-color;
+  color: $entityTree-icon-color;
   padding: 0.1rem;
   font-size: 1rem;
 }
 
 .add:hover:after {
-  color: $primary-hover-backgroundColor;
+  color: $entityTree-icon-hover-color;
 }
 
 .help {
@@ -149,7 +149,7 @@
 .help:after {
   content: "\f128";
   font-family: FontAwesome;
-  color: $secondary-color;
+  color: $entityTree-icon-color;
   padding: 0.1rem;
   font-size: 1rem;
   visibility: hidden;
@@ -160,7 +160,7 @@
 }
 
 .help:hover:after {
-  color: $primary-hover-backgroundColor;
+  color: $entityTree-icon-hover-color;
 }
 
 .contextMenu {

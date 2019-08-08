@@ -7,7 +7,7 @@
   display: flex;
   flex-wrap: wrap;
   background-color: $tab-titles-backgroundColor;
-  border-bottom: 0.2rem $primary-hover-backgroundColor solid;
+  border-bottom: 0.2rem $tab-titles-borderColor solid;
   padding-top: 0.5rem;
   min-height: 2.4rem;
 }
@@ -35,13 +35,13 @@
 }
 
 .tabTitle.active {
-  background: $primary-selection-backgroundColor;
-  color: $primary-selection-color;
+  background: $tab-title-active-backgroundColor;
+  color: $tab-title-active-color;
 }
 
 .tabTitle:hover {
-  background: $primary-hover-backgroundColor;
-  color: $primary-hover-color;
+  background: $tab-title-hover-backgroundColor;
+  color: $tab-title-hover-color;
 }
 
 .tabMainTitle {
@@ -65,14 +65,14 @@
 
 .tabClose:after {
   content: "\f00d";
-  color: $secondary-color;
+  color: $tab-close-color;
   padding: 0.1rem;
   font-family: FontAwesome;
   font-size: 0.9rem;
 }
 
 .tabClose:hover {
-  background-color: $secondary-hover-backgroundColor;
+  background-color: $tab-close-hover-backgroundColor;
 }
 
 .contextMenu {

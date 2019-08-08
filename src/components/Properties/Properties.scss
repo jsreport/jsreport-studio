@@ -3,13 +3,13 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: $secondary-backgroundColor;
+  background-color: $property-panel-backgroundColor;
   user-select: none;
 }
 
 .title {
-  background-color: $primary-hover-backgroundColor;
-  color: $primary-hover-color;
+  background-color: $property-heading-backgroundColor;
+  color: $property-heading-color;
   min-height: 1.7rem;
   font-size: 0.9rem;
   padding: 0.3rem;
