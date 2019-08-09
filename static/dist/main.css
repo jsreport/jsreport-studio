@@ -1,12 +1,12 @@
 
-.JSREPORT-STUDIO-src-components-Preview--Preview--container {
-  background-color: $previewBackgroundColor;
+.Preview-container {
+  background-color: $preview-backgroundColor;
 }
 
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeBox--boxContainer {
+.EntityTreeBox-boxContainer {
   flex: 1 1;
-  background-color: $secondaryBackgroundColor;
+  background-color: $entityTree-backgroundColor;
   display: flex;
   flex-direction: column;
   /*firefox needs min-height and min-width explicitly declared to allow descendants flex items to be scrollable (overflow)*/
@@ -15,24 +15,24 @@
 }
 
 
-.JSREPORT-STUDIO-src-components-EntityTree--HighlightedArea--label {
-  background-color: $highlightColor;
+.HighlightedArea-label {
+  background-color: $entityTree-highlight-color;
   border-radius: 2px;
   position: absolute;
   pointer-events: none;
   opacity: 0.4;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--HighlightedArea--hierarchy {
-  border-left: 1px dotted $highlightColor;
-  border-top: 1px dotted $highlightColor;
-  border-bottom: 1px dotted $highlightColor;
+.HighlightedArea-hierarchy {
+  border-left: 1px dotted $entityTree-highlight-color;
+  border-top: 1px dotted $entityTree-highlight-color;
+  border-bottom: 1px dotted $entityTree-highlight-color;
   position: absolute;
   pointer-events: none;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--HighlightedArea--hierarchyTop {
-  background-color: $highlightColor;
+.HighlightedArea-hierarchyTop {
+  background-color: $entityTree-highlight-color;
   border-radius: 100%;
   height: 5px;
   position: absolute;
@@ -41,8 +41,8 @@
   width: 5px;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--HighlightedArea--hierarchyBottom {
-  background-color: $highlightColor;
+.HighlightedArea-hierarchyBottom {
+  background-color: $entityTree-highlight-color;
   border-radius: 100%;
   bottom: -2.5px;
   height: 5px;
@@ -52,10 +52,10 @@
 }
 
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--treeListContainer {
+.EntityTree-treeListContainer {
   flex: 1 1;
-  background-color: $secondaryBackgroundColor;
-  color: $primaryColor;
+  background-color: $entityTree-backgroundColor;
+  color: $entityTree-color;
   display: flex;
   flex-direction: column;
   /*firefox needs min-height and min-width explicitly declared to allow descendants flex items to be scrollable (overflow)*/
@@ -64,19 +64,19 @@
   height: 100%;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--toolbar {
+.EntityTree-toolbar {
   padding: 0.3rem;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeBox {
+.EntityTree-nodeBox {
   flex: 1 1;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeBoxItem {
+.EntityTree-nodeBoxItem {
   margin-top: 0;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeBoxItemContent {
+.EntityTree-nodeBoxItemContent {
   display: inline-block;
   outline: 1px dashed transparent;
   outline-offset: 1px;
@@ -84,16 +84,16 @@
   margin-left: 0.2rem;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeBoxItemContent.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--dragging,
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeContainer.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--dragging .JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeBoxItemContent {
+.EntityTree-nodeBoxItemContent.EntityTree-dragging,
+.EntityTree-nodeContainer.EntityTree-dragging .EntityTree-nodeBoxItemContent {
   opacity: 0.5;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeBoxItemContent.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--dragging {
-  outline-color: $tertiaryBackgroundColor;
+.EntityTree-nodeBoxItemContent.EntityTree-dragging {
+  outline-color: $entityTree-outlineColor;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodesBox {
+.EntityTree-nodesBox {
   flex: 1 1;
   height: auto;
   overflow: auto;
@@ -104,120 +104,120 @@
   padding-top: 4px;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeTitle {
+.EntityTree-nodeTitle {
   font-size: 0.9rem;
   cursor: pointer;
   width: 0.2rem;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeTitle:before {
+.EntityTree-nodeTitle:before {
   font-size: 1rem;
   font-family: FontAwesome;
-  color: $secondaryHoverColor;
+  color: $entityTree-collapseIcon-collapsed-color;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeTitle:not(.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--collapsed):before {
+.EntityTree-nodeTitle:not(.EntityTree-collapsed):before {
   content: "\F0DA";
   transform: rotateZ(45deg);
   display: inline-block;
   margin-right: 0.3rem;
-  color: $primarySelectionBackgroundColor;
+  color: $entityTree-collapseIcon-color;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeTitle.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--collapsed:before {
+.EntityTree-nodeTitle.EntityTree-collapsed:before {
   content: "\F0DA";
   display: inline-block;
   margin-right: 0.3rem;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeTitle:hover:before {
-  color: $primarySelectionBackgroundColor;
+.EntityTree-nodeTitle:hover:before {
+  color: $entityTree-collapseIcon-hover-color;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeContainer:not(.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--collapsed) {
+.EntityTree-nodeContainer:not(.EntityTree-collapsed) {
   max-height: 15999px;
   transition: 0.15s;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeContainer.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--collapsed {
+.EntityTree-nodeContainer.EntityTree-collapsed {
   max-height: 0;
   overflow: hidden;
   transition: 0.15s;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--link {
+.EntityTree-link {
   padding: 0.3rem;
   padding-left: 1.5rem;
   font-size: 0.9rem;
   cursor: pointer;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--link.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--active {
-  background: $primarySelectionBackgroundColor;
-  color: $primarySelectionColor;
+.EntityTree-link.EntityTree-active {
+  background: $entityTree-node-active-backgroundColor;
+  color: $entityTree-node-active-color;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--link:hover, .JSREPORT-STUDIO-src-components-EntityTree--EntityTree--link.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--focused {
-  background: $secondaryHoverBackgroundColor;
-  color: $primarySelectionColor;
+.EntityTree-link:hover, .EntityTree-link.EntityTree-focused {
+  background: $entityTree-node-hover-backgroundColor;
+  color: $entityTree-node-hover-color;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--link.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--dragging {
+.EntityTree-link.EntityTree-dragging {
   background-color: inherit;
   color: inherit;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--entityIcon {
+.EntityTree-entityIcon {
   margin-right: 0.4rem;
   width: 0.9rem;
-  color: #F16220;
+  color: $entityIcon-color;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--entityDefaultIcon:after {
+.EntityTree-entityDefaultIcon:after {
   font-family: FontAwesome;
   content: "\F1FE";
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--add {
+.EntityTree-add {
   cursor: pointer;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--add:after {
+.EntityTree-add:after {
   content: "\F067";
   font-family: FontAwesome;
-  color: $secondaryColor;
+  color: $entityTree-icon-color;
   padding: 0.1rem;
   font-size: 1rem;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--add:hover:after {
-  color: $primaryHoverBackgroundColor;
+.EntityTree-add:hover:after {
+  color: $entityTree-icon-hover-color;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--help {
+.EntityTree-help {
   cursor: pointer;
   text-decoration: none;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--help:after {
+.EntityTree-help:after {
   content: "\F128";
   font-family: FontAwesome;
-  color: $secondaryColor;
+  color: $entityTree-icon-color;
   padding: 0.1rem;
   font-size: 1rem;
   visibility: hidden;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nodeBox:hover .JSREPORT-STUDIO-src-components-EntityTree--EntityTree--help:after {
+.EntityTree-nodeBox:hover .EntityTree-help:after {
   visibility: visible;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--help:hover:after {
-  color: $primaryHoverBackgroundColor;
+.EntityTree-help:hover:after {
+  color: $entityTree-icon-hover-color;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextMenu {
-  background-color: $contextMenuBackgroundColor;
+.EntityTree-contextMenu {
+  background-color: $contextMenu-backgroundColor;
   position: relative;
   min-width: 9rem;
   padding-top: 0.5rem;
@@ -226,12 +226,12 @@
   box-shadow: 0.1rem 0.1rem 0.1rem 0.05rem rgba(0, 0, 0, 0.6);
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextMenuContainer {
+.EntityTree-contextMenuContainer {
   position: absolute;
   z-index: 9999999;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextMenuContainer.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nestedLevel {
+.EntityTree-contextMenuContainer.EntityTree-nestedLevel {
   position: absolute;
   top: 0;
   left: 100%;
@@ -242,9 +242,9 @@
   overflow: hidden;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextButton {
+.EntityTree-contextButton {
   position: relative;
-  color: $contextMenuButtonColor;
+  color: $contextMenu-button-color;
   padding: 0.5rem 1rem 0.5rem 1rem;
   font-size: 0.8rem;
   cursor: pointer;
@@ -254,17 +254,17 @@
           user-select: none;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextButton i {
+.EntityTree-contextButton i {
   width: 0.8rem;
   margin-right: 0.6rem;
   display: inline-block;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextButton.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--disabled {
-  color: $contextMenuButtonDisabledColor;
+.EntityTree-contextButton.EntityTree-disabled {
+  color: $contextMenu-button-disabled-color;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextButton.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--hasNestedLevels:after {
+.EntityTree-contextButton.EntityTree-hasNestedLevels:after {
   font-family: FontAwesome;
   font-size: 0.9rem;
   padding-right: 0.5rem;
@@ -273,94 +273,94 @@
   right: 0;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextButton:hover:not(.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--disabled) {
-  background-color: $contextMenuButtonHoverBackgroundColor;
-  color: $contextMenuButtonHoverColor;
+.EntityTree-contextButton:hover:not(.EntityTree-disabled) {
+  background-color: $contextMenu-button-hover-backgroundColor;
+  color: $contextMenu-button-hover-color;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextButton.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--hasNestedLevels:hover > .JSREPORT-STUDIO-src-components-EntityTree--EntityTree--contextMenuContainer.JSREPORT-STUDIO-src-components-EntityTree--EntityTree--nestedLevel {
+.EntityTree-contextButton.EntityTree-hasNestedLevels:hover > .EntityTree-contextMenuContainer.EntityTree-nestedLevel {
   opacity: 1;
   height: auto;
   overflow: visible;
 }
 
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeButton--entityTreeButton {
-  background-color: $entityTreeButtonBackgroundColor;
+.EntityTreeButton-entityTreeButton {
+  background-color: $entityTree-button-backgroundColor;
   border: none;
-  color: $entityTreeButtonColor;
+  color: $entityTree-button-color;
   cursor: pointer;
   padding: 0.2rem;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  border: 0.1rem solid $entityTreeButtonBorderColor;
+  border: 0.1rem solid $entityTree-button-borderColor;
   font-size: 0.75rem;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeButton--entityTreeButton:hover {
-  background-color: $entityTreeButtonHoverBackgroundColor;
-  color: $entityTreeButtonHoverColor
+.EntityTreeButton-entityTreeButton:hover {
+  background-color: $entityTree-button-hover-backgroundColor;
+  color: $entityTree-button-hover-color;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeButton--entityTreeButton.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeButton--active {
-  border: 0.1rem solid $primarySelectionBackgroundColor;
+.EntityTreeButton-entityTreeButton.EntityTreeButton-active {
+  border: 0.1rem solid $entityTree-button-active-borderColor;
 }
 
 
-.JSREPORT-STUDIO-src-components-Properties--Properties--propertiesPanel {
+.Properties-propertiesPanel {
   flex: 1 1;
   display: flex;
   flex-direction: column;
-  background-color: $secondaryBackgroundColor;
+  background-color: $property-panel-backgroundColor;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
 }
 
-.JSREPORT-STUDIO-src-components-Properties--Properties--title {
-  background-color: $primaryHoverBackgroundColor;
-  color: $primaryHoverColor;
+.Properties-title {
+  background-color: $property-heading-backgroundColor;
+  color: $property-heading-color;
   min-height: 1.7rem;
   font-size: 0.9rem;
   padding: 0.3rem;
 }
 
-.JSREPORT-STUDIO-src-components-Properties--Properties--propertiesContainer {
+.Properties-propertiesContainer {
   overflow: auto;
 }
 
-.JSREPORT-STUDIO-src-components-Properties--Properties--propertyTitle {
+.Properties-propertyTitle {
   cursor: pointer;
   padding: 0.5rem 0.5rem 0.5rem 1.2rem;
-  background-color: $propertyTitleBackgroundColor;
-  color: $propertyTitleColor;
+  background-color: $property-title-backgroundColor;
+  color: $property-title-color;
 }
 
-.JSREPORT-STUDIO-src-components-Properties--Properties--propertyTitle.JSREPORT-STUDIO-src-components-Properties--Properties--expanded {
-  background-color: $propertyTitleExpandedBackgroundColor;
-  color: $propertyTitleExpandedColor;
+.Properties-propertyTitle.Properties-expanded {
+  background-color: $property-title-expanded-backgroundColor;
+  color: $property-title-expanded-color;
 }
 
-.JSREPORT-STUDIO-src-components-Properties--Properties--propertyTitle:hover {
-  background-color: $propertyTitleHoverBackgroundColor;
-  color: $propertyTitleHoverColor;
+.Properties-propertyTitle:hover {
+  background-color: $property-title-hover-backgroundColor;
+  color: $property-title-hover-color;
 }
 
-.JSREPORT-STUDIO-src-components-Properties--Properties--propertyBox {
+.Properties-propertyBox {
   margin: 0.3rem 0.3rem;
   min-width: 9rem;
 }
 
-.JSREPORT-STUDIO-src-components-Properties--Properties--propertyContentBox {
+.Properties-propertyContentBox {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s;
 }
 
-.JSREPORT-STUDIO-src-components-Properties--Properties--propertyContentBox.JSREPORT-STUDIO-src-components-Properties--Properties--expanded {
+.Properties-propertyContentBox.Properties-expanded {
   max-height: 95rem;
 }
 
@@ -371,18 +371,18 @@
 }
 
 
-.JSREPORT-STUDIO-src-components-Properties--Properties--propertiesNodes {
+.Properties-propertiesNodes {
   padding: 0.5em;
   overflow: auto;
   flex-direction: column;
   display: flex;
 }
 
-.JSREPORT-STUDIO-src-containers-App--App--appContent {
+.App-appContent {
   flex: 1 1;
 }
 
-.JSREPORT-STUDIO-src-containers-App--App--navbar {
+.App-navbar {
   width: 100%;
   position: fixed;
   z-index: 99;
@@ -390,45 +390,45 @@
   padding: 1em;
 }
 
-.JSREPORT-STUDIO-src-containers-App--App--nav-link {
+.App-nav-link {
   color: white;
   text-decoration: none;
   padding: 1em;
 }
 
-.JSREPORT-STUDIO-src-containers-App--App--properties {
+.App-properties {
   background-color: red;
 }
 
 
-.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--container {
+.EntityFuzzyFinderModal-container {
   margin: 0;
   width: 560px;
   height: 280px;
   overflow: hidden;
 }
 
-.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--input {
+.EntityFuzzyFinderModal-input {
   width: 100%;
   padding-top: 0.7rem;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 5px 2px;
+  box-shadow: $entityFinder-input-shadowColor 0px 1px 5px 2px;
 }
 
-.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--input:hover, .JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--input:focus, .JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--input:active {
-  border-bottom: solid 0.2rem #d9d9d9 !important;
+.EntityFuzzyFinderModal-input:hover, .EntityFuzzyFinderModal-input:focus, .EntityFuzzyFinderModal-input:active {
+  border-bottom: solid 0.2rem $entityFinder-input-hover-borderColor !important;
 }
 
-.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--results {
+.EntityFuzzyFinderModal-results {
   border-width: 0px 0px 1px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 12px 30px 2px;
+  box-shadow: $entityFinder-results-shadowColor 0px 12px 30px 2px;
   border-top-style: initial;
   border-right-style: solid;
   border-bottom-style: solid;
   border-left-style: solid;
   border-top-color: initial;
-  border-right-color: $secondaryColor;
-  border-bottom-color: $secondaryColor;
-  border-left-color: $secondaryColor;
+  border-right-color: $entityFinder-results-borderColor;
+  border-bottom-color: $entityFinder-results-borderColor;
+  border-left-color: $entityFinder-results-borderColor;
   -o-border-image: initial;
      border-image: initial;
   font-size: 0.8rem;
@@ -439,48 +439,48 @@
   position: relative;
 }
 
-.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--resultsItem {
+.EntityFuzzyFinderModal-resultsItem {
   position: relative;
   padding: 0.6rem;
-  border-top: 1px solid $secondaryColor;
+  border-top: 1px solid $entityFinder-results-borderColor;
   cursor: pointer;
 }
 
-.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--resultsItem::after {
+.EntityFuzzyFinderModal-resultsItem::after {
   content: "";
   clear: both;
   display: table;
 }
 
-.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--resultsItem.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--active {
-  background-color: $primarySelectionBackgroundColor;
-  color: #fff;
+.EntityFuzzyFinderModal-resultsItem.EntityFuzzyFinderModal-active {
+  background-color: $entityFinder-results-item-active-backgroundColor;
+  color: $entityFinder-results-item-active-color;
 }
 
-.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--resultsItemIcon {
+.EntityFuzzyFinderModal-resultsItemIcon {
   margin-right: 0.2rem;
   width: 0.9rem;
-  color: #F16220;
+  color: $entityIcon-color;
 }
 
-.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--resultsItemDefaultIcon:after {
+.EntityFuzzyFinderModal-resultsItemDefaultIcon:after {
   font-family: FontAwesome;
   content: "\F1FE";
 }
 
-.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--resultsItemPath {
+.EntityFuzzyFinderModal-resultsItemPath {
   float: right;
   opacity: 0.5;
 }
 
-.JSREPORT-STUDIO-src-components-Modals--EntityFuzzyFinderModal--emptyResults {
+.EntityFuzzyFinderModal-emptyResults {
   opacity: 0.5;
 }
 
 
-.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--toolbar {
-  background-color: $tertiaryBackgroundColor;
-  color: $tertiaryColor;
+.Toolbar-toolbar {
+  background-color: $toolbar-backgroundColor;
+  color: $toolbar-color;
   display: flex;
   align-items: center;
   min-height: 2.5rem;
@@ -501,45 +501,45 @@
 }
 
 .toolbar-button.disabled {
-  color: $secondaryColor
+  color: $toolbar-button-disabled-color;
 }
 
 .toolbar-button:hover:not(.disabled) {
-  background: $primaryHoverBackgroundColor;
-  color: $primaryHoverColor;
+  background: $toolbar-button-hover-backgroundColor;
+  color: $toolbar-button-hover-color;
 }
 
-.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--run:before {
+.Toolbar-run:before {
   content: "\F04B";
   font-family: FontAwesome;
 }
 
-.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--save:before {
+.Toolbar-save:before {
   content: "\F0C7";
   font-family: FontAwesome;
 }
 
-.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--saveAll:before {
+.Toolbar-saveAll:before {
   content: "\F0C7";
   font-family: FontAwesome;
 }
 
-.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--spinner {
+.Toolbar-spinner {
   flex: 1 1;
-  color: #ffc40d;
+  color: $formPrimary-color;
   font-size: 1.5rem;
 }
 
-.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--spinner > i {
+.Toolbar-spinner > i {
 }
 
-.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--delete:before {
+.Toolbar-delete:before {
   content: "\F014";
   font-family: FontAwesome;
 }
 
-.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--logo {
-  background: linear-gradient(to left, $tertiaryBackgroundColor 0%, $tertiaryBackgroundColorTarget 100%);
+.Toolbar-logo {
+  background: linear-gradient(to left, $toolbar-backgroundColor 0%, $toolbar-target-backgroundColor 100%);
   background-size: auto 100%;
   background-repeat: no-repeat;
   padding-left: 0.2rem;
@@ -551,8 +551,8 @@
   height: 2.5rem;
 }
 
-.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--popup {
-  background-color: #424c57;
+.Toolbar-popup {
+  background-color: $toolbar-popup-backgroundColor;
   position: absolute;
   right: 0;
   padding: 0.5rem;
@@ -560,30 +560,30 @@
   z-index: 200
 }
 
-.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--popup > div  {
+.Toolbar-popup > div  {
   padding: 0.5rem;
 }
 
-.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--popup > div:hover {
-  background-color: $primaryHoverBackgroundColor;
+.Toolbar-popup > div:hover {
+  background-color: $toolbar-popup-hover-backgroundColor;
 }
 
-.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--runCaret {
+.Toolbar-runCaret {
   font-family: FontAwesome;
   padding: 0.5rem;
   font-size: 0.7rem;
 }
 
-.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--runCaret:hover {
-  color: $formPrimaryColor;
+.Toolbar-runCaret:hover {
+  color: $formPrimary-color;
 }
 
-.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--runCaret:after {
+.Toolbar-runCaret:after {
   content: "\F0D7   "
 }
 
-.JSREPORT-STUDIO-src-components-Toolbar--Toolbar--runPopup {
-  background-color: #424c57;
+.Toolbar-runPopup {
+  background-color: $toolbar-popup-backgroundColor;
   top: 2.4rem;
   position: absolute;
   padding: 0.5rem;
@@ -591,24 +591,24 @@
 }
 
 
-.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabPane {
-  background-color: $tabPaneBackgroundColor;
+.Tabs-tabPane {
+  background-color: $tab-pane-backgroundColor;
 }
 
-.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabTitles {
+.Tabs-tabTitles {
   display: flex;
   flex-wrap: wrap;
-  background-color: $tabTitlesBackgroundColor;
-  border-bottom: 0.2rem $primaryHoverBackgroundColor solid;
+  background-color: $tab-titles-backgroundColor;
+  border-bottom: 0.2rem $tab-titles-borderColor solid;
   padding-top: 0.5rem;
   min-height: 2.4rem;
 }
 
-.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabContainer {
+.Tabs-tabContainer {
   display: inline-block;
 }
 
-.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabTitle {
+.Tabs-tabTitle {
   position: relative;
   flex: 0 1;
   /*flexbox workaround some browsers (mostly Safari) needs to have some properties defined explicitly to handle auto sizing correctly*/
@@ -618,9 +618,9 @@
   min-height: 1.7rem;
   white-space: nowrap;
   display:flex;
-  background-color: $tabTitleBackgroundColor;
+  background-color: $tab-title-backgroundColor;
   padding: 0.3rem 0.3rem 0.3rem 0.9rem;
-  border-right: 1px $tabTitleBorderColor solid;
+  border-right: 1px $tab-title-borderColor solid;
   cursor: pointer;
   font-size: 0.91rem;
   -webkit-user-select: none;
@@ -629,21 +629,21 @@
           user-select: none;
 }
 
-.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabTitle.JSREPORT-STUDIO-src-components-Tabs--Tabs--active {
-  background: $primarySelectionBackgroundColor;
-  color: $primarySelectionColor;
+.Tabs-tabTitle.Tabs-active {
+  background: $tab-title-active-backgroundColor;
+  color: $tab-title-active-color;
 }
 
-.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabTitle:hover {
-  background: $primaryHoverBackgroundColor;
-  color: $primaryHoverColor;
+.Tabs-tabTitle:hover {
+  background: $tab-title-hover-backgroundColor;
+  color: $tab-title-hover-color;
 }
 
-.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabMainTitle {
+.Tabs-tabMainTitle {
   vertical-align: middle;
 }
 
-.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabComplementTitle {
+.Tabs-tabComplementTitle {
   display: inline-block;
   max-width: 70px;
   overflow: hidden;
@@ -653,40 +653,40 @@
   font-size: 0.8rem;
 }
 
-.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabClose {
+.Tabs-tabClose {
   display: inline-block;
   margin-left: 0.3rem;
 }
 
-.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabClose:after {
+.Tabs-tabClose:after {
   content: "\F00D";
-  color: $secondaryColor;
+  color: $tab-close-color;
   padding: 0.1rem;
   font-family: FontAwesome;
   font-size: 0.9rem;
 }
 
-.JSREPORT-STUDIO-src-components-Tabs--Tabs--tabClose:hover {
-  background-color: $secondaryHoverBackgroundColor;
+.Tabs-tabClose:hover {
+  background-color: $tab-close-hover-backgroundColor;
 }
 
-.JSREPORT-STUDIO-src-components-Tabs--Tabs--contextMenu {
-  background-color: $contextMenuBackgroundColor;
+.Tabs-contextMenu {
+  background-color: $contextMenu-backgroundColor;
   position: absolute;
   padding: 0.5rem;
   min-width: 9rem;
   z-index: 200;
 }
 
-.JSREPORT-STUDIO-src-components-Tabs--Tabs--contextMenuContainer {
+.Tabs-contextMenuContainer {
   position: absolute;
   bottom: 2px;
   left: 2px;
   z-index: 200;
 }
 
-.JSREPORT-STUDIO-src-components-Tabs--Tabs--contextButton {
-  color: $contextMenuButtonColor;
+.Tabs-contextButton {
+  color: $contextMenu-button-color;
   padding: 0.5rem;
   font-size: 0.8rem;
   cursor: pointer;
@@ -696,27 +696,27 @@
           user-select: none;
 }
 
-.JSREPORT-STUDIO-src-components-Tabs--Tabs--contextButton:hover {
-  background-color: $contextMenuButtonHoverBackgroundColor;
-  color: $contextMenuButtonHoverColor;
+.Tabs-contextButton:hover {
+  background-color: $contextMenu-button-hover-backgroundColor;
+  color: $contextMenu-button-hover-color;
 }
 
 
-.JSREPORT-STUDIO-src-containers-Modal--Modal--overlay {
+.Modal-overlay {
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: $modal-overlay-backgroundColor;
   z-index: 99999;
   opacity:1;
 }
 
-.JSREPORT-STUDIO-src-containers-Modal--Modal--content {
-  background-color: $secondaryBackgroundColor;
-  box-shadow: 1rem 1rem 1rem 0 rgba(0, 0, 0, 0.3);
-  color: $primaryColor;
+.Modal-content {
+  background-color: $modal-backgroundColor;
+  box-shadow: 1rem 1rem 1rem 0 $modal-shadowColor;
+  color: $modal-color;
   display: block;
   float: left;
   height: auto;
@@ -729,20 +729,20 @@
 }
 
 
-.JSREPORT-STUDIO-src-containers-Modal--Modal--close {
+.Modal-close {
   position: absolute;
   right: 1rem;
   top: 0.5rem;
 }
 
-.JSREPORT-STUDIO-src-containers-Modal--Modal--close:after {
-  color: $secondaryColor;
+.Modal-close:after {
+  color: $modal-close-color;
   font-family: FontAwesome;
   content: '\F00D'
 }
 
-.JSREPORT-STUDIO-src-containers-Modal--Modal--close:hover:after {
-  color: $primaryColor;
+.Modal-close:hover:after {
+  color: $modal-close-hover-color;
   cursor: pointer;
 }
 
@@ -761,28 +761,28 @@
 
 select {
   border: none;
-  background-color: $controlsBackgroundColor;
-  color: $controlsColor;
-  border-bottom: solid 0.2rem $controlsBorderColor;
+  background-color: $controls-backgroundColor;
+  color: $controls-color;
+  border-bottom: solid 0.2rem $controls-borderColor;
   transition: border 0.3s;
   padding: 0.5rem;
 }
 
 select:hover, select:focus, select:active {
-  border-bottom: solid 0.2rem $primarySelectionBackgroundColor;
+  border-bottom: solid 0.2rem $controls-hover-borderColor;
 }
 
 input {
   border: none;
-  background-color: $controlsBackgroundColor;
-  color: $controlsColor;
-  border-bottom: solid 0.2rem $controlsBorderColor;
+  background-color: $controls-backgroundColor;
+  color: $controls-color;
+  border-bottom: solid 0.2rem $controls-borderColor;
   transition: border 0.3s;
   padding: 0.3rem;
 }
 
 input:hover, input:focus, input:active {
-  border-bottom: solid 0.2rem $primarySelectionBackgroundColor;
+  border-bottom: solid 0.2rem $controls-hover-borderColor;
 }
 
 input[type=text] {
@@ -805,24 +805,24 @@ input[type=checkbox] {
   margin-left: 1rem;
   flex: 0.1 1;
   border: none;
-  color: $primarySelectionColor;
+  color: $button-color;
   padding: 0.5rem;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  box-shadow: 0 0 1px $button-shadowColor;
 }
 
 .button:hover, .button:focus, button:active {
-  box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 0.1rem $button-active-shadowColor;
 }
 
 .button.confirmation {
-  background-color: #008CBA;
+  background-color: $button-confirmation-backgroundColor;
 }
 
 .button.danger {
-  background-color: #FCBE59;
+  background-color: $button-danger-backgroundColor;
 }
 
 :focus {
@@ -838,27 +838,27 @@ input[type=checkbox] {
 }
 
 .resizer-line {
-  background: #000;
+  background: $resizer-backgroundColor;
   opacity: .2;
   /*z-index: 1000;*/
   box-sizing: border-box;
   background-clip: padding-box;
   width: 11px;
-  border-left: 5px solid rgba(255, 255, 255, 0);
-  border-right: 5px solid rgba(255, 255, 255, 0);
+  border-left: 5px solid $resizer-borderColor;
+  border-right: 5px solid $resizer-borderColor;
   cursor: col-resize;
 }
 
 .resizer-horizontal {
-  background: #000;
+  background: $resizer-backgroundColor;
   opacity: .2;
   /*z-index: 1000;*/
   box-sizing: border-box;
   background-clip: padding-box;
   height: 15px;
   margin: -5px 0;
-  border-top: 5px solid rgba(255, 255, 255, 0);
-  border-bottom: 5px solid rgba(255, 255, 255, 0);
+  border-top: 5px solid $resizer-borderColor;
+  border-bottom: 5px solid $resizer-borderColor;
   cursor: row-resize;
   width: 100%;
 }
@@ -866,14 +866,14 @@ input[type=checkbox] {
 
 .resizer-horizontal:hover {
   transition: all 2s ease;
-  border-top: 5px solid rgba(0, 0, 0, 0.5);
-  border-bottom: 5px solid rgba(0, 0, 0, 0.5);
+  border-top: 5px solid $resizer-hover-borderColor;
+  border-bottom: 5px solid $resizer-hover-borderColor;
 }
 
 .resizer-line:hover {
   transition: all 2s ease;
-  border-left: 5px solid rgba(0, 0, 0, 0.5);
-  border-right: 5px solid rgba(0, 0, 0, 0.5);
+  border-left: 5px solid $resizer-hover-borderColor;
+  border-right: 5px solid $resizer-hover-borderColor;
 }
 
 .resizer-line:hover {
@@ -890,7 +890,7 @@ input[type=checkbox] {
 .docker {
   opacity:0;
   font-size: 2rem;
-  color: $secondaryColor;
+  color: $resizer-icons-color;
   position: absolute;
   transition:0s 1s;
   cursor: pointer;
@@ -901,21 +901,21 @@ input[type=checkbox] {
 }
 
 .docker:hover {
-  color: $primarySelectionBackgroundColor;
+  color: $resizer-icons-hover-color;
 }
 
 .resizer.collapsed {
   min-width: 2.5rem;
-  background-color: $secondaryColor;
+  background-color: $resizer-collapsed-backgroundColor;
   cursor: pointer;
 }
 
 .resizer.collapsed:hover {
-  background-color: $primaryHoverBackgroundColor;
+  background-color: $resizer-collapsed-hover-backgroundColor;
 }
 
 .pane-holder {
-  color: $primarySelectionColor;
+  color: $resizer-paneHolder-color;
   flex: 0 1;
   padding-top: 1rem;
   -webkit-writing-mode: vertical-lr;
@@ -934,8 +934,8 @@ html, body {
   height: 100%;
   margin: 0;
   font-size: 0.9em;
-  background-color: $primaryBackgroundColor;
-  color: $primaryColor;
+  background-color: $primary-backgroundColor;
+  color: $primary-color;
 }
 
 ::-webkit-scrollbar {
@@ -943,19 +943,19 @@ html, body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: $scrollBarThumbBackgroundColor;
+  background: $scrollBar-thumb-backgroundColor;
 }
 
 ::-webkit-scrollbar-thumb:active {
-  background-color: $scrollBarThumbHoverBackgroundColor;
+  background-color: $scrollBar-thumb-hover-backgroundColor;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: $scrollBarThumbHoverBackgroundColor;
+  background: $scrollBar-thumb-hover-backgroundColor;
 }
 
 ::-webkit-scrollbar-track {
-  background: $scrollBarTrackBackgroundColor;
+  background: $scrollBar-track-backgroundColor;
 }
 
 .container {
@@ -977,7 +977,6 @@ html, body {
 
 .block-item {
   flex: 1 1;
-
 }
 
 .custom-editor {
@@ -987,13 +986,27 @@ html, body {
 h1,h2,h3,h4 {
   text-transform: lowercase;
   font-weight: 150;
-  color: $primarySelectionBackgroundColor
+  color: $headings-color;
 }
 
 .table {
   border-collapse: collapse;
   width: 100%;
 }
+
+.table td,
+.table th {
+  color: $table-color;
+}
+
+.table th {
+  background-color: $table-heading-backgroundColor;
+}
+
+.table td {
+  background-color: $table-row-backgroundColor;
+}
+
 .table > thead {
   width: 100%;
 }
@@ -1006,10 +1019,10 @@ h1,h2,h3,h4 {
    font-weight: bold;
    text-transform: uppercase;
    text-align: left;
-   padding: 0.2rem 1rem 0.5rem 1rem;
+   padding: 0.4rem 1rem 0.5rem 1rem;
    vertical-align: bottom;
-   border-bottom: 0.1rem solid #ddd;
-   border-right: 0.1rem solid #ddd;
+   border-bottom: 0.1rem solid $table-heading-borderColor;
+   border-right: 0.1rem solid $table-heading-borderColor;
    font-size: 0.8rem;
  }
 
@@ -1017,18 +1030,17 @@ h1,h2,h3,h4 {
   vertical-align: middle;
   cursor: pointer;
   width: 100%;
-  border-bottom: 0.2rem solid $primarySelectionColor;
-  cursor: pointer;
+  border-bottom: 0.2rem solid $table-row-borderColor;
 }
 
 .table > tbody > tr.active {
-  background-color: $primaryHoverBackgroundColor;
-  color: $primaryHoverColor;
+  background-color: $table-row-active-backgroundColor;
+  color: $table-row-active-color;
 }
 
 .table > tbody > tr:hover {
-  background-color: $secondaryHoverBackgroundColor;
-  color: $primaryHoverColor;
+  background-color: $table-row-hover-backgroundColor;
+  color: $table-row-hover-color;
 }
 
 .table > tbody > tr > td > a:link {
@@ -1053,24 +1065,24 @@ h1,h2,h3,h4 {
   cursor: pointer;
 }
 
-.table > tbody> tr:not(:hover):not(.active) > td.selection {
-  background-color: darken($secondaryBackgroundColor, 3%);
-  color: $primaryColor;
+.table > tbody > tr:not(:hover):not(.active) > td.selection {
+  background-color: $table-selection-backgroundColor;
+  color: $table-selection-color;
 }
 
 
-.JSREPORT-STUDIO-src-components-common-Popover--Popover--popoverDisplayLayer {
+.Popover-popoverDisplayLayer {
   display: none;
   position: fixed;
   z-index: 2;
 }
 
-.JSREPORT-STUDIO-src-components-common-Popover--Popover--popoverContainer {
+.Popover-popoverContainer {
   position: absolute;
   z-index: 2;
 }
 
-.JSREPORT-STUDIO-src-components-common-Popover--Popover--popoverCloseLayer {
+.Popover-popoverCloseLayer {
   bottom: 0;
   left: 0;
   position: fixed;
@@ -1078,244 +1090,268 @@ h1,h2,h3,h4 {
   top: 0;
 }
 
-.JSREPORT-STUDIO-src-components-common-Popover--Popover--popoverContent {
+.Popover-popoverContent {
   position: relative;
   z-index: 2;
 }
 
-.JSREPORT-STUDIO-src-components-common-Popover--Popover--popoverContentWrapper {
-  background: #fff;
-  border: 1px solid rgba(0,0,0,0.2);
-  box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+.Popover-popoverContentWrapper {
+  background: $popover-backgroundColor;
+  border: 1px solid $popover-borderColor;
+  box-shadow: 0 3px 12px $popover-shadowColor;
   border-radius: 4px;
   padding: 0.3rem;
 }
 
-.JSREPORT-STUDIO-src-components-common-Popover--Popover--popoverTriangle {
+.Popover-popoverTriangle {
   border: 7px solid transparent;
-  border-bottom-color: #fff;
+  border-bottom-color: $popover-backgroundColor;
   left: 10px;
   position: absolute;
   top: -14px;
 }
 
-.JSREPORT-STUDIO-src-components-common-Popover--Popover--popoverTriangleShadow {
+.Popover-popoverTriangleShadow {
   border: 8px solid transparent;
-  border-bottom-color: rgba(0,0,0,0.15);
+  border-bottom-color: $popover-shadowColor;
   left: 9px;
   position: absolute;
   top: -16px;
 }
 
 
-.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--multiSelect {
-  background-color: $controlsBackgroundColor;
+.MultiSelect-multiSelect {
+  background-color: $controls-backgroundColor;
   border: none;
   letter-spacing: normal;
   word-spacing: normal;
-  border-bottom: .2rem solid $controlsBorderColor;
-  color: $controlsColor;
+  border-bottom: .2rem solid $controls-borderColor;
+  color: $controls-color;
   transition: border .3s;
   padding: .5rem;
   font: 400 11px system-ui;
   overflow-y: scroll;
 }
 
-.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--multiSelect:active, .JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--multiSelect:focus, .JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--multiSelect:hover {
-  border-bottom: .2rem solid $primarySelectionBackgroundColor;
+.MultiSelect-multiSelect:active, .MultiSelect-multiSelect:focus, .MultiSelect-multiSelect:hover {
+  border-bottom: .2rem solid $controls-hover-borderColor;
 }
 
-.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--allCheckContainer {
+.MultiSelect-allCheckContainer {
   margin-bottom: 0.2rem;
 }
 
-.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--allCheck {
+.MultiSelect-allCheck {
   display: inline-block;
   cursor: pointer;
 }
 
-.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--allCheck * {
+.MultiSelect-allCheck * {
   cursor: inherit;
 }
 
-.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--list {
+.MultiSelect-list {
   cursor: pointer;
   margin: 0px;
   padding: 0px;
   list-style: none;
 }
 
-.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--list * {
+.MultiSelect-list * {
   cursor: inherit;
 }
 
-.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--listOption {
+.MultiSelect-listOption {
   white-space: pre;
   padding: 0px 2px 1px;
   min-height: 1.2em;
 }
 
-.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--listOptionSelected {
+.MultiSelect-listOptionSelected {
   background-color: rgb(212, 212, 212);
 }
 
-.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--list:active .JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--listOptionSelected, .JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--list:focus .JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--listOptionSelected {
+.MultiSelect-list:active .MultiSelect-listOptionSelected, .MultiSelect-list:focus .MultiSelect-listOptionSelected {
   background-color: rgb(0, 105, 217);
   color: #fff;
 }
 
-.JSREPORT-STUDIO-src-components-common-MultiSelect--MultiSelect--listOptionLabel {
+.MultiSelect-listOptionLabel {
   display: block;
 }
 
 
-.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--heading {
+.EntityRefSelect-heading {
   margin-bottom: 0.2rem;
 }
 
-.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--select {
+.EntityRefSelect-select {
   overflow-y: auto;
   overflow-x: auto;
-  color: $controlsColor;
-  background-color: $controlsBackgroundColor
+  color: $controls-color;
+  background-color: $controls-backgroundColor
 }
 
-.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--select > ul {
+.EntityRefSelect-select > ul {
   margin: 0rem;
   padding: 0rem;
   list-style: none;
 }
 
-.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--select > ul > li {
+.EntityRefSelect-select > ul > li {
   cursor: pointer;
   padding: 0.3rem;
-  border-bottom: 0.1rem solid $controlsBorderColor;
+  border-bottom: 0.1rem solid $controls-borderColor;
 }
 
-.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--select > ul > li:hover {
-  background-color: $secondaryHoverBackgroundColor;
-  color: $primaryHoverColor;
+.EntityRefSelect-select > ul > li:hover {
+  background-color: $controls-list-hover-backgroundColor;
+  color: $controls-list-hover-color;
 }
 
-.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--selectInput {
+.EntityRefSelect-selectInput {
   cursor: pointer;
   font-size: 0.9rem;
-  background-color: $controlsBackgroundColor;
-  border-bottom: solid 0.2rem $controlsBorderColor;
+  background-color: $controls-backgroundColor;
+  border-bottom: solid 0.2rem $controls-borderColor;
   transition: border 0.3s;
   padding: 0.5rem;
   width: 100%;
   display: flex;
-  color: $controlsColor;
+  color: $controls-color;
   margin-top: 2px;
 }
 
-.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--selectInput:hover, .JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--selectInput:focus, .JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--selectInput:active {
-  border-bottom: solid 0.2rem $primarySelectionBackgroundColor;
+.EntityRefSelect-selectInput:hover, .EntityRefSelect-selectInput:focus, .EntityRefSelect-selectInput:active {
+  border-bottom: solid 0.2rem $controls-hover-borderColor;
 }
 
-.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--selectInput > i {
+.EntityRefSelect-selectInput > i {
   margin-top: 0.1rem;
 }
 
-.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--selectInput > i:hover {
-  color: $primarySelectionBackgroundColor;
+.EntityRefSelect-selectInput > i:hover {
+  color: $controls-hover-borderColor;
 }
 
-.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--selectInput > span {
+.EntityRefSelect-selectInput > span {
   margin-left: 0.5rem;
   white-space: nowrap;
   overflow-x: hidden;
 }
 
-.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--selectInput > span.JSREPORT-STUDIO-src-components-common-EntityRefSelect--EntityRefSelect--link:hover {
+.EntityRefSelect-selectInput > span.EntityRefSelect-link:hover {
   margin-left: 0.5rem;
-  color: $primarySelectionBackgroundColor;
+  color: $controls-hover-borderColor;
   text-decoration: underline;
 }
 
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeInputSeach--container {
+.EntityTreeInputSeach-container {
   display: inline-block;
   margin-left: 0.2rem;
   margin-right: 0.2rem;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeInputSeach--search {
+.EntityTreeInputSeach-search {
   display: inline-block;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeInputSeach--search > input {
+.EntityTreeInputSeach-search > input {
   border: none;
-  border-bottom: solid 0.2rem $secondaryColor;
+  border-bottom: solid 0.2rem $controls-borderColor;
   transition: border 0.3s;
   padding: 0.2rem;
   width: 10rem;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeInputSeach--search > input:focus {
-  border-bottom: solid 0.2rem $primarySelectionBackgroundColor;
+.EntityTreeInputSeach-search > input:focus {
+  border-bottom: solid 0.2rem $controls-hover-borderColor;
 }
 
-.JSREPORT-STUDIO-src-components-EntityTree--EntityTreeInputSeach--search:before {
+.EntityTreeInputSeach-search:before {
   content: "\F002";
   margin-right: 0.3rem;
-  color: $secondaryColor;
+  color: $entityTree-icon-color;
   font-family: FontAwesome;
 }
 
 
-.JSREPORT-STUDIO-src-components-Modals--ThemeModal--item {
+.ThemeModal-container {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 400px;
+}
+
+.ThemeModal-item {
   display: inline-block;
   width: 80px;
   padding: 8px;
 }
 
-.JSREPORT-STUDIO-src-components-Modals--ThemeModal--itemLabel {
+.ThemeModal-itemLabel {
   display: block;
   margin-bottom: 6px;
 }
 
-.JSREPORT-STUDIO-src-components-Modals--ThemeModal--itemPreview {
-  border: 1px solid $tertiaryBackgroundColor;
+.ThemeModal-itemPreview {
+  border: 1px solid $alternative-backgroundColor;
   height: 65px;
 }
 
+.ThemeModal-miniItem {
+  display: inline-block;
+  padding: 6px 8px;
+}
 
-.JSREPORT-STUDIO-src-components-Modals--ApiModal--label {
-  background-color: $primaryHoverBackgroundColor;
-  color: $primaryHoverColor;
+.ThemeModal-miniItemLabel {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.ThemeModal-miniItemPreview {
+  display: inline-block;
+  border: 1px solid $alternative-backgroundColor;
+  margin-left: 2px;
+  width: 25px;
+  height: 15px;
+}
+
+
+.ApiModal-label {
+  background-color: $primary-hover-backgroundColor;
+  color: $primary-hover-color;
   padding: 0.2rem;
   font-weight: lighter;
   font-size: 0.8rem;
   margin-right: 0.5rem;
 }
 
-.JSREPORT-STUDIO-src-components-Modals--ApiModal--label.JSREPORT-STUDIO-src-components-Modals--ApiModal--minor {
-  background-color: $secondaryColor
+.ApiModal-label.ApiModal-minor {
+  background-color: $secondary-color;
 }
 
-.JSREPORT-STUDIO-src-components-Modals--ApiModal--url {
-  color: $secondaryHoverBackgroundColor
+.ApiModal-url {
+  color: $secondary-hover-backgroundColor;
 }
 
-.JSREPORT-STUDIO-src-components-Modals--ApiModal--row {
+.ApiModal-row {
   margin: 0.7rem 0 0.7rem 0;
 }
 
-.JSREPORT-STUDIO-src-components-Modals--ApiModal--string { color: green; }
-.JSREPORT-STUDIO-src-components-Modals--ApiModal--number { color: darkorange; }
-.JSREPORT-STUDIO-src-components-Modals--ApiModal--boolean { color: blue; }
-.JSREPORT-STUDIO-src-components-Modals--ApiModal--null { color: magenta; }
-.JSREPORT-STUDIO-src-components-Modals--ApiModal--key { color: red; }
+.ApiModal-string { color: green; }
+.ApiModal-number { color: darkorange; }
+.ApiModal-boolean { color: blue; }
+.ApiModal-null { color: magenta; }
+.ApiModal-key { color: red; }
 
-.JSREPORT-STUDIO-src-components-Modals--ApiModal--overridesBox {
+.ApiModal-overridesBox {
   height: 17rem;
   overflow: auto;
   width: 100%;
 }
 
-.JSREPORT-STUDIO-src-components-Modals--ApiModal--link {
+.ApiModal-link {
   text-decoration: none;
 }
 
