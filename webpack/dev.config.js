@@ -238,7 +238,40 @@ module.exports = (extensions, extensionsInNormalMode) => {
                 modules: true,
                 importLoaders: 1,
                 sourceMap: true,
-                localIdentName: 'JSREPORT-STUDIO-[path]-[name]--[local]'
+                getLocalIdent: (context, localIdentName, localName, options) => {
+                  const modulePath = context.resource
+                  let devExtension
+
+                  for (let key in extensions) {
+                    const valid = (
+                      modulePath.includes(extensions[key].directory)
+                    ) && (
+                      extensionsInNormalMode.find((e) => {
+                        return e.directory === extensions[key].directory
+                      }) == null
+                    ) && (
+                      modulePath.includes(extensions[key].directory) && modulePath.replace(extensions[key].directory, '').includes('node_modules')
+                    )
+
+                    if (valid) {
+                      devExtension = extensions.find((e) => {
+                        return (
+                          e.directory.includes('node_modules') &&
+                          modulePath.includes(e.directory)
+                        )
+                      }).name
+                      break
+                    }
+                  }
+
+                  const name = path.basename(context.resource, path.extname(context.resource))
+
+                  if (devExtension != null) {
+                    return `${devExtension.toUpperCase()}-${name}-${localName}`
+                  }
+
+                  return `${name}-${localName}`
+                }
               }
             },
             {

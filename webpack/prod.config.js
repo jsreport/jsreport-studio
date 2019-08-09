@@ -135,7 +135,7 @@ module.exports = {
               modules: true,
               importLoaders: 1,
               sourceMap: true,
-              localIdentName: 'JSREPORT-STUDIO-[path]-[name]--[local]'
+              localIdentName: '[name]-[local]'
             }
           },
           {
