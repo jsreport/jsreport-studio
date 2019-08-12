@@ -1,3 +1,5 @@
+const themeVarsDefinition = require('./lib/themeVarsDefinition')
+
 module.exports = {
   name: 'studio',
   main: 'lib/studio.js',
@@ -12,8 +14,8 @@ module.exports = {
             properties: {
               name: {
                 type: 'string',
-                enum: ['light', 'dark'],
-                description: 'specifies the theme name that is going to be used in studio',
+                enum: ['light'],
+                description: 'specifies the default theme name that is going to be used in studio',
                 default: 'light'
               },
               logo: {
@@ -47,7 +49,8 @@ module.exports = {
               },
               variables: {
                 type: 'object',
-                description: 'specifies the value of some variables to customize the studio UI theme'
+                description: 'specifies the value of theme variables to customize the studio UI',
+                properties: getThemeVariablesSchema(themeVarsDefinition)
               },
               customCss: {
                 type: 'object',
@@ -102,4 +105,18 @@ module.exports = {
     }
   },
   dependencies: ['express']
+}
+
+function getThemeVariablesSchema (themeVarsDefinition) {
+  return themeVarsDefinition.reduce((acu, varDef) => {
+    acu[varDef.name] = {
+      type: 'string'
+    }
+
+    if (varDef.extends != null) {
+      acu[varDef.name].description = `If not specified inherits value from variable "${varDef.extends}"`
+    }
+
+    return acu
+  }, {})
 }
