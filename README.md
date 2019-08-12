@@ -4,6 +4,8 @@
 
 ![studio](http://jsreport.net/img/jsreport-studio.gif)
 
+See http://jsreport.net/learn/studio
+
 ## Studio development
 
 ```sh
@@ -14,5 +16,3 @@ npm start
 
 ## Studio extension development
 The documentation can be found [here](https://jsreport.net/learn/extending-studio).
-
-
