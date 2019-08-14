@@ -275,7 +275,9 @@ export default class SplitPane extends Component {
           this.props.onDocking && this.props.onDocking()
         }
 
-        this.setState(stateToUpdate)
+        this.setState(stateToUpdate, () => {
+          this.props.onCollapseChange && this.props.onCollapseChange()
+        })
       } else {
         if (ref1) {
           this.lastSize = ref1.state.size
@@ -318,6 +320,8 @@ export default class SplitPane extends Component {
             const nWindow = this.openWindow(windowOpts)
 
             this.props.onUndocked && this.props.onUndocked(windowOpts.id, nWindow)
+
+            this.props.onCollapseChange && this.props.onCollapseChange()
           })
         } else {
           if (ref1) {
@@ -332,7 +336,9 @@ export default class SplitPane extends Component {
             })
           }
 
-          this.setState(stateToUpdate)
+          this.setState(stateToUpdate, () => {
+            this.props.onCollapseChange && this.props.onCollapseChange()
+          })
         }
       }
 

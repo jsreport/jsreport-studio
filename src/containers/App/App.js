@@ -80,6 +80,7 @@ class App extends Component {
     this.handlePreviewDocking = this.handlePreviewDocking.bind(this)
     this.handlePreviewUndocking = this.handlePreviewUndocking.bind(this)
     this.handlePreviewUndocked = this.handlePreviewUndocked.bind(this)
+    this.handlePreviewCollapseChange = this.handlePreviewCollapseChange.bind(this)
     this.isPreviewUndockeable = this.isPreviewUndockeable.bind(this)
   }
 
@@ -256,6 +257,10 @@ class App extends Component {
     return true
   }
 
+  handlePreviewCollapseChange () {
+    triggerSplitResize()
+  }
+
   handlePreviewDocking () {
     const previews = this.refs.previewPane.windows
 
@@ -426,6 +431,7 @@ class App extends Component {
                     undockeable={this.isPreviewUndockeable}
                     onChange={() => this.handleSplitChanged()}
                     onCollapsing={this.handlePreviewCollapsing}
+                    onCollapseChange={this.handlePreviewCollapseChange}
                     onDocking={this.handlePreviewDocking}
                     onUndocking={this.handlePreviewUndocking}
                     onUndocked={this.handlePreviewUndocked}
