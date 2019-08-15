@@ -183,9 +183,10 @@ class App extends Component {
   handleSplitChanged () {
     triggerSplitResize()
 
-    if (this.refs.preview) {
-      this.refs.preview.resizeStarted()
-    }
+    Object.keys(Preview.instances).forEach((instanceId) => {
+      const previewInstance = Preview.instances[instanceId]
+      previewInstance.resizeStarted()
+    })
   }
 
   openStartup () {
@@ -221,9 +222,10 @@ class App extends Component {
   }
 
   handleSplitDragFinished () {
-    if (this.refs.preview) {
-      this.refs.preview.resizeEnded()
-    }
+    Object.keys(Preview.instances).forEach((instanceId) => {
+      const previewInstance = Preview.instances[instanceId]
+      previewInstance.resizeEnded()
+    })
   }
 
   isPreviewUndockeable () {
@@ -439,7 +441,7 @@ class App extends Component {
                     resizerClassName='resizer'>
                     <EditorTabs
                       activeTabKey={activeTabKey} onUpdate={(v) => groupedUpdate(v)} tabs={tabsWithEntities} />
-                    <Preview ref='preview' onLoad={stop} />
+                    <Preview main onLoad={stop} />
                   </SplitPane>
                 </div>
               </SplitPane>

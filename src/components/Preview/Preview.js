@@ -1,49 +1,82 @@
 import React, { Component } from 'react'
+import shortid from 'shortid'
 import { registerPreviewFrameChangeHandler } from '../../lib/configuration.js'
 import styles from './Preview.scss'
 
 export default class Preview extends Component {
+  static instances = {}
+
   static propTypes = {
     onLoad: React.PropTypes.func.isRequired
   }
 
-  constructor () {
-    super()
-    this.state = { src: null }
+  constructor (props) {
+    super(props)
+    this.state = { src: this.props.initialSrc }
   }
 
   componentDidMount () {
-    registerPreviewFrameChangeHandler((src) => this.setState({ src: src }))
+    this.instanceId = shortid.generate()
+    Preview.instances[this.instanceId] = this
+
+    if (this.props.main) {
+      registerPreviewFrameChangeHandler((src) => this.setState({ src: src }))
+    }
+  }
+
+  componentWillUnmount () {
+    delete Preview.instances[this.instanceId]
+  }
+
+  changeSrc (newSrc) {
+    this.setState({
+      src: newSrc
+    })
   }
 
   resizeStarted () {
-    document.getElementById('overlay').style.display = 'block'
-    document.getElementById('preview').style.display = 'none'
+    if (this.refs.overlay) {
+      this.refs.overlay.style.display = 'block'
+    }
+
+    if (this.refs.preview) {
+      this.refs.preview.style.display = 'none'
+    }
   }
 
   resizeEnded () {
-    document.getElementById('overlay').style.display = 'none'
-    document.getElementById('preview').style.display = 'block'
+    if (this.refs.overlay) {
+      this.refs.overlay.style.display = 'none'
+    }
+
+    if (this.refs.preview) {
+      this.refs.preview.style.display = 'block'
+    }
   }
 
   render () {
     const { src } = this.state
+    let mainProps = {}
+
+    if (this.props.main) {
+      mainProps.id = 'preview'
+      mainProps.name = 'previewFrame'
+    }
 
     return (
       <div className={`block ${styles.container}`}>
-        <div id='overlay' style={{ display: 'none' }} />
+        <div ref='overlay' style={{ display: 'none' }} />
         <iframe
-          id='preview'
+          ref='preview'
           frameBorder='0'
           onLoad={this.props.onLoad}
-          name='previewFrame'
           allowTransparency='true'
           allowFullScreen='true'
-          ref='frame'
           width='100%'
           height='100%'
           src={src}
           className='block-item'
+          {...mainProps}
         />
       </div>
     )

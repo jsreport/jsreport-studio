@@ -14,6 +14,7 @@ import EntityRefSelect from './components/common/EntityRefSelect/index.js'
 import TextEditor from './components/Editor/TextEditor.js'
 import EntityTree from './components/EntityTree/EntityTree.js'
 import EntityTreeButton from './components/EntityTree/EntityTreeButton.js'
+import Preview from './components/Preview/Preview.js'
 import NewEntityModal from './components/Modals/NewEntityModal.js'
 import * as editor from './redux/editor'
 import * as entities from './redux/entities'
@@ -661,6 +662,10 @@ class Studio {
    */
   get EntityRefSelect () {
     return EntityRefSelect
+  }
+
+  get Preview () {
+    return Preview
   }
 
   constructor (store) {

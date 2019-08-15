@@ -42,8 +42,8 @@ reducer.handleActions([EntityActionTypes.REMOVE, ActionTypes.CLOSE_TAB], (state,
     state.activeTabKey === action._id ||
     state.lastActiveTemplateKey === action._id ||
     (
-    action.children &&
-    action.children.some((childId) => state.activeTabKey === childId)
+      action.children &&
+      action.children.some((childId) => state.activeTabKey === childId)
     )
   ) {
     newActiveTabKey = newTabs.length ? newTabs[newTabs.length - 1].key : null
