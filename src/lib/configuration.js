@@ -13,6 +13,7 @@ export const entityTreeOrder = []
 export const entityTreeWrapperComponents = []
 export const entityTreeIconResolvers = []
 export const entityTreeFilterItemResolvers = []
+export const entityEditorComponentKeyResolvers = []
 export const entityTreeContextMenuItemsResolvers = []
 export const entityTreeToolbarComponents = {
   single: [],

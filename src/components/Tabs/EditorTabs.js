@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Tab from './Tab'
 import TabPane from './TabPane.js'
-import { editorComponents } from '../../lib/configuration.js'
+import { editorComponents, entityEditorComponentKeyResolvers } from '../../lib/configuration.js'
 
 export default class EditorTabs extends Component {
   static propTypes = {
@@ -42,14 +42,47 @@ export default class EditorTabs extends Component {
   }
 
   renderEntityTab (t, onUpdate) {
-    return <Tab key={t.tab.key} >
-      {React.createElement(editorComponents[ t.tab.editorComponentKey || t.entity.__entitySet ], {
-        entity: t.entity,
-        tab: t.tab,
-        ref: t.tab.key,
-        onUpdate: (o) => onUpdate(o)
-      })}
-    </Tab>
+    let editorComponentResult
+
+    if (t.tab.editorComponentKey != null) {
+      editorComponentResult = { key: t.tab.editorComponentKey }
+    } else {
+      entityEditorComponentKeyResolvers.some((componentKeyResolverFn) => {
+        const componentKey = componentKeyResolverFn(t.entity)
+        let found = false
+
+        if (componentKey) {
+          editorComponentResult = componentKey
+          found = true
+        }
+
+        return found
+      })
+
+      if (editorComponentResult == null) {
+        editorComponentResult = { key: t.entity.__entitySet }
+      }
+    }
+
+    let entity = t.entity
+
+    if (editorComponentResult.hasOwnProperty('entity')) {
+      entity = editorComponentResult.entity
+    }
+
+    const editorProps = {
+      ...editorComponentResult.props,
+      entity,
+      tab: t.tab,
+      ref: t.tab.key,
+      onUpdate: (o) => onUpdate(o)
+    }
+
+    return (
+      <Tab key={t.tab.key} >
+        {React.createElement(editorComponents[editorComponentResult.key], editorProps)}
+      </Tab>
+    )
   }
 
   render () {

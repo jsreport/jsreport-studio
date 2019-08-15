@@ -197,6 +197,15 @@ class Studio {
   }
 
   /**
+   * Array of functions used to resolve entity editor component editor, function accepts entity and returns string represent the component editor key
+   *
+   * @returns {Function[]}
+   */
+  get entityEditorComponentKeyResolvers () {
+    return configuration.entityEditorComponentKeyResolvers
+  }
+
+  /**
    * Sets the function returning the browser url path
    * (defaultCalculatedPath, currentEntity) => String
    * @param {Function} fn
