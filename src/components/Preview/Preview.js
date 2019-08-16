@@ -12,7 +12,11 @@ export default class Preview extends Component {
 
   constructor (props) {
     super(props)
-    this.state = { src: this.props.initialSrc }
+
+    this.state = {
+      nodeKey: shortid.generate(),
+      src: this.props.initialSrc
+    }
   }
 
   componentDidMount () {
@@ -31,6 +35,13 @@ export default class Preview extends Component {
   changeSrc (newSrc) {
     this.setState({
       src: newSrc
+    })
+  }
+
+  clear () {
+    this.setState({
+      nodeKey: shortid.generate(),
+      src: null
     })
   }
 
@@ -55,7 +66,7 @@ export default class Preview extends Component {
   }
 
   render () {
-    const { src } = this.state
+    const { nodeKey, src } = this.state
     let mainProps = {}
 
     if (this.props.main) {
@@ -67,6 +78,7 @@ export default class Preview extends Component {
       <div className={`block ${styles.container}`}>
         <div ref='overlay' style={{ display: 'none' }} />
         <iframe
+          key={nodeKey}
           ref='preview'
           frameBorder='0'
           onLoad={this.props.onLoad}
@@ -74,7 +86,7 @@ export default class Preview extends Component {
           allowFullScreen='true'
           width='100%'
           height='100%'
-          src={src}
+          src={src == null ? 'about:blank' : src}
           className='block-item'
           {...mainProps}
         />

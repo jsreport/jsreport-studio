@@ -81,6 +81,7 @@ class App extends Component {
     this.handlePreviewUndocking = this.handlePreviewUndocking.bind(this)
     this.handlePreviewUndocked = this.handlePreviewUndocked.bind(this)
     this.handlePreviewCollapseChange = this.handlePreviewCollapseChange.bind(this)
+    this.handlePreviewCancel = this.handlePreviewCancel.bind(this)
     this.isPreviewUndockeable = this.isPreviewUndockeable.bind(this)
   }
 
@@ -298,6 +299,12 @@ class App extends Component {
     this.handleRun(undefined, this.props.undockMode)
   }
 
+  handlePreviewCancel () {
+    if (this.refs.preview) {
+      this.refs.preview.clear()
+    }
+  }
+
   renderEntityTree () {
     const containerStyles = {
       display: 'flex',
@@ -431,17 +438,19 @@ class App extends Component {
                     collapsedText='preview'
                     collapsable='second'
                     undockeable={this.isPreviewUndockeable}
+                    cancellable
                     onChange={() => this.handleSplitChanged()}
                     onCollapsing={this.handlePreviewCollapsing}
                     onCollapseChange={this.handlePreviewCollapseChange}
                     onDocking={this.handlePreviewDocking}
                     onUndocking={this.handlePreviewUndocking}
                     onUndocked={this.handlePreviewUndocked}
+                    onCancel={this.handlePreviewCancel}
                     onDragFinished={() => this.handleSplitDragFinished()}
                     resizerClassName='resizer'>
                     <EditorTabs
                       activeTabKey={activeTabKey} onUpdate={(v) => groupedUpdate(v)} tabs={tabsWithEntities} />
-                    <Preview main onLoad={stop} />
+                    <Preview ref='preview' main onLoad={stop} />
                   </SplitPane>
                 </div>
               </SplitPane>

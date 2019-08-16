@@ -14,9 +14,11 @@ const Resizer = React.createClass({
       className,
       collapsed,
       collapse,
+      cancel,
       collapsedText,
       collapsable,
       undocked,
+      cancellable,
       undockeable
     } = this.props
     const classes = ['Resizer', split, className]
@@ -51,6 +53,16 @@ const Resizer = React.createClass({
             onClick={(e) => collapse(true, undockeable, true)}
           >
             <i className={'fa fa-window-restore'} />
+          </div>
+        )}
+        {!collapsed && cancellable && (
+          <div
+            title='Clear pane'
+            className={'docker ' + (collapsable === 'first' ? 'left' : '')}
+            style={{ top: !collapsed && undockeable ? '70px' : '35px' }}
+            onClick={(e) => cancel()}
+          >
+            <i className={'fa fa-times'} />
           </div>
         )}
       </div>)

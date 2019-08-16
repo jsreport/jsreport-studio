@@ -17,6 +17,7 @@ export default class SplitPane extends Component {
     }
 
     this.collapse = this.collapse.bind(this)
+    this.cancel = this.cancel.bind(this)
     this.onMouseDown = this.onMouseDown.bind(this)
     this.onMouseMove = this.onMouseMove.bind(this)
     this.onMouseUp = this.onMouseUp.bind(this)
@@ -348,6 +349,12 @@ export default class SplitPane extends Component {
     })
   }
 
+  cancel () {
+    if (this.props.onCancel) {
+      this.props.onCancel()
+    }
+  }
+
   renderPane (type, undockeable, pane) {
     const { collapsable } = this.props
     const { undocked } = this.state
@@ -374,7 +381,8 @@ export default class SplitPane extends Component {
       resizerClassName,
       collapsedText,
       collapsable,
-      undockeable
+      undockeable,
+      cancellable
     } = this.props
     const { collapsed, undocked } = this.state
     let disabledClass = allowResize ? '' : 'disabled'
@@ -404,6 +412,7 @@ export default class SplitPane extends Component {
     const children = this.props.children
     const classes = ['SplitPane', this.props.className, split, disabledClass]
     const undockSupported = (typeof undockeable === 'function' ? undockeable() : undockeable)
+    const cancelSupported = (typeof cancellable === 'function' ? cancellable() : cancellable)
 
     return (
       <div className={classes.join(' ')} style={style} ref='splitPane'>
@@ -423,6 +432,8 @@ export default class SplitPane extends Component {
           split={split}
           collapse={this.collapse}
           undockeable={undockSupported}
+          cancellable={cancelSupported}
+          cancel={this.cancel}
           undocked={undocked}
         />
         {this.renderPane(
