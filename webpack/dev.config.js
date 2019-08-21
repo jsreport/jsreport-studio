@@ -240,26 +240,28 @@ module.exports = (extensions, extensionsInNormalMode) => {
                 sourceMap: true,
                 getLocalIdent: (context, localIdentName, localName, options) => {
                   const modulePath = context.resource
+
+                  const extensionsInDevMode = extensions.filter((e) => {
+                    return (
+                      extensionsInNormalMode.find((eN) => eN.directory === e.directory) == null &&
+                      fs.existsSync(path.join(e.directory, 'studio/main_dev.js'))
+                    )
+                  })
+
                   let devExtension
 
-                  for (let key in extensions) {
-                    const valid = (
-                      modulePath.includes(extensions[key].directory)
-                    ) && (
-                      extensionsInNormalMode.find((e) => {
-                        return e.directory === extensions[key].directory
-                      }) == null
-                    ) && (
-                      modulePath.includes(extensions[key].directory) && modulePath.replace(extensions[key].directory, '').includes('node_modules')
-                    )
+                  for (let key in extensionsInDevMode) {
+                    const currentExtension = extensionsInDevMode[key]
+
+                    if (currentExtension.name === 'studio') {
+                      break
+                    }
+
+                    const extensionDirectoryNormalized = currentExtension.directory.slice(-1) !== path.sep ? currentExtension.directory : `${currentExtension.directory.slice(0, -1)}`
+                    const valid = modulePath.includes(`${extensionDirectoryNormalized}${path.sep}studio${path.sep}`)
 
                     if (valid) {
-                      devExtension = extensions.find((e) => {
-                        return (
-                          e.directory.includes('node_modules') &&
-                          modulePath.includes(e.directory)
-                        )
-                      }).name
+                      devExtension = currentExtension.name
                       break
                     }
                   }
@@ -267,7 +269,7 @@ module.exports = (extensions, extensionsInNormalMode) => {
                   const name = path.basename(context.resource, path.extname(context.resource))
 
                   if (devExtension != null) {
-                    return `${devExtension.toUpperCase()}-${name}-${localName}`
+                    return `x-${devExtension}-${name}-${localName}`
                   }
 
                   return `${name}-${localName}`
