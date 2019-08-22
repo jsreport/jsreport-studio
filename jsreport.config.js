@@ -8,6 +8,12 @@ module.exports = {
       studio: {
         type: 'object',
         properties: {
+          title: {
+            type: 'string',
+            description: 'The browser title that will be shown in studio, it accepts es6 template string for dynamic values',
+            // eslint-disable-next-line no-template-curly-in-string
+            default: 'jsreport ${jsreport.version} ${jsreport.options.mode}'
+          },
           theme: {
             type: 'object',
             default: {},
