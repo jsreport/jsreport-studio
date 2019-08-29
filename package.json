@@ -62,6 +62,7 @@
     "mini-css-extract-plugin": "0.7.0",
     "mocha": "2.4.5",
     "mocha-clean": "1.0.0",
+    "monaco-editor": "0.17.1",
     "monaco-editor-webpack-plugin": "1.7.0",
     "monaco-themes": "0.3.3",
     "ok-file": "1.4.0",
