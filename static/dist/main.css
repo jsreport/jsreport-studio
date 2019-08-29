@@ -813,6 +813,10 @@ input[type=checkbox] {
   box-shadow: 0 0 1px $button-shadowColor;
 }
 
+.button.disabled {
+  color: $button-disabled-color;
+}
+
 .button:hover, .button:focus, button:active {
   box-shadow: 0 0 0.1rem $button-active-shadowColor;
 }
