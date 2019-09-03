@@ -998,17 +998,13 @@ h1,h2,h3,h4 {
   width: 100%;
 }
 
-.table td,
-.table th {
+.table tr {
   color: $table-color;
-}
-
-.table th {
-  background-color: $table-heading-backgroundColor;
-}
-
-.table td {
   background-color: $table-row-backgroundColor;
+}
+
+.table tr th {
+  background-color: $table-heading-backgroundColor;
 }
 
 .table > thead {
@@ -1042,7 +1038,7 @@ h1,h2,h3,h4 {
   color: $table-row-active-color;
 }
 
-.table > tbody > tr:hover {
+.table > tbody > tr:hover > td {
   background-color: $table-row-hover-backgroundColor;
   color: $table-row-hover-color;
 }
