@@ -30,12 +30,6 @@ export default class TemplateEditor extends Component {
     return null
   }
 
-  componentDidMount () {
-    setTimeout(() => {
-      this.refs.contentEditor.mainEditor.editor.focus()
-    }, 150)
-  }
-
   render () {
     const { entity, onUpdate } = this.props
 
@@ -57,6 +51,7 @@ export default class TemplateEditor extends Component {
           name={entity._id + '_helpers'}
           getFilename={() => `${entity.name} (helpers)`}
           mode='javascript'
+          preventInitialFocus
           onUpdate={(v) => onUpdate(Object.assign({ _id: entity._id }, { helpers: v }))}
           value={entity.helpers || ''}
         />

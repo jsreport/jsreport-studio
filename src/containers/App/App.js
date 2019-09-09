@@ -49,7 +49,6 @@ const progressActions = progress.actions
   canRun: selectors.canRun(state),
   canSave: selectors.canSave(state),
   canSaveAll: selectors.canSaveAll(state),
-  canReformat: selectors.canReformat(state),
   tabsWithEntities: selectors.getTabWithEntities(state),
   activeEntity: selectors.getActiveEntity(state),
   lastActiveTemplate: selectors.getLastActiveTemplate(state),
@@ -378,7 +377,6 @@ class App extends Component {
       canRun,
       canSave,
       canSaveAll,
-      canReformat,
       activeTabWithEntity,
       entities,
       stop,
@@ -387,7 +385,6 @@ class App extends Component {
       activeEntity,
       update,
       groupedUpdate,
-      reformat,
       undockMode
     } = this.props
 
@@ -407,8 +404,6 @@ class App extends Component {
               isPending={isPending}
               activeTab={activeTabWithEntity}
               onUpdate={update}
-              canReformat={canReformat}
-              onReformat={reformat}
               onRun={(target, ignoreUndockMode) => this.handleRun(target, ignoreUndockMode ? false : undockMode)}
               undockPreview={this.undockPreview}
               openStartup={() => this.openStartup()}
