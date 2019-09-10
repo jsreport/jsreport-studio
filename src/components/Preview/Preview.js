@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import shortid from 'shortid'
-import { registerPreviewFrameChangeHandler } from '../../lib/configuration.js'
+import { subscribeToThemeChange, registerPreviewFrameChangeHandler } from '../../lib/configuration.js'
 import styles from './Preview.scss'
 
 export default class Preview extends Component {
@@ -17,6 +17,13 @@ export default class Preview extends Component {
       nodeKey: shortid.generate(),
       src: this.props.initialSrc
     }
+
+    this.handleOnLoad = this.handleOnLoad.bind(this)
+    this.applyStylesToIframe = this.applyStylesToIframe.bind(this)
+  }
+
+  componentWillMount () {
+    subscribeToThemeChange(this.applyStylesToIframe)
   }
 
   componentDidMount () {
@@ -30,6 +37,48 @@ export default class Preview extends Component {
 
   componentWillUnmount () {
     delete Preview.instances[this.instanceId]
+  }
+
+  handleOnLoad () {
+    this.applyStylesToIframe()
+
+    if (this.props.onLoad) {
+      this.props.onLoad()
+    }
+  }
+
+  applyStylesToIframe () {
+    if (!this.refs.container || !this.refs.preview) {
+      return
+    }
+
+    try {
+      const previousStyle = this.refs.preview.contentDocument.head.querySelector('style[data-jsreport-theme-styles]')
+
+      if (previousStyle) {
+        previousStyle.remove()
+      }
+
+      const containerStyles = window.getComputedStyle(this.refs.container, null)
+      const style = document.createElement('style')
+
+      style.dataset.jsreportThemeStyles = true
+      style.type = 'text/css'
+
+      style.appendChild(document.createTextNode(`
+        html, body {
+          background-color: ${containerStyles.getPropertyValue('background-color')};
+          color: ${containerStyles.getPropertyValue('color')};
+        }
+      `))
+
+      this.refs.preview.contentDocument.head.insertBefore(
+        style,
+        this.refs.preview.contentDocument.head.firstChild
+      )
+    } catch (e) {
+      // ignore error, because it was just cross-origin issues
+    }
   }
 
   changeSrc (newSrc) {
@@ -75,13 +124,13 @@ export default class Preview extends Component {
     }
 
     return (
-      <div className={`block ${styles.container}`}>
+      <div ref='container' className={`block ${styles.container}`}>
         <div ref='overlay' style={{ display: 'none' }} />
         <iframe
           key={nodeKey}
           ref='preview'
           frameBorder='0'
-          onLoad={this.props.onLoad}
+          onLoad={this.handleOnLoad}
           allowTransparency='true'
           allowFullScreen='true'
           width='100%'

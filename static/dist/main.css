@@ -1,6 +1,7 @@
 
 .Preview-container {
   background-color: $preview-backgroundColor;
+  color: $preview-color;
 }
 
 
