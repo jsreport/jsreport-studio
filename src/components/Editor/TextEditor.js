@@ -9,6 +9,11 @@ import { getCurrentTheme } from '../../helpers/theme'
 import LinterWorker from './workers/linter.worker'
 import { textEditorInitializeListeners, textEditorCreatedListeners, subscribeToThemeChange, subscribeToSplitResize } from '../../lib/configuration.js'
 
+let lastTextEditorMounted = {
+  timeoutId: null,
+  timestamp: null
+}
+
 class TextEditor extends Component {
   static propTypes = {
     value: React.PropTypes.string,
@@ -23,6 +28,7 @@ class TextEditor extends Component {
     this.lintWorker = null
     this.oldCode = null
 
+    this.getFocus = this.getFocus.bind(this)
     this.setUpLintWorker = this.setUpLintWorker.bind(this)
     this.lint = this.lint.bind(this)
     this.lint = debounce(this.lint, 400)
@@ -35,8 +41,6 @@ class TextEditor extends Component {
   }
 
   componentDidMount () {
-    this.refs.monaco.editor.focus()
-
     this.unsubscribe = subscribeToSplitResize(() => {
       this.refs.monaco.editor.layout()
     })
@@ -280,6 +284,54 @@ class TextEditor extends Component {
     textEditorCreatedListeners.forEach((fn) => {
       fn({ monaco, editor })
     })
+
+    const nowTimestamp = Date.now()
+    const threshold = 350
+    const defer = 250
+    const initialFocus = this.props.preventInitialFocus !== true
+
+    // this logic calls get focus only if some time (threshold) has passed since the last
+    // time of an editor has been mounted, this prevents getting multiple active cursors when
+    // a lot of entities/tabs are loaded (like the playground case which opens multiple tabs at page load).
+    if (
+      (lastTextEditorMounted.timestamp == null ||
+      (nowTimestamp - lastTextEditorMounted.timestamp > threshold)) &&
+      initialFocus
+    ) {
+      clearTimeout(lastTextEditorMounted.timeoutId)
+
+      lastTextEditorMounted.timeoutId = setTimeout(() => {
+        clearTimeout(lastTextEditorMounted.timeoutId)
+        lastTextEditorMounted.timeoutId = null
+        this.getFocus()
+      }, defer)
+
+      lastTextEditorMounted.timestamp = nowTimestamp
+    } else {
+      if (initialFocus && lastTextEditorMounted.timeoutId) {
+        clearTimeout(lastTextEditorMounted.timeoutId)
+
+        lastTextEditorMounted.timeoutId = setTimeout(() => {
+          clearTimeout(lastTextEditorMounted.timeoutId)
+          lastTextEditorMounted.timeoutId = null
+          this.getFocus()
+        }, defer)
+
+        lastTextEditorMounted.timestamp = nowTimestamp
+      }
+    }
+  }
+
+  getFocus () {
+    const self = this
+
+    if (!self.refs.monaco) {
+      setTimeout(() => {
+        self.getFocus()
+      }, 150)
+    } else {
+      self.refs.monaco.editor.focus()
+    }
   }
 
   updateThemeRule (theme, tokenName, foregroundColor) {
@@ -381,4 +433,4 @@ class TextEditor extends Component {
 
 export default connect(undefined, {
   reformat
-})(TextEditor)
+}, undefined, { withRef: true })(TextEditor)
