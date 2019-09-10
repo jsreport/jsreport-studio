@@ -6,9 +6,9 @@ import api from '../../helpers/api.js'
 import * as selectors from './selectors.js'
 import { push } from 'react-router-redux'
 import shortid from 'shortid'
+import reformatter from '../../helpers/reformatter'
 import preview from '../../helpers/preview'
 import resolveUrl from '../../helpers/resolveUrl.js'
-import beautify from 'js-beautify-jsreport'
 import { engines, recipes, entitySets, previewListeners, locationResolver, editorComponents, concurrentUpdateModal, modalHandler } from '../../lib/configuration.js'
 
 export function closeTab (id) {
@@ -307,29 +307,25 @@ export function saveAll () {
   }
 }
 
-const reformatter = function (code, mode) {
-  return beautify[mode](code || '', {
-    unformatted: ['script']
-  })
-}
-
-export function reformat () {
+export function reformat (shouldThrow = false) {
   return async function (dispatch, getState) {
-    try {
-      // this flushed the updates
-      dispatch(entities.actions.flushUpdates())
+    // this flushed the updates
+    dispatch(entities.actions.flushUpdates())
 
-      const tab = selectors.getActiveTab(getState())
+    const tab = selectors.getActiveTab(getState())
 
-      const editorReformat = editorComponents[tab.editorComponentKey || tab.entitySet].reformat
+    const editorReformat = editorComponents[tab.editorComponentKey || tab.entitySet].reformat
 
-      const activeEntity = selectors.getActiveEntity(getState())
-      const toUpdate = editorReformat(reformatter, activeEntity, tab)
-
-      dispatch(update(Object.assign({ _id: activeEntity._id }, toUpdate)))
-    } catch (e) {
-      console.error(e)
+    if (!editorReformat && !shouldThrow) {
+      return false
     }
+
+    const activeEntity = selectors.getActiveEntity(getState())
+    const toUpdate = editorReformat(reformatter, activeEntity, tab)
+
+    dispatch(update(Object.assign({ _id: activeEntity._id }, toUpdate)))
+
+    return true
   }
 }
 

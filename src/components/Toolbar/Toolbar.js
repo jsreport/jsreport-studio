@@ -17,8 +17,6 @@ export default class Toolbar extends Component {
     canSave: React.PropTypes.bool.isRequired,
     onSaveAll: React.PropTypes.func.isRequired,
     canSaveAll: React.PropTypes.bool.isRequired,
-    onReformat: React.PropTypes.func.isRequired,
-    canReformat: React.PropTypes.bool.isRequired,
     isPending: React.PropTypes.bool.isRequired,
     activeTab: React.PropTypes.object
   }
@@ -70,18 +68,6 @@ export default class Toolbar extends Component {
         this.props.onSaveAll()
         return false
       }
-    }
-
-    if (
-      (
-        (e.ctrlKey && e.shiftKey && e.which === 70) ||
-        // handles CMD + SHIFT + F on Mac
-        (isMac() && e.metaKey && e.shiftKey && e.which === 70)
-      ) && this.props.canReformat && toolbarVisibilityResolver('Reformat')
-    ) {
-      e.preventDefault()
-      this.props.onReformat()
-      return false
     }
 
     if (
@@ -175,7 +161,7 @@ export default class Toolbar extends Component {
 
   render () {
     const metaKey = isMac() ? 'CMD' : 'CTRL'
-    const { onSave, canSave, onSaveAll, canSaveAll, isPending, openStartup, onReformat, canReformat } = this.props
+    const { onSave, canSave, onSaveAll, canSaveAll, isPending, openStartup } = this.props
 
     return (
       <div className={style.toolbar}>
@@ -188,7 +174,6 @@ export default class Toolbar extends Component {
         {this.renderRun()}
         {this.renderButton(onSave, canSave, 'Save', 'fa fa-floppy-o', `Save current tab (${metaKey}+S)`)}
         {this.renderButton(onSaveAll, canSaveAll, 'SaveAll', 'fa fa-floppy-o', `Save all tabs (${metaKey}+SHIFT+S`)}
-        {this.renderButton(onReformat, canReformat, 'Reformat', 'fa fa-indent', `Reformat code (${metaKey}+SHIFT+F)`)}
         {this.renderToolbarComponents('left')}
         <div className={style.spinner}>
           {isPending ? <i className='fa fa-spinner fa-spin fa-fw' /> : ''}

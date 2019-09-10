@@ -1,12 +1,20 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import ChromeTheme from 'monaco-themes/themes/Chrome DevTools.json'
 import MonacoEditor from 'react-monaco-editor'
 import debounce from 'lodash/debounce'
+import { reformat } from '../../redux/editor/actions'
+import reformatter from '../../helpers/reformatter'
 import { getCurrentTheme } from '../../helpers/theme'
 import LinterWorker from './workers/linter.worker'
 import { textEditorInitializeListeners, textEditorCreatedListeners, subscribeToThemeChange, subscribeToSplitResize } from '../../lib/configuration.js'
 
-export default class TextEditor extends Component {
+let lastTextEditorMounted = {
+  timeoutId: null,
+  timestamp: null
+}
+
+class TextEditor extends Component {
   static propTypes = {
     value: React.PropTypes.string,
     onUpdate: React.PropTypes.func.isRequired,
@@ -20,6 +28,7 @@ export default class TextEditor extends Component {
     this.lintWorker = null
     this.oldCode = null
 
+    this.getFocus = this.getFocus.bind(this)
     this.setUpLintWorker = this.setUpLintWorker.bind(this)
     this.lint = this.lint.bind(this)
     this.lint = debounce(this.lint, 400)
@@ -32,8 +41,6 @@ export default class TextEditor extends Component {
   }
 
   componentDidMount () {
-    this.refs.monaco.editor.focus()
-
     this.unsubscribe = subscribeToSplitResize(() => {
       this.refs.monaco.editor.layout()
     })
@@ -112,19 +119,56 @@ export default class TextEditor extends Component {
       editor.trigger('jsreport-studio', 'redo')
     })
 
-    // disables the default "Format Document" action, we do this to prevent having two
-    // different ways to format the code, we want to use our own formatter for now
-    editor.addAction({
-      id: 'editor.action.formatDocument',
-      label: '',
-      keybindings: [],
-      precondition: null,
-      keybindingContext: null,
-      run: () => {}
+    // adding universal ctrl + shift + f, cmd + shift + f handler reformat key binding
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KEY_F, () => {
+      editor.getAction('editor.action.formatDocument').run()
+    })
+
+    const self = this
+
+    const defaultFormattersPerLang = {
+      html: (value) => reformatter(value, 'html'),
+      handlebars: (value) => reformatter(value, 'html'),
+      javascript: (value) => reformatter(value, 'js'),
+      json: (value) => reformatter(value, 'js'),
+      css: (value) => reformatter(value, 'css')
+    }
+
+    // we override here the monaco "Format Document" option for all registered languages,
+    // what we do is that we replace the default format of monaco with the .reformat logic of the registered
+    // editorComponents of studio. so if user click "Format Document" option of monaco what will be executed is
+    // the .reformat logic of current active editorComponent, if there is no .reformat logic for the current editor then
+    // we check if the current language is a well known one (like css), if it is then we reformat using a default reformatter,
+    // if it isn't then we just do nothing
+    monaco.languages.getLanguages().map((l) => l.id).forEach((lang) => {
+      monaco.languages.registerDocumentFormattingEditProvider(lang, {
+        async provideDocumentFormattingEdits (model, options, token) {
+          let update
+
+          try {
+            const registeredReformatterExists = await self.props.reformat()
+
+            if (!registeredReformatterExists && defaultFormattersPerLang[lang]) {
+              update = {
+                range: model.getFullModelRange(),
+                text: defaultFormattersPerLang[lang](model.getValue())
+              }
+            }
+          } catch (e) {
+            console.error(`Error when reformatting language "${lang}"`, e)
+          }
+
+          if (update) {
+            return [update]
+          }
+
+          return []
+        }
+      })
     })
 
     // monkey path setValue option to make it preserve undo stack
-    // when editing text editor with "Reformat" (or by prop change)
+    // when editing text editor (by prop change)
     editor.setValue = (newValue) => {
       const model = editor.getModel()
 
@@ -240,10 +284,54 @@ export default class TextEditor extends Component {
     textEditorCreatedListeners.forEach((fn) => {
       fn({ monaco, editor })
     })
+
+    const nowTimestamp = Date.now()
+    const threshold = 350
+    const defer = 250
+    const initialFocus = this.props.preventInitialFocus !== true
+
+    // this logic calls get focus only if some time (threshold) has passed since the last
+    // time of an editor has been mounted, this prevents getting multiple active cursors when
+    // a lot of entities/tabs are loaded (like the playground case which opens multiple tabs at page load).
+    if (
+      (lastTextEditorMounted.timestamp == null ||
+      (nowTimestamp - lastTextEditorMounted.timestamp > threshold)) &&
+      initialFocus
+    ) {
+      clearTimeout(lastTextEditorMounted.timeoutId)
+
+      lastTextEditorMounted.timeoutId = setTimeout(() => {
+        clearTimeout(lastTextEditorMounted.timeoutId)
+        lastTextEditorMounted.timeoutId = null
+        this.getFocus()
+      }, defer)
+
+      lastTextEditorMounted.timestamp = nowTimestamp
+    } else {
+      if (initialFocus && lastTextEditorMounted.timeoutId) {
+        clearTimeout(lastTextEditorMounted.timeoutId)
+
+        lastTextEditorMounted.timeoutId = setTimeout(() => {
+          clearTimeout(lastTextEditorMounted.timeoutId)
+          lastTextEditorMounted.timeoutId = null
+          this.getFocus()
+        }, defer)
+
+        lastTextEditorMounted.timestamp = nowTimestamp
+      }
+    }
   }
 
-  get mainEditor () {
-    return this.refs.monaco
+  getFocus () {
+    const self = this
+
+    if (!self.refs.monaco) {
+      setTimeout(() => {
+        self.getFocus()
+      }, 150)
+    } else {
+      self.refs.monaco.editor.focus()
+    }
   }
 
   updateThemeRule (theme, tokenName, foregroundColor) {
@@ -342,3 +430,7 @@ export default class TextEditor extends Component {
     )
   }
 }
+
+export default connect(undefined, {
+  reformat
+}, undefined, { withRef: true })(TextEditor)

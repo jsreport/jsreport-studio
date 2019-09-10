@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import ReactModal from 'react-modal'
-import {connect} from 'react-redux'
-import {actions} from 'redux/modal'
+import { connect } from 'react-redux'
+import { actions } from 'redux/modal'
 import debounce from 'lodash/debounce'
 import { registerModalHandler } from '../../lib/configuration.js'
 import style from './Modal.scss'
@@ -91,7 +91,7 @@ class ModalContent extends Component {
 
     return (
       <div ref={this.setNode}>
-        {frameless ? '' : <span className={style.close} onClick={() => onClose()}></span>}
+        {frameless ? '' : <span className={style.close} onClick={() => onClose()} />}
         {this.renderBody()}
       </div>
     )
