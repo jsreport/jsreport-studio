@@ -52,6 +52,7 @@ function setCurrentTheme ({ theme, editorTheme }, { onComplete, onError } = {}) 
   }
 
   const themeLinks = Array.prototype.slice.call(document.querySelectorAll('link[data-jsreport-studio-theme]'))
+  const serverStartupHash = document.querySelector('meta[data-jsreport-server-startup-hash]').getAttribute('content')
   const customCssLink = document.querySelector('link[data-jsreport-studio-custom-css]')
   const defaultThemeLink = themeLinks.find((l) => l.dataset.defaultJsreportStudioTheme === 'true' || l.dataset.defaultJsreportStudioTheme === true)
   let targetThemeLink = themeLinks.find((l) => l.dataset.jsreportStudioTheme === theme)
@@ -72,7 +73,7 @@ function setCurrentTheme ({ theme, editorTheme }, { onComplete, onError } = {}) 
     const newThemeLink = document.createElement('link')
 
     newThemeLink.rel = 'stylesheet'
-    newThemeLink.href = resolveUrl(`/studio/assets/alternativeTheme.css?name=${theme}`)
+    newThemeLink.href = resolveUrl(`/studio/assets/alternativeTheme.css?${serverStartupHash}&name=${theme}`)
     newThemeLink.disabled = false
     newThemeLink.dataset.jsreportStudioTheme = theme
 

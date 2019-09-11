@@ -93,8 +93,8 @@ module.exports = (extensions, extensionsInNormalMode) => {
     },
     output: {
       path: assetsPath,
-      filename: 'client.js',
-      chunkFilename: '[name].client.js',
+      filename: 'client.dev.js',
+      chunkFilename: '[name].client.dev.js',
       // this makes the worker-loader bundle to work fine at runtime, otherwise you
       // will see error in the web worker
       globalObject: 'this'
@@ -116,7 +116,7 @@ module.exports = (extensions, extensionsInNormalMode) => {
           use: [{
             loader: 'worker-loader',
             options: {
-              name: '[name].js'
+              name: '[name].dev.js'
             }
           }]
         },
@@ -368,8 +368,8 @@ module.exports = (extensions, extensionsInNormalMode) => {
       new MiniCssExtractPlugin({
         // Options similar to the same options in webpackOptions.output
         // both options are optional
-        filename:  '[name].css', // '[name].[hash].css'
-        chunkFilename: '[id].css' // '[id].[hash].css'
+        filename:  '[name].dev.css', // '[name].[hash].css'
+        chunkFilename: '[name].client.dev.css' // '[id].[hash].css'
       }),
       new MonacoWebpackPlugin({
         languages: ['xml', 'html', 'handlebars', 'css', 'json', 'javascript', 'typescript'],

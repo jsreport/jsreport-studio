@@ -43,6 +43,15 @@ const start = async () => {
   const extensionsArray = await Studio.api.get('/api/extensions')
   configuration.extensions = zipObject(extensionsArray.map((e) => e.name), extensionsArray)
 
+  const oldMonacoGetWorkerUrl = window.MonacoEnvironment.getWorkerUrl
+
+  // we override the function created by monaco-editor-webpack-plugin because
+  // it does not require chunks with cache in mind
+  window.MonacoEnvironment.getWorkerUrl = function (...args) {
+    const url = oldMonacoGetWorkerUrl.apply(window.MonacoEnvironment, args)
+    return `${url}?${configuration.extensions.studio.options.serverStartupHash}`
+  }
+
   for (const key in Studio.initializeListeners) {
     await Studio.initializeListeners[key]()
   }

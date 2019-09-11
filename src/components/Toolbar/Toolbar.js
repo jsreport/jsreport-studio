@@ -167,7 +167,7 @@ export default class Toolbar extends Component {
       <div className={style.toolbar}>
         <div className={style.logo} onClick={() => openStartup()}>
           <img
-            src={extensions.studio.options.customLogo === true ? resolveUrl('/studio/assets/custom-logo') : logo}
+            src={extensions.studio.options.customLogo === true ? resolveUrl(`/studio/assets/custom-logo?${extensions.studio.options.serverStartupHash}`) : logo}
             style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%', display: 'inline-block' }}
           />
         </div>
