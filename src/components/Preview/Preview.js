@@ -18,12 +18,20 @@ export default class Preview extends Component {
       src: this.props.initialSrc
     }
 
+    this.lastURLBlobCreated = null
     this.handleOnLoad = this.handleOnLoad.bind(this)
     this.applyStylesToIframe = this.applyStylesToIframe.bind(this)
   }
 
   componentWillMount () {
-    subscribeToThemeChange(this.applyStylesToIframe)
+    this.unsubscribeThemeChange = subscribeToThemeChange(this.applyStylesToIframe)
+  }
+
+  componentWillUpdate (nextProps, nextState) {
+    if (this.state.src !== nextState.src && this.lastURLBlobCreated != null) {
+      window.URL.revokeObjectURL(this.lastURLBlobCreated)
+      this.lastURLBlobCreated = null
+    }
   }
 
   componentDidMount () {
@@ -31,11 +39,38 @@ export default class Preview extends Component {
     Preview.instances[this.instanceId] = this
 
     if (this.props.main) {
-      registerPreviewFrameChangeHandler((src) => this.setState({ src: src }))
+      this.disposePreviewChangeHandler = registerPreviewFrameChangeHandler((src) => {
+        let srcToUse = src
+        const dataURLMatch = /^data:([^,;]+)?(;[^,]+)?(,.+)/.exec(src)
+
+        if (dataURLMatch != null) {
+          const blob = new Blob([decodeURI(dataURLMatch[3].slice(1))], { type: dataURLMatch[1] })
+          srcToUse = window.URL.createObjectURL(blob)
+        }
+
+        this.setState({ src: srcToUse }, () => {
+          if (dataURLMatch != null) {
+            this.lastURLBlobCreated = srcToUse
+          }
+        })
+      })
     }
   }
 
   componentWillUnmount () {
+    if (this.disposePreviewChangeHandler) {
+      this.disposePreviewChangeHandler()
+    }
+
+    if (this.unsubscribeThemeChange) {
+      this.unsubscribeThemeChange()
+    }
+
+    if (this.lastURLBlobCreated != null) {
+      window.URL.revokeObjectURL(this.lastURLBlobCreated)
+      this.lastURLBlobCreated = null
+    }
+
     delete Preview.instances[this.instanceId]
   }
 

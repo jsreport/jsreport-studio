@@ -290,7 +290,8 @@ class Studio {
    * @param {String} frameSrc
    */
   customPreview (url, request) {
-    return customPreview(url, request)
+    const target = configuration.getPreviewTargetHandler() || 'previewFrame'
+    return customPreview(url, request, target)
   }
 
   /**

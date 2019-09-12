@@ -36,11 +36,44 @@ export const tabTitleComponents = []
 
 export let toolbarVisibilityResolver = () => true
 
-export const registerPreviewFrameChangeHandler = (fn) => { previewFrameChangeHandler = fn }
+export const registerPreviewFrameChangeHandler = (fn) => {
+  previewFrameChangeHandler = fn
+
+  // dispose
+  return () => {
+    // only delete the handler when the current one is still the same fn
+    if (previewFrameChangeHandler === fn) {
+      previewFrameChangeHandler = () => {}
+    }
+  }
+}
+
 export let previewFrameChangeHandler = () => {}
 
-export const registerPreviewHandler = (fn) => { previewHandler = fn }
+export const registerPreviewHandler = (fn) => {
+  previewHandler = fn
+
+  // dispose
+  return () => {
+    // only delete the handler when the current one is still the same fn
+    if (previewHandler === fn) {
+      previewHandler = () => {}
+    }
+  }
+}
 export let previewHandler = () => {}
+
+export const registerGetPreviewTargetHandler = (fn) => {
+  getPreviewTargetHandler = fn
+
+  return () => {
+    if (getPreviewTargetHandler === fn) {
+      getPreviewTargetHandler = () => {}
+    }
+  }
+}
+
+export let getPreviewTargetHandler = () => {}
 
 export const registerModalHandler = (fn) => { modalHandler = fn }
 export let modalHandler = () => {}

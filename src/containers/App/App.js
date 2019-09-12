@@ -29,6 +29,7 @@ import {
   triggerSplitResize,
   removeHandler,
   previewListeners,
+  registerGetPreviewTargetHandler,
   registerPreviewHandler,
   entitySets,
   shouldOpenStartupPage,
@@ -91,6 +92,22 @@ class App extends Component {
       }
     }
 
+    registerGetPreviewTargetHandler(() => {
+      let target = 'previewFrame'
+
+      if (this.props.undockMode) {
+        target = 'previewFrame_GENERAL'
+
+        this.refs.previewPane.openWindow({
+          id: target,
+          name: target,
+          tab: true
+        })
+      }
+
+      return target
+    })
+
     registerPreviewHandler((src) => {
       if (!src) {
         this.handleRun(undefined, this.props.undockMode)
@@ -145,8 +162,7 @@ class App extends Component {
     }, 1000)
 
     if (undockMode) {
-      let previewWindowOpts = this.getPreviewWindowOptions()
-
+      const previewWindowOpts = this.getPreviewWindowOptions()
       this.props.run(previewWindowOpts.name)
       return
     }
