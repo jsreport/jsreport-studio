@@ -1,4 +1,4 @@
-const themeVarsDefinition = require('./lib/themeVarsDefinition')
+const themeVarsDefinition = require('./lib/themeVarsDefinition.json')
 
 module.exports = {
   name: 'studio',
