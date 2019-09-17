@@ -25,8 +25,8 @@ module.exports = {
   },
   output: {
     path: assetsPath,
-    filename: 'client.[hash].js',
-    chunkFilename: '[name].client.[hash].js',
+    filename: 'client.[contenthash].js',
+    chunkFilename: '[name].client.[contenthash].js',
     // this makes the worker-loader bundle to work fine at runtime, otherwise you
     // will see error in the web worker
     globalObject: 'this'
@@ -39,7 +39,7 @@ module.exports = {
         use: [{
           loader: 'worker-loader',
           options: {
-            name: '[name].[hash].js'
+            name: '[name].[contenthash].js'
           }
         }]
       },
@@ -232,8 +232,8 @@ module.exports = {
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename:  '[name].[hash].css', // '[name].[hash].css'
-      chunkFilename: '[name].client.[hash].css' // '[id].[hash].css'
+      filename:  '[name].[contenthash].css', // '[name].[hash].css'
+      chunkFilename: '[name].client.[contenthash].css' // '[id].[hash].css'
     }),
     new MonacoWebpackPlugin({
       languages: ['xml', 'html', 'handlebars', 'css', 'json', 'javascript', 'typescript'],
