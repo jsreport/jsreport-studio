@@ -93,12 +93,11 @@ class ThemeModal extends Component {
         <h2>Theme</h2>
         <div className={style.container}>
           {Object.keys(availableThemes).map((themeName) => (
-            <div key={themeName} className={style.item}>
+            <div key={themeName} className={style.item} onClick={() => this.changeTheme(themeName)}>
               <label className={style.itemLabel}>
                 <input
                   type='radio'
                   value={themeName}
-                  onChange={() => this.changeTheme(themeName)}
                   checked={selectedTheme === themeName}
                 />
                 {themeName}
@@ -110,12 +109,11 @@ class ThemeModal extends Component {
         <h2>Editor Theme</h2>
         <div className={style.container}>
           {Object.keys(availableEditorThemes).map((themeName) => (
-            <div key={themeName} className={style.miniItem}>
+            <div key={themeName} className={style.miniItem} onClick={() => this.changeEditorTheme(themeName)}>
               <label className={style.miniItemLabel}>
                 <input
                   type='radio'
                   value={themeName}
-                  onChange={() => this.changeEditorTheme(themeName)}
                   checked={selectedEditorTheme === themeName}
                 />
                 {themeName}
@@ -126,8 +124,9 @@ class ThemeModal extends Component {
           ))}
         </div>
         <br />
-        <div>
-          <button onClick={() => this.restoreThemeToDefault()} className='button confirmation' style={{ margin: 0 }}>Restore to default</button>
+        <div className='button-bar'>
+          <button className='button confirmation' onClick={() => this.props.close()}>Confirm</button>
+          <button style={{'white-space': 'nowrap'}} className='button danger' onClick={() => this.restoreThemeToDefault()}>Restore to default</button>
         </div>
       </div>
     )
