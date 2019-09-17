@@ -143,3 +143,7 @@ h1,h2,h3,h4 {
   background-color: $table-selection-backgroundColor;
   color: $table-selection-color;
 }
+
+a:link, a:visited, a:hover, a:active {
+  color: $anchors-color;
+}
