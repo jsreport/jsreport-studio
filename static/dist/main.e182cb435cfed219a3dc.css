@@ -1071,9 +1071,10 @@ h1,h2,h3,h4 {
   color: $table-selection-color;
 }
 
-a:link, a:visited, a:hover, a:active {
+a:not(.button)[href]:link, a:not(.button)[href]:visited, a:not(.button)[href]:hover, a:not(.button)[href]:active {
   color: $anchors-color;
 }
+
 
 .Popover-popoverDisplayLayer {
   display: none;
