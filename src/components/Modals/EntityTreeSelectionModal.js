@@ -288,7 +288,7 @@ class EntityTreeSelectionModal extends Component {
         {allowNewFolder && (
           <br />
         )}
-        <div style={Object.assign({ minHeight: '30rem', overflow: 'auto' }, treeStyle)}>
+        <div style={Object.assign({ minHeight: '30rem', maxHeight: '30rem', overflow: 'auto' }, treeStyle)}>
           <EntityTree
             entities={entities}
             selectable
