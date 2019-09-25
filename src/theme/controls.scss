@@ -47,6 +47,11 @@ input[type=checkbox] {
   transform: translateZ(0);
 }
 
+textarea {
+  background-color: $controls-backgroundColor;
+  color: $controls-color;
+}
+
 .button-bar {
   display: flex;
   margin-top: 2rem;
