@@ -17,10 +17,22 @@ const reducer = combineReducers({
 })
 
 export default (state, action) => {
+  let currentUndockMode
+
   if (action.type === 'RESET') {
     const { routing } = state
+
+    currentUndockMode = state.editor && state.editor.undockMode != null ? state.editor.undockMode : undefined
+
     state = { routing }
   }
 
-  return reducer(state, action)
+  const newState = reducer(state, action)
+
+  // we preserve the undock state after reset
+  if (currentUndockMode != null && newState.editor) {
+    newState.editor.undockMode = currentUndockMode
+  }
+
+  return newState
 }

@@ -6,8 +6,8 @@ import Pane from './Pane'
 import Resizer from './Resizer'
 
 export default class SplitPane extends Component {
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
 
     this.windows = {}
 
@@ -384,6 +384,7 @@ export default class SplitPane extends Component {
       undockeable,
       cancellable
     } = this.props
+
     const { collapsed, undocked } = this.state
     let disabledClass = allowResize ? '' : 'disabled'
 
