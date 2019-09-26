@@ -36,6 +36,14 @@ html, body {
   background: $scrollBar-track-backgroundColor;
 }
 
+::-webkit-resizer {
+  background: $scrollBar-resizer-backgroundColor;
+}
+
+::-webkit-scrollbar-corner {
+  background: $scrollBar-corner-backgroundColor;
+}
+
 .container {
   display: flex;
   flex-direction: column;

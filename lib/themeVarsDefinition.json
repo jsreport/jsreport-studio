@@ -160,6 +160,14 @@
     "default": "#FAFAFA"
   },
   {
+    "name": "scrollBar-resizer-backgroundColor",
+    "extends": "scrollBar-thumb-backgroundColor"
+  },
+  {
+    "name": "scrollBar-corner-backgroundColor",
+    "extends": "scrollBar-thumb-backgroundColor"
+  },
+  {
     "name": "toolbar-color",
     "extends": "primary-selection-color"
   },
