@@ -34,6 +34,7 @@ class TextEditor extends Component {
     this.lint = debounce(this.lint, 400)
     this.editorWillMount = this.editorWillMount.bind(this)
     this.editorDidMount = this.editorDidMount.bind(this)
+    this.calculateEditorLayout = this.calculateEditorLayout.bind(this)
 
     this.state = {
       editorTheme: getCurrentTheme().editorTheme
@@ -41,9 +42,11 @@ class TextEditor extends Component {
   }
 
   componentDidMount () {
-    this.unsubscribe = subscribeToSplitResize(() => {
-      this.refs.monaco.editor.layout()
-    })
+    this.unsubscribe = subscribeToSplitResize(this.calculateEditorLayout)
+
+    this.debouncedCalculateEditorLayout = debounce(this.calculateEditorLayout, 200)
+
+    window.addEventListener('resize', this.debouncedCalculateEditorLayout)
 
     this.unsubscribeThemeChange = subscribeToThemeChange(({ newEditorTheme }) => {
       this.setState({
@@ -56,6 +59,9 @@ class TextEditor extends Component {
     this.oldCode = null
 
     this.unsubscribe()
+
+    window.removeEventListener('resize', this.debouncedCalculateEditorLayout)
+
     this.unsubscribeThemeChange()
 
     if (this.lintWorker) {
@@ -384,6 +390,12 @@ class TextEditor extends Component {
         editor.getModel().getVersionId()
       )
     })
+  }
+
+  calculateEditorLayout (ev) {
+    if (this.refs.monaco && this.refs.monaco.editor) {
+      this.refs.monaco.editor.layout()
+    }
   }
 
   lint (code, filename, version) {
