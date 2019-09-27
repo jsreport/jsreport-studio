@@ -14,7 +14,7 @@ const SelectInput = ({ textToShow, entity, handleOpenTree, openTab, disabled }) 
     <i className='fa fa-pencil-square-o' />
     <span
       title={textToShow}
-      className={textToShow ? styles.link : ''}
+      className={`${styles.nameLabel} ${textToShow ? styles.link : ''}`}
       onClick={(e) => {
         e.preventDefault()
         e.stopPropagation()
@@ -141,7 +141,7 @@ class EntityRefSelect extends Component {
 
         items.push(
           <li key={namePath} title={namePath} onClick={() => this.props.openTab(entity)}>
-            <span>{namePath}</span>
+            <span className={styles.nameLabel}>{namePath}</span>
           </li>
         )
       })

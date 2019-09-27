@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import { engines, recipes } from '../../lib/configuration'
 
 export default class TemplateProperties extends Component {
@@ -11,7 +11,7 @@ export default class TemplateProperties extends Component {
   renderEngines () {
     const { entity, onChange } = this.props
 
-    return <select value={entity.engine} onChange={(v) => onChange({_id: entity._id, engine: v.target.value})}>
+    return <select value={entity.engine} onChange={(v) => onChange({ _id: entity._id, engine: v.target.value })}>
       {engines.map((e) => <option key={e} value={e}>{e}</option>)}
     </select>
   }
@@ -23,14 +23,14 @@ export default class TemplateProperties extends Component {
   renderRecipes () {
     const { entity, onChange } = this.props
 
-    return <select value={entity.recipe} onChange={(v) => onChange({_id: entity._id, recipe: v.target.value})}>
+    return <select value={entity.recipe} onChange={(v) => onChange({ _id: entity._id, recipe: v.target.value })}>
       {recipes.map((e) => <option key={e} value={e}>{e}</option>)}
     </select>
   }
 
   render () {
     if (this.props.entity.__entitySet !== 'templates') {
-      return <div></div>
+      return <div />
     }
 
     return (
@@ -41,4 +41,3 @@ export default class TemplateProperties extends Component {
     )
   }
 }
-

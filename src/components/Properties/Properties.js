@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import style from './Properties.scss'
 import { entitySets, propertiesComponents } from '../../lib/configuration.js'
 
@@ -53,7 +53,7 @@ export default class Properties extends Component {
           <label>{nameAttribute}</label>
           <input
             type='text' value={entity[nameAttribute] || ''}
-            onChange={(v) => onChange({_id: entity._id, [nameAttribute]: v.target.value})} />
+            onChange={(v) => onChange({ _id: entity._id, [nameAttribute]: v.target.value })} />
         </div>
       </div>
       {propertiesComponents.map((p, i) => this.renderOne(p, i, entity, entities, onChange))}
