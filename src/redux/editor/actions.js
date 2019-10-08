@@ -9,7 +9,7 @@ import shortid from 'shortid'
 import reformatter from '../../helpers/reformatter'
 import preview from '../../helpers/preview'
 import resolveUrl from '../../helpers/resolveUrl.js'
-import { engines, recipes, entitySets, previewListeners, locationResolver, editorComponents, concurrentUpdateModal, modalHandler } from '../../lib/configuration.js'
+import { engines, recipes, entitySets, previewListeners, previewConfigurationHandler, locationResolver, editorComponents, concurrentUpdateModal, modalHandler } from '../../lib/configuration.js'
 
 export function closeTab (id) {
   return (dispatch, getState) => {
@@ -341,8 +341,20 @@ export function run (target) {
     let template = Object.assign({}, selectors.getLastActiveTemplate(getState()))
     let request = { template: template, options: {} }
     const entities = Object.assign({}, getState().entities)
-    await Promise.all([...previewListeners.map((l) => l(request, entities, target))])
+
+    const previewListenersReturns = await Promise.all([...previewListeners.map((l) => l(request, entities, target))])
+
+    const previewConfig = previewListenersReturns.reduce((acu, value) => {
+      if (value != null) {
+        acu = Object.assign(acu, value)
+      }
+
+      return acu
+    }, {})
+
     dispatch({ type: ActionTypes.RUN })
+
+    await previewConfigurationHandler({ ...previewConfig, src: null })
 
     preview(request, target || 'previewFrame')
   }

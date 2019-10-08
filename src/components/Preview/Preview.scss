@@ -3,3 +3,9 @@
   background-color: $preview-backgroundColor;
   color: $preview-color;
 }
+
+.containerDefaultBackground {
+  /* emulates default background, color of browser */
+  background-color: #fff;
+  color: #000;
+}

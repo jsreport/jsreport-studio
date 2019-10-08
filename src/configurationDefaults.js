@@ -315,6 +315,12 @@ export default () => {
 
   configuration.concurrentUpdateModal = ConcurrentUpdateErrorModal
 
+  configuration.previewListeners.push((request) => {
+    if (request.template && request.template.recipe === 'html') {
+      return { disableTheming: true }
+    }
+  })
+
   configuration.initializeListeners.push(() => {
     configuration.entityTreeIconResolvers.push((entity) => {
       if (entity.__entitySet !== 'templates') {

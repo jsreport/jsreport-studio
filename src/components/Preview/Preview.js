@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
 import shortid from 'shortid'
-import { subscribeToThemeChange, registerPreviewFrameChangeHandler } from '../../lib/configuration.js'
+import {
+  subscribeToThemeChange,
+  registerPreviewFrameChangeHandler,
+  registerPreviewConfigurationHandler,
+  previewFrameChangeHandler,
+  previewConfigurationHandler
+} from '../../lib/configuration.js'
 import styles from './Preview.scss'
 
 export default class Preview extends Component {
@@ -15,7 +21,8 @@ export default class Preview extends Component {
 
     this.state = {
       nodeKey: shortid.generate(),
-      src: this.props.initialSrc
+      src: this.props.initialSrc,
+      disableTheming: false
     }
 
     this.lastURLBlobCreated = null
@@ -39,7 +46,7 @@ export default class Preview extends Component {
     Preview.instances[this.instanceId] = this
 
     if (this.props.main) {
-      this.disposePreviewChangeHandler = registerPreviewFrameChangeHandler((src) => {
+      this.disposePreviewChangeHandler = registerPreviewFrameChangeHandler((src, opts = {}) => {
         let srcToUse = src
         const dataURLMatch = /^data:([^,;]+)?(;[^,]+)?(,.+)/.exec(src)
 
@@ -48,10 +55,38 @@ export default class Preview extends Component {
           srcToUse = window.URL.createObjectURL(blob)
         }
 
-        this.setState({ src: srcToUse }, () => {
+        previewConfigurationHandler({ ...opts, src: srcToUse }).then(() => {
           if (dataURLMatch != null) {
             this.lastURLBlobCreated = srcToUse
           }
+        })
+      })
+
+      this.disposePreviewConfigurationHandler = registerPreviewConfigurationHandler(async (opts = {}) => {
+        // removing lastURLBlob on each execution
+        if (this.lastURLBlobCreated != null) {
+          window.URL.revokeObjectURL(this.lastURLBlobCreated)
+          this.lastURLBlobCreated = null
+        }
+
+        const newState = {}
+
+        if (opts.src == null) {
+          newState.src = null
+        } else {
+          newState.src = opts.src
+        }
+
+        if (opts.disableTheming === true) {
+          newState.disableTheming = true
+        } else {
+          newState.disableTheming = false
+        }
+
+        return new Promise((resolve) => {
+          this.setState(newState, () => {
+            resolve()
+          })
         })
       })
     }
@@ -60,6 +95,10 @@ export default class Preview extends Component {
   componentWillUnmount () {
     if (this.disposePreviewChangeHandler) {
       this.disposePreviewChangeHandler()
+    }
+
+    if (this.disposePreviewConfigurationHandler) {
+      this.disposePreviewConfigurationHandler()
     }
 
     if (this.unsubscribeThemeChange) {
@@ -88,10 +127,21 @@ export default class Preview extends Component {
     }
 
     try {
+      const { disableTheming } = this.state
+
+      if (this.refs.container.classList.contains(styles.containerDefaultBackground)) {
+        this.refs.container.classList.remove(styles.containerDefaultBackground)
+      }
+
       const previousStyle = this.refs.preview.contentDocument.head.querySelector('style[data-jsreport-theme-styles]')
 
       if (previousStyle) {
         previousStyle.remove()
+      }
+
+      if (disableTheming) {
+        this.refs.container.classList.add(styles.containerDefaultBackground)
+        return
       }
 
       const containerStyles = window.getComputedStyle(this.refs.container, null)
@@ -116,16 +166,15 @@ export default class Preview extends Component {
     }
   }
 
-  changeSrc (newSrc) {
-    this.setState({
-      src: newSrc
-    })
+  changeSrc (newSrc, opts = {}) {
+    previewFrameChangeHandler(newSrc, opts)
   }
 
   clear () {
     this.setState({
       nodeKey: shortid.generate(),
-      src: null
+      src: null,
+      disableTheming: false
     })
   }
 

@@ -61,6 +61,7 @@ export const registerPreviewHandler = (fn) => {
     }
   }
 }
+
 export let previewHandler = () => {}
 
 export const registerGetPreviewTargetHandler = (fn) => {
@@ -74,6 +75,18 @@ export const registerGetPreviewTargetHandler = (fn) => {
 }
 
 export let getPreviewTargetHandler = () => {}
+
+export const registerPreviewConfigurationHandler = (fn) => {
+  previewConfigurationHandler = fn
+
+  return () => {
+    if (previewConfigurationHandler === fn) {
+      previewConfigurationHandler = () => {}
+    }
+  }
+}
+
+export let previewConfigurationHandler = () => {}
 
 export const registerModalHandler = (fn) => { modalHandler = fn }
 export let modalHandler = () => {}

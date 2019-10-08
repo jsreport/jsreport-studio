@@ -12,8 +12,6 @@ html, body {
   height: 100%;
   margin: 0;
   font-size: 0.9em;
-  background-color: $primary-backgroundColor;
-  color: $primary-color;
 }
 
 ::-webkit-scrollbar {
@@ -42,6 +40,11 @@ html, body {
 
 ::-webkit-scrollbar-corner {
   background: $scrollBar-corner-backgroundColor;
+}
+
+.root-container {
+  background-color: $primary-backgroundColor;
+  color: $primary-color;
 }
 
 .container {

@@ -289,9 +289,12 @@ class Studio {
    * and hits the iframe src chars limit.
    * @param {String} frameSrc
    */
-  customPreview (url, request) {
+  customPreview (url, request, opts = {}) {
     const target = configuration.getPreviewTargetHandler() || 'previewFrame'
-    return customPreview(url, request, target)
+
+    configuration.previewConfigurationHandler({ ...opts, src: null }).then(() => {
+      customPreview(url, request, target)
+    })
   }
 
   /**
