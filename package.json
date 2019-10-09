@@ -3,7 +3,7 @@
   "description": "jsreport templates editor and designer",
   "author": "Jan Blaha",
   "license": "MIT",
-  "version": "2.6.5",
+  "version": "2.6.6",
   "repository": {
     "type": "git",
     "url": "https://github.com/jsreport/jsreport-studio"
