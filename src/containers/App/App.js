@@ -137,9 +137,14 @@ class App extends Component {
     })
 
     if (this.props.params.shortid) {
-      collapseEntityHandler({ shortid: this.props.params.shortid }, false, { parents: true, self: false })
+      const { shortid, entitySet } = this.props.params
 
-      this.props.openTab({ shortid: this.props.params.shortid, entitySet: this.props.params.entitySet })
+      // delay the collapsing a bit to avoid showing ugly transition of collapsed -> uncollapsed
+      setTimeout(() => {
+        collapseEntityHandler({ shortid }, false, { parents: true, self: false })
+      }, 200)
+
+      this.props.openTab({ shortid, entitySet })
       return
     }
 
