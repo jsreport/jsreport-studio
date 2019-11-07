@@ -1,6 +1,6 @@
-import React, {Component, PropTypes} from 'react'
-import {connect} from 'react-redux'
-import {actions, selectors} from '../../redux/entities'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { actions, selectors } from '../../redux/entities'
 import api from '../../helpers/api.js'
 import { entitySets } from '../../lib/configuration.js'
 
@@ -16,6 +16,16 @@ export default class RenameModal extends Component {
 
     this.state = {
       error: null
+    }
+  }
+
+  componentDidMount () {
+    setTimeout(() => this.refs.name.focus(), 0)
+  }
+
+  handleKeyPress (e) {
+    if (e.key === 'Enter') {
+      this.rename()
     }
   }
 
@@ -57,10 +67,6 @@ export default class RenameModal extends Component {
     this.props.save(this.props.entity._id)
   }
 
-  componentDidMount () {
-    setTimeout(() => this.refs.name.focus(), 0)
-  }
-
   render () {
     const { error } = this.state
     const { entity } = this.props
@@ -69,10 +75,15 @@ export default class RenameModal extends Component {
     return <div>
       <div className='form-group'>
         <label>rename entity</label>
-        <input ref='name' type='text' defaultValue={entity[nameAttribute]} />
+        <input
+          ref='name'
+          type='text'
+          defaultValue={entity[nameAttribute]}
+          onKeyPress={(e) => this.handleKeyPress(e)}
+        />
       </div>
       <div className='form-group'>
-        <span style={{color: 'red', display: error ? 'block' : 'none'}}>{error}</span>
+        <span style={{ color: 'red', display: error ? 'block' : 'none' }}>{error}</span>
       </div>
       <div className='button-bar'>
         <button className='button confirmation' onClick={() => this.rename()}>Ok</button>

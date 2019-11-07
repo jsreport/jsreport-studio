@@ -1,6 +1,6 @@
-import React, {Component, PropTypes} from 'react'
-import {connect} from 'react-redux'
-import {actions} from '../../redux/editor'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { actions } from '../../redux/editor'
 import api from '../../helpers/api.js'
 import { entitySets } from '../../lib/configuration.js'
 
@@ -85,7 +85,7 @@ export default class Modal extends Component {
         />
       </div>
       <div className='form-group'>
-        <span style={{color: 'red', display: error ? 'block' : 'none'}}>{error}</span>
+        <span style={{ color: 'red', display: error ? 'block' : 'none' }}>{error}</span>
       </div>
       <div className='button-bar'>
         <button className='button confirmation' onClick={() => this.submit()}>ok</button>
