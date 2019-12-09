@@ -57,7 +57,7 @@
     "js-beautify-jsreport": "1.6.19",
     "js-cookie": "2.1.1",
     "jsdom": "15.0.0",
-    "jsreport-core": "2.6.1",
+    "jsreport-core": "github:jsreport/jsreport-core",
     "jsreport-studio-dev": "1.5.0",
     "mini-css-extract-plugin": "0.7.0",
     "mocha": "2.4.5",
