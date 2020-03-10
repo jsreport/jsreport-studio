@@ -27,6 +27,7 @@ export default class Toolbar extends Component {
     this.tryHide = this.tryHide.bind(this)
     this.handleShortcut = this.handleShortcut.bind(this)
     this.handleEarlyShortcut = this.handleEarlyShortcut.bind(this)
+    this.handleSave = this.handleSave.bind(this)
   }
 
   componentDidMount () {
@@ -65,7 +66,7 @@ export default class Toolbar extends Component {
       e.preventDefault()
 
       if (this.props.canSaveAll && toolbarVisibilityResolver('SaveAll')) {
-        this.props.onSaveAll()
+        this.handleSave(this.props.onSaveAll)
         return false
       }
     }
@@ -78,7 +79,7 @@ export default class Toolbar extends Component {
       e.preventDefault()
 
       if (this.props.canSave && toolbarVisibilityResolver('SaveAll')) {
-        this.props.onSave()
+        this.handleSave(this.props.onSave)
         return false
       }
     }
@@ -97,6 +98,24 @@ export default class Toolbar extends Component {
 
     if (this.state.expandedRun) {
       this.setState({ expandedRun: false })
+    }
+  }
+
+  async handleSave (onSave) {
+    if (this.state.saving) {
+      return
+    }
+
+    try {
+      this.setState({
+        saving: true
+      })
+
+      await onSave()
+    } finally {
+      this.setState({
+        saving: false
+      })
     }
   }
 
@@ -172,8 +191,8 @@ export default class Toolbar extends Component {
           />
         </div>
         {this.renderRun()}
-        {this.renderButton(onSave, canSave, 'Save', 'fa fa-floppy-o', `Save current tab (${metaKey}+S)`)}
-        {this.renderButton(onSaveAll, canSaveAll, 'SaveAll', 'fa fa-floppy-o', `Save all tabs (${metaKey}+SHIFT+S`)}
+        {this.renderButton(() => this.handleSave(onSave), canSave, 'Save', 'fa fa-floppy-o', `Save current tab (${metaKey}+S)`)}
+        {this.renderButton(() => this.handleSave(onSaveAll), canSaveAll, 'SaveAll', 'fa fa-floppy-o', `Save all tabs (${metaKey}+SHIFT+S`)}
         {this.renderToolbarComponents('left')}
         <div className={style.spinner}>
           {isPending ? <i className='fa fa-spinner fa-spin fa-fw' /> : ''}
