@@ -27,6 +27,7 @@ import {
   entityTreeToolbarComponents,
   entityTreeFilterItemResolvers,
   entityTreeContextMenuItemsResolvers,
+  entityTreeDropResolvers,
   registerCollapseEntityHandler,
   modalHandler
 } from '../../lib/configuration.js'
@@ -52,71 +53,26 @@ const entityTreeTarget = {
       isOverShallow: monitor.isOver({ shallow: true })
     })
   },
-  drop (props, monitor, component) {
+  async drop (props, monitor, component) {
     const dragOverContext = component.dragOverContext
-    const sourceEntitySet = monitor.getItem().entitySet
-    const sourceNode = monitor.getItem().node
-    const targetNode = dragOverContext ? dragOverContext.targetNode : undefined
-    let sourceInfo
-    let targetInfo
+    const draggedItem = monitor.getItem()
+    const dropResolvers = entityTreeDropResolvers.filter((resolver) => resolver.type === monitor.getItemType())
 
-    if (sourceNode && dragOverContext && !dragOverContext.containerTargetEntity) {
-      if (!dragOverContext.overRoot) {
-        if (!component.isValidHierarchyTarget(sourceNode, targetNode)) {
-          return
-        }
-      }
-
-      // drop will be at the same root level, so we stop it
-      if (sourceNode.data.folder == null) {
-        return
-      }
-
-      sourceInfo = {
-        id: sourceNode.data._id,
-        entitySet: sourceEntitySet
-      }
-
-      targetInfo = {
-        shortid: null
-      }
-    } else if (
-      sourceNode &&
-      dragOverContext &&
-      dragOverContext.containerTargetEntity
-    ) {
-      if (!component.isValidHierarchyTarget(sourceNode, targetNode)) {
-        return
-      }
-
-      // skip drop over same hierarchy
-      if (
-        (sourceNode.data.__entitySet === 'folders' &&
-        sourceNode.data.shortid === dragOverContext.containerTargetEntity.shortid) ||
-        (sourceNode.data.folder && sourceNode.data.folder.shortid === dragOverContext.containerTargetEntity.shortid)
-      ) {
-        return
-      }
-
-      component.dragOverContext = null
-      component.clearHighlightedArea()
-
-      sourceInfo = {
-        id: sourceNode.data._id,
-        entitySet: sourceEntitySet
-      }
-
-      targetInfo = {
-        shortid: dragOverContext.containerTargetEntity.shortid,
-        children: getAllEntitiesInHierarchy(component.entityNodesById[dragOverContext.containerTargetEntity._id])
-      }
+    if (dropResolvers.length === 0) {
+      return
     }
 
-    if (sourceInfo && targetInfo) {
+    const dropComplete = () => {
       component.dragOverContext = null
       component.clearHighlightedArea()
+    }
 
-      component.copyOrMoveEntity(sourceInfo, targetInfo)
+    for (const dropResolver of dropResolvers) {
+      await dropResolver.handler({
+        draggedItem,
+        dragOverContext,
+        dropComplete
+      })
     }
   }
 }
@@ -236,6 +192,73 @@ class EntityTree extends Component {
     this.renderNodeContextMenu = this.renderNodeContextMenu.bind(this)
     this.renderContextMenu = this.renderContextMenu.bind(this)
     this.renderTree = this.renderTree.bind(this)
+
+    if (this.props.main) {
+      entityTreeDropResolvers.push({
+        type: ENTITY_NODE_DRAG_TYPE,
+        handler: ({ draggedItem, dragOverContext, dropComplete }) => {
+          const sourceEntitySet = draggedItem.entitySet
+          const sourceNode = draggedItem.node
+          const targetNode = dragOverContext ? dragOverContext.targetNode : undefined
+          let sourceInfo
+          let targetInfo
+
+          if (sourceNode && dragOverContext && !dragOverContext.containerTargetEntity) {
+            if (!dragOverContext.overRoot) {
+              if (!this.isValidHierarchyTarget(sourceNode, targetNode)) {
+                return
+              }
+            }
+
+            // drop will be at the same root level, so we stop it
+            if (sourceNode.data.folder == null) {
+              return
+            }
+
+            sourceInfo = {
+              id: sourceNode.data._id,
+              entitySet: sourceEntitySet
+            }
+
+            targetInfo = {
+              shortid: null
+            }
+          } else if (
+            sourceNode &&
+            dragOverContext &&
+            dragOverContext.containerTargetEntity
+          ) {
+            if (!this.isValidHierarchyTarget(sourceNode, targetNode)) {
+              return
+            }
+
+            // skip drop over same hierarchy
+            if (
+              (sourceNode.data.__entitySet === 'folders' &&
+              sourceNode.data.shortid === dragOverContext.containerTargetEntity.shortid) ||
+              (sourceNode.data.folder && sourceNode.data.folder.shortid === dragOverContext.containerTargetEntity.shortid)
+            ) {
+              return
+            }
+
+            sourceInfo = {
+              id: sourceNode.data._id,
+              entitySet: sourceEntitySet
+            }
+
+            targetInfo = {
+              shortid: dragOverContext.containerTargetEntity.shortid,
+              children: getAllEntitiesInHierarchy(this.entityNodesById[dragOverContext.containerTargetEntity._id])
+            }
+          }
+
+          if (sourceInfo && targetInfo) {
+            dropComplete()
+            this.copyOrMoveEntity(sourceInfo, targetInfo)
+          }
+        }
+      })
+    }
   }
 
   componentDidMount () {
@@ -546,7 +569,7 @@ class EntityTree extends Component {
         containerTargetInContext = hierarchyEntity
       }
 
-      if (sourceEntityNode.data.__entitySet === 'folders') {
+      if (sourceEntityNode && sourceEntityNode.data.__entitySet === 'folders') {
         if (!this.isValidHierarchyTarget(sourceEntityNode, targetEntityNode)) {
           return this.clearHighlightedArea()
         }
@@ -1174,4 +1197,14 @@ export default connect(
     getEntityByShortid: (shortid, ...params) => entitiesSelectors.getByShortid(state, shortid, ...params)
   }),
   { ...editorActions, ...entitiesActions }
-)(DropTarget(ENTITY_NODE_DRAG_TYPE, entityTreeTarget, collect)(EntityTree))
+)(DropTarget(() => {
+  const valid = []
+
+  entityTreeDropResolvers.forEach((resolver) => {
+    if (valid.indexOf(resolver.type) === -1) {
+      valid.push(resolver.type)
+    }
+  })
+
+  return valid
+}, entityTreeTarget, collect)(EntityTree))

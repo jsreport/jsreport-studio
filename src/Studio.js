@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDom from 'react-dom'
+import { NativeTypes } from 'react-dnd-html5-backend'
 import ReactList from 'react-list'
 import superagent from 'superagent'
 import shortid from 'shortid'
@@ -679,6 +680,10 @@ class Studio {
 
   get Preview () {
     return Preview
+  }
+
+  get dragAndDropNativeTypes () {
+    return NativeTypes
   }
 
   constructor (store) {

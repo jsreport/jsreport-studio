@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { DragSource, DropTarget } from 'react-dnd'
+import { NativeTypes } from 'react-dnd-html5-backend'
 import style from './EntityTree.scss'
 import { checkIsGroupNode, checkIsGroupEntityNode, getNodeDOMId, getNodeTitleDOMId, getAllEntitiesInHierarchy } from './utils'
 import ENTITY_NODE_DRAG_TYPE from './nodeDragType'
-import { entitySets, entityTreeItemComponents, entityTreeIconResolvers } from '../../lib/configuration.js'
+import { entitySets, entityTreeItemComponents, entityTreeIconResolvers, entityTreeDropResolvers } from '../../lib/configuration.js'
 
 const nodeSource = {
   beginDrag (props, monitor, component) {
@@ -404,7 +405,7 @@ class EntityTreeNode extends Component {
               className={`${style.nodeBoxItemContent} ${isDragging ? style.dragging : ''}`}
             >
               {this.renderSelectControl(currentSelectionMode, node)}
-              <i key='entity-icon' className={style.entityIcon + ' fa ' + (entityStyle || (entitySets[entity.__entitySet].faIcon || style.entityDefaultIcon))}></i>
+              <i key='entity-icon' className={style.entityIcon + ' fa ' + (entityStyle || (entitySets[entity.__entitySet].faIcon || style.entityDefaultIcon))} />
               <a key='entity-name'>{getEntityTypeNameAttr(entity.__entitySet, entity) + (entity.__isDirty ? '*' : '')}</a>
               {this.renderEntityTreeItemComponents('right', { entity, entities: originalEntities })}
             </div>
@@ -441,7 +442,17 @@ export default DragSource(
   nodeSource,
   collectForSource
 )(DropTarget(
-  ENTITY_NODE_DRAG_TYPE,
+  () => {
+    const valid = []
+
+    entityTreeDropResolvers.forEach((resolver) => {
+      if (valid.indexOf(resolver.type) === -1) {
+        valid.push(resolver.type)
+      }
+    })
+
+    return valid
+  },
   nodeTarget,
   collectForTarget
 )(EntityTreeNode))
