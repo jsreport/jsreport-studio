@@ -483,6 +483,15 @@ class Studio {
   }
 
   /**
+   * Emits an error that shows the message in a modal
+   * @param {Error} e
+   * @param {Boolean} ignoreModal defaults to false
+   */
+  apiFailed (...args) {
+    return this.store.dispatch(entities.actions.apiFailed(...args))
+  }
+
+  /**
    * Synchronize the location with history
    */
   updateHistory () {
