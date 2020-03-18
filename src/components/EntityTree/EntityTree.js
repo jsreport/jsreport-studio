@@ -53,7 +53,7 @@ const entityTreeTarget = {
       isOverShallow: monitor.isOver({ shallow: true })
     })
   },
-  async drop (props, monitor, component) {
+  drop (props, monitor, component) {
     const dragOverContext = component.dragOverContext
     const draggedItem = monitor.getItem()
     const dropResolvers = entityTreeDropResolvers.filter((resolver) => resolver.type === monitor.getItemType())
@@ -67,13 +67,33 @@ const entityTreeTarget = {
       component.clearHighlightedArea()
     }
 
-    for (const dropResolver of dropResolvers) {
-      await dropResolver.handler({
+    const runResolvers = (resolvers, idx) => {
+      let i = idx || 0
+      let currentResolver = resolvers[i]
+
+      const end = (value) => {
+        value++
+
+        if (value === resolvers.length) {
+          return
+        }
+
+        runResolvers(resolvers, value)
+      }
+
+      currentResolver.handler({
         draggedItem,
         dragOverContext,
         dropComplete
+      }).then(() => {
+        end(i)
+      }, (err) => {
+        console.error(err)
+        end(i)
       })
     }
+
+    runResolvers(dropResolvers)
   }
 }
 
@@ -196,7 +216,7 @@ class EntityTree extends Component {
     if (this.props.main) {
       entityTreeDropResolvers.push({
         type: ENTITY_NODE_DRAG_TYPE,
-        handler: ({ draggedItem, dragOverContext, dropComplete }) => {
+        handler: async ({ draggedItem, dragOverContext, dropComplete }) => {
           const sourceEntitySet = draggedItem.entitySet
           const sourceNode = draggedItem.node
           const targetNode = dragOverContext ? dragOverContext.targetNode : undefined
