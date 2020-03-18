@@ -198,6 +198,15 @@ class Studio {
   }
 
   /**
+   * Array of functions used to resolve drop into entity tree
+   *
+   * @returns {Function[]}
+   */
+  get entityTreeDropResolvers () {
+    return configuration.entityTreeDropResolvers
+  }
+
+  /**
    * Array of functions used to resolve entity editor component editor, function accepts entity and returns string represent the component editor key
    *
    * @returns {Function[]}
