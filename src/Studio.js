@@ -626,7 +626,17 @@ class Studio {
    * @returns {string}
    */
   get rootUrl () {
-    return window.location.href.substring(0, window.location.href.indexOf('/studio'))
+    let url
+
+    if (window.location.href.indexOf('/studio') !== -1) {
+      url = window.location.href.substring(0, window.location.href.indexOf('/studio'))
+    } else {
+      url = window.location.href
+    }
+
+    url = url.slice(-1) === '/' ? url.slice(0, -1) : url
+
+    return url
   }
 
   /** /runtime helpers **/
