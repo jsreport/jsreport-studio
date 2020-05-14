@@ -436,8 +436,8 @@ class Studio {
    * @param {String} id
    * @return {Promise}
    */
-  saveEntity (id) {
-    return this.store.dispatch(entities.actions.save(id))
+  saveEntity (id, opts) {
+    return this.store.dispatch(entities.actions.save(id, opts))
   }
 
   /**
