@@ -13,14 +13,36 @@ import { engines, recipes, entitySets, previewListeners, previewConfigurationHan
 
 export function closeTab (id) {
   return (dispatch, getState) => {
-    const activeEntity = selectors.getActiveEntity(getState())
+    const entity = entities.selectors.getById(getState(), id, false)
+
+    if (entity) {
+      const dependantEntityTabs = getState().editor.tabs.filter((t) => {
+        return (
+          t.type === 'entity' &&
+          t._id === id &&
+          // this check includes tabs like header-footer/pdf-utils
+          t.key !== t._id
+        )
+      })
+
+      // close also dependants tabs (like header-footer, pdf-utils, etc)
+      // if the entity is new of if it is dirty
+      dependantEntityTabs.forEach((t) => {
+        if (entity.__isNew || entity.__isDirty) {
+          dispatch({
+            type: ActionTypes.CLOSE_TAB,
+            key: t.key
+          })
+        }
+      })
+    }
 
     dispatch({
       type: ActionTypes.CLOSE_TAB,
       key: id
     })
 
-    if (activeEntity && activeEntity._id === id) {
+    if (entity) {
       dispatch(entities.actions.unload(id))
     }
   }
