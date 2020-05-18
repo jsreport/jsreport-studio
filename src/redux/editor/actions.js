@@ -284,10 +284,21 @@ export function saveAll () {
         type: ActionTypes.SAVE_STARTED
       })
 
-      await Promise.all(getState().editor.tabs.filter((t) => {
-        return t.type === 'entity' && t.headerOrFooter == null
-      }).map((t) => {
-        return entities.actions.save(t._id, { ignoreFailed: true })(dispatch, getState)
+      const entitiesToUpdate = getState().editor.tabs.filter((t) => {
+        return (
+          t.type === 'entity' &&
+          // this check excludes tabs like header-footer/pdf-utils
+          t.key === t._id
+        )
+      })
+
+      await Promise.all(entitiesToUpdate.map((t) => {
+        const entity = entities.selectors.getById(getState(), t._id)
+
+        // only save for new or entities that have changed
+        if (entity.__isNew || entity.__isDirty) {
+          return entities.actions.save(t._id, { ignoreFailed: true })(dispatch, getState)
+        }
       }))
 
       dispatch({

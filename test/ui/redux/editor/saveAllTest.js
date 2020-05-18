@@ -8,7 +8,7 @@ describeAsyncStore('editor.actions.saveAll', ({ store, api, history }) => {
     api.patch((p) => ({}))
 
     store.update({
-      entities: { '1': { __entitySet: 'testEntity', _id: '1', shortid: 'foo' } },
+      entities: { '1': { __entitySet: 'testEntity', _id: '1', shortid: 'foo', __isDirty: true } },
       editor: { tabs: [{ key: '1', _id: '1', type: 'entity', entitySet: 'testEntity' }], activeTab: '1' }
     })
 
