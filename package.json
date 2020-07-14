@@ -36,7 +36,7 @@
   "dependencies": {
     "bluebird": "3.5.4",
     "compression": "1.7.4",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "semaphore-async-await": "1.5.1",
     "serve-favicon": "2.4.5",
     "serve-static": "1.13.2"
