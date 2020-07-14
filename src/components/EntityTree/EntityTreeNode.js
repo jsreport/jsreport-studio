@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { DragSource, DropTarget } from 'react-dnd'
-import { NativeTypes } from 'react-dnd-html5-backend'
 import style from './EntityTree.scss'
 import { checkIsGroupNode, checkIsGroupEntityNode, getNodeDOMId, getNodeTitleDOMId, getAllEntitiesInHierarchy } from './utils'
 import ENTITY_NODE_DRAG_TYPE from './nodeDragType'
@@ -265,8 +264,7 @@ class EntityTreeNode extends Component {
             } else {
               onNodeSelect(getAllEntitiesInHierarchy(node, true), newValue)
             }
-          }
-        }
+          }}
         />
       )
     }

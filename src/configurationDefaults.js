@@ -199,7 +199,7 @@ export default () => {
       })
     }
 
-    if (!isRoot && (isGroupEntity == null)) {
+    if (!isRoot) {
       items.push({
         key: 'Copy',
         title: 'Copy',
