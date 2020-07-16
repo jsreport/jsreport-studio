@@ -171,7 +171,7 @@ export default () => {
       })
     }
 
-    if (!isRoot && isGroupEntity == null) {
+    if (!isRoot) {
       items.push({
         key: 'Clone',
         title: 'Clone',

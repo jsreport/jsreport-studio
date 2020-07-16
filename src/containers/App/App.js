@@ -16,6 +16,7 @@ import SplitPane from '../../components/common/SplitPane/SplitPane.js'
 import EditorTabs from '../../components/Tabs/EditorTabs.js'
 import TabTitles from '../../components/Tabs/TabTitles.js'
 import Modal from '../Modal/Modal.js'
+import NewFolderModal from '../../components/Modals/NewFolderModal.js'
 import NewEntityModal from '../../components/Modals/NewEntityModal.js'
 import DeleteConfirmationModal from '../../components/Modals/DeleteConfirmationModal.js'
 import CloseConfirmationModal from '../../components/Modals/CloseConfirmationModal.js'
@@ -342,12 +343,22 @@ class App extends Component {
       toolbar: true,
       onRename: (id) => this.openModal(RenameModal, { _id: id }),
       onClone: (entity) => {
-        this.openModal(NewEntityModal, {
+        let modalToOpen
+
+        const options = {
           cloning: true,
           entity: entity,
-          entitySet: entity.__entitySet,
           initialName: getCloneName(entity[entitySets[entity.__entitySet].nameAttribute])
-        })
+        }
+
+        if (entity.__entitySet === 'folders') {
+          modalToOpen = NewFolderModal
+        } else {
+          modalToOpen = NewEntityModal
+          options.entitySet = entity.__entitySet
+        }
+
+        this.openModal(modalToOpen, options)
       },
       onRemove: (id, children) => removeHandler ? removeHandler(id, children) : this.openModal(DeleteConfirmationModal, { _id: id, childrenIds: children }),
       activeEntity,

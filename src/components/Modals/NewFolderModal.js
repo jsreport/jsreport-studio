@@ -1,9 +1,10 @@
-import React, {Component, PropTypes} from 'react'
-import {connect} from 'react-redux'
-import {actions as entitiesActions} from '../../redux/entities'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { actions as editorActions } from '../../redux/editor'
+import { actions as entitiesActions } from '../../redux/entities'
 import api from '../../helpers/api.js'
 
-@connect((state) => ({}), { ...entitiesActions })
+@connect((state) => ({}), { ...entitiesActions, ...editorActions })
 export default class Modal extends Component {
   static propTypes = {
     close: PropTypes.func.isRequired,
@@ -14,6 +15,7 @@ export default class Modal extends Component {
     super(props)
 
     this.state = {
+      processing: false,
       error: null
     }
   }
@@ -25,8 +27,13 @@ export default class Modal extends Component {
   }
 
   async submit (val) {
-    let entity = {}
+    if (this.state.processing) {
+      return
+    }
+
+    let entity = Object.assign({}, this.props.options.entity)
     const name = val || this.refs.nameInput.value
+    const isCloning = this.props.options.cloning === true
     let response
 
     entity.name = name
@@ -35,34 +42,60 @@ export default class Modal extends Component {
       entity = Object.assign(this.props.options.defaults, entity)
     }
 
+    this.setState({ processing: true })
+
     try {
       await api.post('/studio/validate-entity-name', {
         data: {
-          _id: entity._id,
+          _id: isCloning ? undefined : entity._id,
           name: entity.name,
           entitySet: 'folders',
           folderShortid: entity.folder != null ? entity.folder.shortid : null
         }
       })
 
+      if (isCloning) {
+        delete entity._id
+        delete entity.shortid
+      }
+
       response = await api.post('/odata/folders', {
         data: entity
       })
     } catch (e) {
       this.setState({
+        processing: false,
         error: e.message
       })
 
       return
     }
 
-    this.setState({
-      error: null
-    })
-
     response.__entitySet = 'folders'
 
     this.props.addExisting(response)
+
+    if (isCloning) {
+      try {
+        await this.props.hierarchyMove({
+          id: this.props.options.entity._id,
+          entitySet: 'folders',
+          onlyChildren: true
+        }, { shortid: response.shortid }, true, false, false)
+      } catch (e) {
+        this.setState({
+          error: e.message,
+          processing: false
+        })
+
+        return
+      }
+    }
+
+    this.setState({
+      error: null,
+      processing: false
+    })
 
     this.props.close()
   }
@@ -73,7 +106,7 @@ export default class Modal extends Component {
   }
 
   render () {
-    const { error } = this.state
+    const { error, processing } = this.state
     const { initialName } = this.props.options
 
     return <div>
@@ -88,10 +121,10 @@ export default class Modal extends Component {
         />
       </div>
       <div className='form-group'>
-        <span style={{color: 'red', display: error ? 'block' : 'none'}}>{error}</span>
+        <span style={{ color: 'red', display: error ? 'block' : 'none' }}>{error}</span>
       </div>
       <div className='button-bar'>
-        <button className='button confirmation' onClick={() => this.submit()}>ok</button>
+        <button className='button confirmation' disabled={processing} onClick={() => this.submit()}>ok</button>
       </div>
     </div>
   }

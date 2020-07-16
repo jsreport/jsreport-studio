@@ -191,7 +191,8 @@ export function hierarchyMove (source, target, shouldCopy = false, replace = fal
           data: {
             source: {
               entitySet: source.entitySet,
-              id: source.id
+              id: source.id,
+              onlyChildren: source.onlyChildren
             },
             target: {
               shortid: target.shortid

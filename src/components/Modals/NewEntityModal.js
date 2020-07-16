@@ -15,7 +15,8 @@ export default class Modal extends Component {
     super(props)
 
     this.state = {
-      error: null
+      error: null,
+      processing: false
     }
   }
 
@@ -26,13 +27,19 @@ export default class Modal extends Component {
   }
 
   async submit (val) {
+    if (this.state.processing) {
+      return
+    }
+
     const name = val || this.refs.nameInput.value
 
-    let entity = this.props.options.entity || {}
+    let entity = Object.assign({}, this.props.options.entity)
 
     if (this.props.options.defaults != null) {
       entity = Object.assign(this.props.options.defaults, entity)
     }
+
+    this.setState({ processing: true })
 
     try {
       await api.post('/studio/validate-entity-name', {
@@ -45,14 +52,16 @@ export default class Modal extends Component {
       })
     } catch (e) {
       this.setState({
-        error: e.message
+        error: e.message,
+        processing: false
       })
 
       return
     }
 
     this.setState({
-      error: null
+      error: null,
+      processing: false
     })
 
     this.props.close()
@@ -70,7 +79,7 @@ export default class Modal extends Component {
   }
 
   render () {
-    const { error } = this.state
+    const { error, processing } = this.state
     const { entitySet, initialName } = this.props.options
 
     return <div>
@@ -88,7 +97,7 @@ export default class Modal extends Component {
         <span style={{ color: 'red', display: error ? 'block' : 'none' }}>{error}</span>
       </div>
       <div className='button-bar'>
-        <button className='button confirmation' onClick={() => this.submit()}>ok</button>
+        <button className='button confirmation' disabled={processing} onClick={() => this.submit()}>ok</button>
       </div>
     </div>
   }
