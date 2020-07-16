@@ -81,7 +81,10 @@ export default class Modal extends Component {
           id: this.props.options.entity._id,
           entitySet: 'folders',
           onlyChildren: true
-        }, { shortid: response.shortid }, true, false, false)
+        }, {
+          shortid: response.shortid,
+          updateReferences: true
+        }, true, false, false)
       } catch (e) {
         this.setState({
           error: e.message,

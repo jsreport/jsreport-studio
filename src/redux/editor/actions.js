@@ -195,7 +195,8 @@ export function hierarchyMove (source, target, shouldCopy = false, replace = fal
               onlyChildren: source.onlyChildren
             },
             target: {
-              shortid: target.shortid
+              shortid: target.shortid,
+              updateReferences: target.updateReferences
             },
             copy: shouldCopy === true,
             replace: replace === true
@@ -248,8 +249,6 @@ export function hierarchyMove (source, target, shouldCopy = false, replace = fal
         })
 
         dispatch(entities.actions.apiDone())
-
-        return response.items
       } catch (e) {
         if (retry && e.code === 'DUPLICATED_ENTITY' && e.existingEntityEntitySet !== 'folders') {
           dispatch(entities.actions.apiDone())
@@ -263,6 +262,14 @@ export function hierarchyMove (source, target, shouldCopy = false, replace = fal
 
         dispatch(entities.actions.apiFailed(e))
       }
+
+      if (target.updateReferences) {
+        // refresh target
+        const targetEntity = entities.selectors.getByShortid(getState(), target.shortid)
+        await entities.actions.load(targetEntity._id, true)(dispatch, getState)
+      }
+
+      return response.items
     }
   }
 }
