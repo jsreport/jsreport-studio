@@ -49,4 +49,3 @@ export const describeAsyncStore = (name, nestedDescribe) => {
     nestedDescribe({ store: store, api: api, history: history })
   })
 }
-

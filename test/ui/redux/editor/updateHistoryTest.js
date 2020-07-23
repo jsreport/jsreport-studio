@@ -25,6 +25,6 @@ describeAsyncStore('editor.actions.updateHistory', ({ store, api, history }) => 
 
     await store.dispatch(actions.updateHistory())
 
-    history.should.not.containEql('@@router/CALL_HISTORY_METHOD')
+    history.should.not.have.key('@@router/CALL_HISTORY_METHOD')
   })
 })

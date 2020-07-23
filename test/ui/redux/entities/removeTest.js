@@ -18,8 +18,8 @@ describeAsyncStore('entities.actions.remove', async ({ store, api, history }) =>
     api.del((p) => { })
 
     await store.dispatch(actions.remove('1'))
-    history.should.containEql(ActionTypes.API_START)
-    history.should.containEql(ActionTypes.API_DONE)
+    history.should.have.key(ActionTypes.API_START)
+    history.should.have.key(ActionTypes.API_DONE)
   })
 
   itAsync('should trigger API_FAILED when api call throws', async () => {
@@ -29,7 +29,7 @@ describeAsyncStore('entities.actions.remove', async ({ store, api, history }) =>
     try {
       await store.dispatch(actions.remove('1'))
     } catch (e) {
-      history.should.containEql(ActionTypes.API_FAILED)
+      history.should.have.key(ActionTypes.API_FAILED)
     }
   })
 })

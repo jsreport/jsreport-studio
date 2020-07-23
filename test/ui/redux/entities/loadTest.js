@@ -17,7 +17,7 @@ describeAsyncStore('entities.actions.load', async ({ store, api, history }) => {
     api.get((p) => (called = true))
 
     await store.dispatch(actions.load('1'))
-    called.should.be.eql.false
+    called.should.be.False()
   })
 
   itAsync('should request API if loaded but forced by param', async () => {
@@ -34,7 +34,7 @@ describeAsyncStore('entities.actions.load', async ({ store, api, history }) => {
     api.get((p) => (called = true))
 
     await store.dispatch(actions.load('1'))
-    called.should.be.eql.false
+    called.should.be.False()
   })
 
   itAsync('should trigger API_START and API_DONE events', async () => {
@@ -42,8 +42,8 @@ describeAsyncStore('entities.actions.load', async ({ store, api, history }) => {
     api.get((p) => ({ value: [{ _id: '1', name: 'foo' }] }))
 
     await store.dispatch(actions.load('1'))
-    history.should.containEql(ActionTypes.API_START)
-    history.should.containEql(ActionTypes.API_DONE)
+    history.should.have.key(ActionTypes.API_START)
+    history.should.have.key(ActionTypes.API_DONE)
   })
 
   itAsync('should trigger API_FAILED when remote call fails', async () => {
@@ -53,7 +53,7 @@ describeAsyncStore('entities.actions.load', async ({ store, api, history }) => {
     try {
       await store.dispatch(actions.load('1'))
     } catch (e) {
-      history.should.containEql(ActionTypes.API_FAILED)
+      history.should.have.key(ActionTypes.API_FAILED)
     }
   })
 })

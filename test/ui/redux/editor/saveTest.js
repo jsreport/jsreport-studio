@@ -14,9 +14,9 @@ describeAsyncStore('editor.actions.save', ({ store, api, history }) => {
 
     await store.dispatch(actions.save())
 
-    history.should.containEql(entities.ActionTypes.SAVE)
+    history.should.have.key(entities.ActionTypes.SAVE)
     history[entities.ActionTypes.SAVE]._id.should.be.eql('1')
-    history.should.containEql(ActionTypes.SAVE_STARTED)
-    history.should.containEql(ActionTypes.SAVE_SUCCESS)
+    history.should.have.key(ActionTypes.SAVE_STARTED)
+    history.should.have.key(ActionTypes.SAVE_SUCCESS)
   })
 })

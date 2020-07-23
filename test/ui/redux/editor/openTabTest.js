@@ -16,7 +16,7 @@ describeAsyncStore('editor.actions.openTab', ({ store, api, history }) => {
     api.get((p) => ({ value: [{ _id: '1' }] }))
 
     await store.dispatch(actions.openTab({ _id: '1' }))
-    history.should.containEql(EntitiesActionTypes.LOAD).should.be.ok
+    history.should.have.key(EntitiesActionTypes.LOAD)
   })
 
   itAsync('should be also able to add tab based on shortid', async () => {

@@ -12,7 +12,7 @@ describeAsyncStore('editor.actions.closeTab', ({ store, api, history }) => {
 
     await store.dispatch(actions.closeTab('1'))
 
-    history.should.containEql(entities.ActionTypes.UNLOAD)
+    history.should.have.key(entities.ActionTypes.UNLOAD)
     history[entities.ActionTypes.UNLOAD]._id.should.be.eql('1')
 
     store.getState().editor.tabs.should.have.length(0)

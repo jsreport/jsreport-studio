@@ -43,8 +43,8 @@ describeAsyncStore('entities.actions.save', async ({ store, api, history }) => {
     api.patch((p) => { })
 
     await store.dispatch(actions.save('1'))
-    history.should.containEql(ActionTypes.API_START)
-    history.should.containEql(ActionTypes.API_DONE)
+    history.should.have.key(ActionTypes.API_START)
+    history.should.have.key(ActionTypes.API_DONE)
   })
 
   itAsync('patch trigger API_FAILED when API throws', async () => {
@@ -54,7 +54,7 @@ describeAsyncStore('entities.actions.save', async ({ store, api, history }) => {
     try {
       await store.dispatch(actions.save('1'))
     } catch (e) {
-      history.should.containEql(ActionTypes.API_FAILED)
+      history.should.have.key(ActionTypes.API_FAILED)
     }
   })
 
@@ -99,8 +99,8 @@ describeAsyncStore('entities.actions.save', async ({ store, api, history }) => {
     api.post((p) => ({ _id: '2' }))
 
     await store.dispatch(actions.save('1'))
-    history.should.containEql(ActionTypes.API_START)
-    history.should.containEql(ActionTypes.API_DONE)
+    history.should.have.key(ActionTypes.API_START)
+    history.should.have.key(ActionTypes.API_DONE)
   })
 
   itAsync('post trigger API_FAILED when API throws', async () => {
@@ -110,7 +110,7 @@ describeAsyncStore('entities.actions.save', async ({ store, api, history }) => {
     try {
       await store.dispatch(actions.save('1'))
     } catch (e) {
-      history.should.containEql(ActionTypes.API_FAILED)
+      history.should.have.key(ActionTypes.API_FAILED)
     }
   })
 })
