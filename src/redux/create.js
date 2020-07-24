@@ -1,6 +1,6 @@
 import { createStore as _createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
-import createLogger from 'redux-logger'
+import { createLogger } from 'redux-logger'
 import { routerMiddleware } from 'react-router-redux'
 import { enableBatching } from 'redux-batched-actions'
 import groupUpdate from './middlewares/groupUpdate.js'
@@ -13,7 +13,7 @@ export default function createStore (history) {
 
   let finalCreateStore
   if (__DEVELOPMENT__) {
-    const invariant = require('redux-immutable-state-invariant')()
+    const invariant = require('redux-immutable-state-invariant').default()
     finalCreateStore = applyMiddleware(invariant, ...middleware, logger)(_createStore)
   } else {
     finalCreateStore = applyMiddleware(...middleware)(_createStore)
