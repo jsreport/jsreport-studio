@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import ReactModal from 'react-modal'
 import { connect } from 'react-redux'
@@ -100,7 +101,7 @@ class ModalContent extends Component {
 
 class Modal extends Component {
   static propTypes = {
-    openCallback: React.PropTypes.func.isRequired
+    openCallback: PropTypes.func.isRequired
   }
 
   constructor () {

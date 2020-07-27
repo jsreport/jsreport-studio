@@ -1,7 +1,8 @@
-import React, {Component, PropTypes} from 'react'
-import {connect} from 'react-redux'
-import {selectors} from '../../redux/entities'
-import {actions} from '../../redux/editor'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { selectors } from '../../redux/entities'
+import { actions } from '../../redux/editor'
 
 @connect((state, props) => ({ entity: selectors.getById(state, props.options._id, false) }), { ...actions })
 export default class CloseConfirmationModal extends Component {
@@ -27,7 +28,7 @@ export default class CloseConfirmationModal extends Component {
     const { entity } = this.props
 
     if (!entity) {
-      return <div/>
+      return <div />
     }
 
     return <div>

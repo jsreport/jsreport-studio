@@ -1,4 +1,5 @@
 import Promise from 'bluebird'
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import assign from 'lodash/assign'
@@ -24,19 +25,19 @@ export default class SplitPane extends Component {
   }
 
   static propTypes = {
-    primary: React.PropTypes.oneOf(['first', 'second']),
-    minSize: React.PropTypes.number,
-    defaultSize: React.PropTypes.string,
-    size: React.PropTypes.number,
-    allowResize: React.PropTypes.bool,
-    resizerClassName: React.PropTypes.string,
-    split: React.PropTypes.oneOf(['vertical', 'horizontal']),
-    onDragStarted: React.PropTypes.func,
-    onDragFinished: React.PropTypes.func,
-    onCollapsing: React.PropTypes.func,
-    onDocking: React.PropTypes.func,
-    onUndocking: React.PropTypes.func,
-    onUndocked: React.PropTypes.func
+    primary: PropTypes.oneOf(['first', 'second']),
+    minSize: PropTypes.number,
+    defaultSize: PropTypes.string,
+    size: PropTypes.number,
+    allowResize: PropTypes.bool,
+    resizerClassName: PropTypes.string,
+    split: PropTypes.oneOf(['vertical', 'horizontal']),
+    onDragStarted: PropTypes.func,
+    onDragFinished: PropTypes.func,
+    onCollapsing: PropTypes.func,
+    onDocking: PropTypes.func,
+    onUndocking: PropTypes.func,
+    onUndocked: PropTypes.func
   }
 
   static defaultProps = {

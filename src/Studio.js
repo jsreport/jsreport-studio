@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import ReactDom from 'react-dom'
 import { NativeTypes } from 'react-dnd-html5-backend'
@@ -749,6 +750,7 @@ class Studio {
     this.libraries = {
       react: React,
       'react-dom': ReactDom,
+      'prop-types': PropTypes,
       'react-list': ReactList,
       superagent: superagent,
       shortid: shortid,

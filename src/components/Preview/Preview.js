@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import shortid from 'shortid'
 import {
@@ -13,7 +14,7 @@ export default class Preview extends Component {
   static instances = {}
 
   static propTypes = {
-    onLoad: React.PropTypes.func.isRequired
+    onLoad: PropTypes.func
   }
 
   constructor (props) {

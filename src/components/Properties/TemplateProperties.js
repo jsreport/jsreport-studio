@@ -1,11 +1,12 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { engines, recipes } from '../../lib/configuration'
 
 export default class TemplateProperties extends Component {
   static propTypes = {
-    entity: React.PropTypes.object,
-    entities: React.PropTypes.object,
-    onChange: React.PropTypes.func.isRequired
+    entity: PropTypes.object,
+    entities: PropTypes.object,
+    onChange: PropTypes.func.isRequired
   }
 
   renderEngines () {

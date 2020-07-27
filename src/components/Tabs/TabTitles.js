@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import TabTitle from './TabTitle'
 import { getNodeTitleDOMId } from '../EntityTree/utils'
@@ -10,10 +11,10 @@ const getEntityName = (e) => entitySets[e.__entitySet].nameAttribute ? e[entityS
 
 class TabTitles extends Component {
   static propTypes = {
-    activeTabKey: React.PropTypes.string,
-    activateTab: React.PropTypes.func.isRequired,
-    closeTab: React.PropTypes.func.isRequired,
-    tabs: React.PropTypes.array.isRequired
+    activeTabKey: PropTypes.string,
+    activateTab: PropTypes.func.isRequired,
+    closeTab: PropTypes.func.isRequired,
+    tabs: PropTypes.array.isRequired
   }
 
   constructor (props) {

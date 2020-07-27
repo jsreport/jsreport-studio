@@ -1,5 +1,6 @@
-import React, {Component, PropTypes} from 'react'
-import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { entitySets } from '../../lib/configuration.js'
 import { actions, selectors } from '../../redux/entities'
 

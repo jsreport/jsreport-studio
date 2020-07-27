@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import TextEditor from './TextEditor.js'
 import _debounce from 'lodash/debounce'
@@ -6,8 +7,8 @@ import { triggerSplitResize, templateEditorModeResolvers } from '../../lib/confi
 
 export default class TemplateEditor extends Component {
   static propTypes = {
-    entity: React.PropTypes.object.isRequired,
-    onUpdate: React.PropTypes.func.isRequired
+    entity: PropTypes.object.isRequired,
+    onUpdate: PropTypes.func.isRequired
   }
 
   constructor () {

@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { Component } from 'react'
 
-const Resizer = React.createClass({
+class Resizer extends Component {
+  constructor (props) {
+    super(props)
+
+    this.onMouseDown = this.onMouseDown.bind(this)
+  }
 
   onMouseDown (event) {
     if (!this.props.collapsed) {
       this.props.onMouseDown(event)
     }
-  },
+  }
 
   render () {
     const {
@@ -21,6 +26,7 @@ const Resizer = React.createClass({
       cancellable,
       undockeable
     } = this.props
+
     const classes = ['Resizer', split, className]
 
     return (
@@ -65,8 +71,9 @@ const Resizer = React.createClass({
             <i className={'fa fa-times'} />
           </div>
         )}
-      </div>)
+      </div>
+    )
   }
-})
+}
 
 export default Resizer

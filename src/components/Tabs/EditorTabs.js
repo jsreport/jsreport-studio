@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import Tab from './Tab'
 import TabPane from './TabPane.js'
@@ -5,9 +6,9 @@ import { editorComponents, entityEditorComponentKeyResolvers } from '../../lib/c
 
 export default class EditorTabs extends Component {
   static propTypes = {
-    onUpdate: React.PropTypes.func.isRequired,
-    activeTabKey: React.PropTypes.string,
-    tabs: React.PropTypes.array.isRequired
+    onUpdate: PropTypes.func.isRequired,
+    activeTabKey: PropTypes.string,
+    tabs: PropTypes.array.isRequired
   }
 
   componentDidMount () {

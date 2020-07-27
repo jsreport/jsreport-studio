@@ -1,12 +1,13 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import style from './Properties.scss'
 import { entitySets, propertiesComponents } from '../../lib/configuration.js'
 
 export default class Properties extends Component {
   static propTypes = {
-    entity: React.PropTypes.object,
-    entities: React.PropTypes.object,
-    onChange: React.PropTypes.func.isRequired
+    entity: PropTypes.object,
+    entities: PropTypes.object,
+    onChange: PropTypes.func.isRequired
   }
 
   constructor () {

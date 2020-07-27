@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { Component } from 'react'
 
-const Pane = React.createClass({
-  getInitialState () {
-    return {}
-  },
+class Pane extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {}
+  }
 
   render () {
-    const split = this.props.split
+    const { split } = this.props
     const classes = [ 'Pane', split, this.props.className ]
 
     let style = {
@@ -28,8 +29,12 @@ const Pane = React.createClass({
     style.minHeight = 0
     style.minWidth = 0
 
-    return (<div className={classes.join(' ')} style={style}>{this.props.children}</div>)
+    return (
+      <div className={classes.join(' ')} style={style}>
+        {this.props.children}
+      </div>
+    )
   }
-})
+}
 
 export default Pane

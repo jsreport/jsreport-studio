@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ChromeTheme from 'monaco-themes/themes/Chrome DevTools.json'
@@ -16,10 +17,10 @@ let lastTextEditorMounted = {
 
 class TextEditor extends Component {
   static propTypes = {
-    value: React.PropTypes.string,
-    onUpdate: React.PropTypes.func.isRequired,
-    mode: React.PropTypes.string.isRequired,
-    name: React.PropTypes.string.isRequired
+    value: PropTypes.string,
+    onUpdate: PropTypes.func.isRequired,
+    mode: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired
   }
 
   constructor (props) {

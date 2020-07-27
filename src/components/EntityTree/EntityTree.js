@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import ReactList from 'react-list'
@@ -143,21 +144,21 @@ class ContextMenuContainer extends Component {
 
 class EntityTree extends Component {
   static propTypes = {
-    entities: React.PropTypes.object.isRequired,
-    activeEntity: React.PropTypes.object,
+    entities: PropTypes.object.isRequired,
+    activeEntity: PropTypes.object,
     // specifies if the tree should render a toolbar in his header
-    toolbar: React.PropTypes.bool,
+    toolbar: PropTypes.bool,
     // specifies that the tree is in selectable mode,
     // in this mode, filtering is disabled, all items (incluiding in subtrees)
     // have a checkbox for single or multiple selection and contextmenu actions are disabled
-    selectable: React.PropTypes.bool,
+    selectable: PropTypes.bool,
     // tree accepts a render callback (function as child) to allow extensions to
     // control how entity items are rendered
-    children: React.PropTypes.func
-    // onClick: React.PropTypes.func.isRequired,
-    // onRemove: React.PropTypes.func.isRequired,
-    // onRename: React.PropTypes.func.isRequired,
-    // onNewClick: React.PropTypes.func.isRequired
+    children: PropTypes.func
+    // onClick: PropTypes.func.isRequired,
+    // onRemove: PropTypes.func.isRequired,
+    // onRename: PropTypes.func.isRequired,
+    // onNewClick: PropTypes.func.isRequired
   }
 
   constructor (props) {

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import EntityFuzzyFinderModal from '../Modals/EntityFuzzyFinderModal.js'
 import { modalHandler, toolbarComponents, toolbarVisibilityResolver, extensions } from '../../lib/configuration.js'
@@ -9,16 +10,16 @@ const isMac = () => window.navigator.platform.toUpperCase().indexOf('MAC') >= 0
 
 export default class Toolbar extends Component {
   static propTypes = {
-    openStartup: React.PropTypes.func.isRequired,
-    onUpdate: React.PropTypes.func.isRequired,
-    onRun: React.PropTypes.func.isRequired,
-    canRun: React.PropTypes.bool.isRequired,
-    onSave: React.PropTypes.func.isRequired,
-    canSave: React.PropTypes.bool.isRequired,
-    onSaveAll: React.PropTypes.func.isRequired,
-    canSaveAll: React.PropTypes.bool.isRequired,
-    isPending: React.PropTypes.bool.isRequired,
-    activeTab: React.PropTypes.object
+    openStartup: PropTypes.func.isRequired,
+    onUpdate: PropTypes.func.isRequired,
+    onRun: PropTypes.func.isRequired,
+    canRun: PropTypes.bool.isRequired,
+    onSave: PropTypes.func.isRequired,
+    canSave: PropTypes.bool.isRequired,
+    onSaveAll: PropTypes.func.isRequired,
+    canSaveAll: PropTypes.bool.isRequired,
+    isPending: PropTypes.bool.isRequired,
+    activeTab: PropTypes.object
   }
 
   constructor () {
