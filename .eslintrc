@@ -1,5 +1,5 @@
 {
-  "extends": ["standard", "standard-jsx"],
+  "extends": ["standard", "standard-jsx", "plugin:react-hooks/recommended"],
   "parser": "babel-eslint",
   "plugins": [
     "babel"
