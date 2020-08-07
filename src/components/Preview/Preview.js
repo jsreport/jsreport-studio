@@ -10,7 +10,7 @@ import {
 } from '../../lib/configuration.js'
 import styles from './Preview.scss'
 
-export default class Preview extends Component {
+class Preview extends Component {
   static instances = {}
 
   static propTypes = {
@@ -29,17 +29,6 @@ export default class Preview extends Component {
     this.lastURLBlobCreated = null
     this.handleOnLoad = this.handleOnLoad.bind(this)
     this.applyStylesToIframe = this.applyStylesToIframe.bind(this)
-  }
-
-  componentWillMount () {
-    this.unsubscribeThemeChange = subscribeToThemeChange(this.applyStylesToIframe)
-  }
-
-  componentWillUpdate (nextProps, nextState) {
-    if (this.state.src !== nextState.src && this.lastURLBlobCreated != null) {
-      window.URL.revokeObjectURL(this.lastURLBlobCreated)
-      this.lastURLBlobCreated = null
-    }
   }
 
   componentDidMount () {
@@ -90,6 +79,15 @@ export default class Preview extends Component {
           })
         })
       })
+    }
+
+    this.unsubscribeThemeChange = subscribeToThemeChange(this.applyStylesToIframe)
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (prevState.src !== this.state.src && this.lastURLBlobCreated != null) {
+      window.URL.revokeObjectURL(this.lastURLBlobCreated)
+      this.lastURLBlobCreated = null
     }
   }
 
@@ -216,8 +214,7 @@ export default class Preview extends Component {
           ref='preview'
           frameBorder='0'
           onLoad={this.handleOnLoad}
-          allowTransparency='true'
-          allowFullScreen='true'
+          allowFullScreen
           width='100%'
           height='100%'
           src={src == null ? 'about:blank' : src}
@@ -228,3 +225,5 @@ export default class Preview extends Component {
     )
   }
 }
+
+export default Preview

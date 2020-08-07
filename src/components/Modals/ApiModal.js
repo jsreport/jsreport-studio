@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import { selectors } from '../../redux/editor'
 import style from './ApiModal.scss'
 
-@connect((state, props) => ({ entity: selectors.getActiveEntity(state) }))
-export default class ApiModal extends Component {
+class ApiModal extends Component {
   static propTypes = {
     options: PropTypes.object.isRequired
   }
@@ -84,3 +83,5 @@ export default class ApiModal extends Component {
     </div>
   }
 }
+
+export default connect((state, props) => ({ entity: selectors.getActiveEntity(state) }))(ApiModal)

@@ -3,16 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { actions } from '../../redux/editor'
 
-@connect(undefined, { ...actions }, (stateProps, dispatchProps, ownProps) => ({
-  ...ownProps,
-  ...stateProps,
-  ...dispatchProps,
-  close: (ok) => {
-    ownProps.options.onResponse(ok)
-    ownProps.close && ownProps.close()
-  }
-}))
-export default class RestoreDockConfirmationModal extends Component {
+class RestoreDockConfirmationModal extends Component {
   static propTypes = {
     close: PropTypes.func.isRequired,
     options: PropTypes.object.isRequired
@@ -54,3 +45,17 @@ export default class RestoreDockConfirmationModal extends Component {
     </div>
   }
 }
+
+export default connect(
+  undefined,
+  { ...actions },
+  (stateProps, dispatchProps, ownProps) => ({
+    ...ownProps,
+    ...stateProps,
+    ...dispatchProps,
+    close: (ok) => {
+      ownProps.options.onResponse(ok)
+      ownProps.close && ownProps.close()
+    }
+  })
+)(RestoreDockConfirmationModal)

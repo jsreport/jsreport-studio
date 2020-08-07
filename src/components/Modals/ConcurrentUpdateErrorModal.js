@@ -4,10 +4,7 @@ import { connect } from 'react-redux'
 import { entitySets } from '../../lib/configuration.js'
 import { actions, selectors } from '../../redux/entities'
 
-@connect((state, props) => ({
-  entity: selectors.getById(state, props.options.entityId)
-}), { ...actions })
-export default class ConcurrentUpdateErrorModal extends Component {
+class ConcurrentUpdateErrorModal extends Component {
   static propTypes = {
     close: PropTypes.func.isRequired,
     options: PropTypes.object.isRequired
@@ -110,3 +107,7 @@ export default class ConcurrentUpdateErrorModal extends Component {
     )
   }
 }
+
+export default connect((state, props) => ({
+  entity: selectors.getById(state, props.options.entityId)
+}), { ...actions })(ConcurrentUpdateErrorModal)

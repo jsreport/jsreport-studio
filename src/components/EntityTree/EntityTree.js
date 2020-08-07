@@ -1,45 +1,27 @@
-import React, { Component, useRef, useCallback } from 'react'
+import React, { useRef, useCallback } from 'react'
 import classNames from 'classnames'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import useEntityTree from './useEntityTree'
 import EntityTreeContext from './EntityTreeContext'
 import Toolbar from './Toolbar'
 import TreeList from './TreeList'
 import HighlightedArea from './HighlightedArea'
 import { RootContextMenu } from './ContextMenu'
-import { actions as entitiesActions, selectors as entitiesSelectors } from '../../redux/entities'
+import { selectors as entitiesSelectors } from '../../redux/entities'
 import { actions as editorActions } from '../../redux/editor'
 import styles from './EntityTree.scss'
 
 const paddingByLevelInTree = 0.8
 
-class EntityTree extends Component {
-  render () {
-    const { children, ...restProps } = this.props
-
-    return (
-      <EntityTreeContent
-        {...restProps}
-      >
-        {children}
-      </EntityTreeContent>
-    )
-  }
-}
-
-const EntityTreeContent = ({
+const EntityTree = ({
   main,
   toolbar,
   selectable,
   selectionMode,
-  entities,
   selected,
   activeEntity,
-  getEntityById,
-  getEntityByShortid,
+  entities,
   getContextMenuItems,
-  openTab,
-  hierarchyMove,
   onNewEntity,
   onRemove,
   onClone,
@@ -47,6 +29,21 @@ const EntityTreeContent = ({
   onSelectionChanged,
   children
 }) => {
+  const { getEntityById, getEntityByShortid } = useSelector((state) => ({
+    getEntityById: (id, ...params) => entitiesSelectors.getById(state, id, ...params),
+    getEntityByShortid: (shortid, ...params) => entitiesSelectors.getByShortid(state, shortid, ...params)
+  }))
+
+  const dispatch = useDispatch()
+
+  const openTab = useCallback((...params) => {
+    return dispatch(editorActions.openTab(...params))
+  }, [dispatch])
+
+  const hierarchyMove = useCallback((...params) => {
+    return dispatch(editorActions.hierarchyMove(...params))
+  }, [dispatch])
+
   const listContainerRef = useRef(null)
   const listRef = useRef(null)
   const contextMenuRef = useRef(null)
@@ -135,10 +132,4 @@ const EntityTreeContent = ({
   )
 }
 
-export default connect(
-  (state) => ({
-    getEntityById: (id, ...params) => entitiesSelectors.getById(state, id, ...params),
-    getEntityByShortid: (shortid, ...params) => entitiesSelectors.getByShortid(state, shortid, ...params)
-  }),
-  { ...editorActions, ...entitiesActions }
-)(EntityTree)
+export default EntityTree

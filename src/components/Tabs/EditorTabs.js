@@ -34,11 +34,6 @@ export default class EditorTabs extends Component {
 
     if (typeof componentTabRef.onTabActive === 'function') {
       componentTabRef.onTabActive()
-    } else if (
-      typeof componentTabRef.getWrappedInstance === 'function' &&
-      typeof componentTabRef.getWrappedInstance().onTabActive === 'function'
-    ) {
-      componentTabRef.getWrappedInstance().onTabActive()
     }
   }
 

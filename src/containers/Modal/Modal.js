@@ -108,6 +108,7 @@ class Modal extends Component {
     super()
 
     this.state = this.defaultState()
+    this.mounted = false
 
     this.getBodyParams = this.getBodyParams.bind(this)
     this.updateContainerPosition = this.updateContainerPosition.bind(this)
@@ -116,17 +117,12 @@ class Modal extends Component {
   }
 
   componentDidMount () {
+    this.mounted = true
     this.props.openCallback(this.open.bind(this))
   }
 
-  componentWillReceiveProps (nextProps) {
-    // if error message from API was set then reset componentOrText and options
-    if (nextProps.text != null) {
-      this.componentOrText = undefined
-      this.options = {}
-    }
-
-    if (this.props.contentId !== nextProps.contentId) {
+  componentDidUpdate (prevProps) {
+    if (prevProps.contentId !== this.props.contentId) {
       this.setState(this.defaultState())
     }
   }
@@ -218,8 +214,15 @@ class Modal extends Component {
   }
 
   render () {
+    const { text } = this.props
     const { top, left, marginTop, maxWidth, maxHeight } = this.state
     const isOpen = this.isModalOpen()
+
+    // if error message from API was set then reset componentOrText and options
+    if (this.mounted && text != null) {
+      this.componentOrText = undefined
+      this.options = {}
+    }
 
     return (
       <ReactModal

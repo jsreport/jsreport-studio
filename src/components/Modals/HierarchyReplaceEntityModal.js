@@ -5,12 +5,7 @@ import { connect } from 'react-redux'
 import { selectors } from '../../redux/entities'
 import { actions } from '../../redux/editor'
 
-@connect((state, props) => ({
-  sourceEntity: selectors.getById(state, props.options.sourceId, false),
-  targetEntity: selectors.getByShortid(state, props.options.targetShortId, false),
-  resolveEntityPath: (entity, ...params) => selectors.resolveEntityPath(state, entity, ...params)
-}), { ...actions })
-export default class HierarchyReplaceEntityModal extends Component {
+class HierarchyReplaceEntityModal extends Component {
   static propTypes = {
     close: PropTypes.func.isRequired,
     options: PropTypes.object.isRequired
@@ -80,3 +75,9 @@ export default class HierarchyReplaceEntityModal extends Component {
     )
   }
 }
+
+export default connect((state, props) => ({
+  sourceEntity: selectors.getById(state, props.options.sourceId, false),
+  targetEntity: selectors.getByShortid(state, props.options.targetShortId, false),
+  resolveEntityPath: (entity, ...params) => selectors.resolveEntityPath(state, entity, ...params)
+}), { ...actions })(HierarchyReplaceEntityModal)

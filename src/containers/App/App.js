@@ -43,26 +43,7 @@ import {
 
 const progressActions = progress.actions
 
-@connect((state) => ({
-  entities: state.entities,
-  references: entities.selectors.getReferences(state),
-  activeTabKey: state.editor.activeTabKey,
-  activeTabWithEntity: selectors.getActiveTabWithEntity(state),
-  isPending: progress.selectors.getIsPending(state),
-  canRun: selectors.canRun(state),
-  canSave: selectors.canSave(state),
-  canSaveAll: selectors.canSaveAll(state),
-  tabsWithEntities: selectors.getTabWithEntities(state),
-  activeEntity: selectors.getActiveEntity(state),
-  lastActiveTemplate: selectors.getLastActiveTemplate(state),
-  undockMode: state.editor.undockMode,
-  getEntityByShortid: (shortid, ...params) => entities.selectors.getByShortid(state, shortid, ...params)
-}), { ...actions, ...progressActions })
 class App extends Component {
-  static contextTypes = {
-    store: PropTypes.object.isRequired
-  }
-
   static propTypes = {
     entities: PropTypes.object,
     references: PropTypes.object,
@@ -223,7 +204,9 @@ class App extends Component {
   }
 
   closeTab (key) {
-    const entity = entities.selectors.getById(this.context.store.getState(), key, false)
+    const { getEntityById } = this.props
+    const entity = getEntityById(key, false)
+
     if (!entity || !entity.__isDirty) {
       return this.props.closeTab(key)
     }
@@ -424,7 +407,7 @@ class App extends Component {
       <DndProvider backend={HTML5Backend}>
         <div className='container'>
           <Helmet />
-          <Modal ref='modal' openCallback={(open) => { this.refOpenModal = open }} />
+          <Modal openCallback={(open) => { this.refOpenModal = open }} />
 
           <div className={style.appContent + ' container'}>
             <div className='block'>
@@ -491,4 +474,19 @@ class App extends Component {
   }
 }
 
-export default App
+export default connect((state) => ({
+  entities: state.entities,
+  references: entities.selectors.getReferences(state),
+  activeTabKey: state.editor.activeTabKey,
+  activeTabWithEntity: selectors.getActiveTabWithEntity(state),
+  isPending: progress.selectors.getIsPending(state),
+  canRun: selectors.canRun(state),
+  canSave: selectors.canSave(state),
+  canSaveAll: selectors.canSaveAll(state),
+  tabsWithEntities: selectors.getTabWithEntities(state),
+  activeEntity: selectors.getActiveEntity(state),
+  lastActiveTemplate: selectors.getLastActiveTemplate(state),
+  undockMode: state.editor.undockMode,
+  getEntityById: (id, ...params) => entities.selectors.getById(state, id, ...params),
+  getEntityByShortid: (shortid, ...params) => entities.selectors.getByShortid(state, shortid, ...params)
+}), { ...actions, ...progressActions })(App)

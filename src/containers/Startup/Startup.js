@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { actions } from '../../redux/editor'
 import { actions as settingsActions, selectors as settingsSelectors } from '../../redux/settings'
@@ -6,13 +6,7 @@ import { selectors as entitiesSelectors } from '../../redux/entities'
 import api from '../../helpers/api.js'
 import { previewFrameChangeHandler, extensions } from '../../lib/configuration.js'
 
-@connect((state) => ({
-  activeTabKey: state.editor.activeTabKey,
-  logsWithTemplates: settingsSelectors.getLogsWithTemplates(state),
-  failedLogsWithTemplates: settingsSelectors.getFailedLogsWithTemplates(state),
-  resolveEntityPath: (...params) => entitiesSelectors.resolveEntityPath(state, ...params)
-}), { ...actions, ...settingsActions }, undefined, { withRef: true })
-export default class Startup extends Component {
+class Startup extends Component {
   constructor () {
     super()
     this.state = { templates: [] }
@@ -78,16 +72,16 @@ export default class Startup extends Component {
               </tr>
             </thead>
             <tbody>
-            {(logsWithTemplates).map((l, k) => (
-              <tr key={k} onClick={() => this.openLogs(l)}>
-                <td className='selection'>
-                  <a style={{ textDecoration: 'underline' }} onClick={() => l.template._id ? openTab({ _id: l.template._id }) : null}>
-                    {l.template.path}
-                  </a>
-                </td>
-                <td>{new Date(l.timestamp).toLocaleString()}</td>
-              </tr>
-            ))}
+              {(logsWithTemplates).map((l, k) => (
+                <tr key={k} onClick={() => this.openLogs(l)}>
+                  <td className='selection'>
+                    <a style={{ textDecoration: 'underline' }} onClick={() => l.template._id ? openTab({ _id: l.template._id }) : null}>
+                      {l.template.path}
+                    </a>
+                  </td>
+                  <td>{new Date(l.timestamp).toLocaleString()}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -103,17 +97,17 @@ export default class Startup extends Component {
               </tr>
             </thead>
             <tbody>
-            {(failedLogsWithTemplates).map((l, k) => (
-              <tr key={k} onClick={() => this.openLogs(l)}>
-                <td className='selection'>
-                  <a style={{ textDecoration: 'underline' }} onClick={() => l.template._id ? openTab({ _id: l.template._id }) : null}>
-                    {l.template.path}
-                  </a>
-                </td>
-                <td>{!l.error.message || l.error.message.length < 90 ? l.error.message : (l.error.message.substring(0, 80) + '...')}</td>
-                <td>{new Date(l.timestamp).toLocaleString()}</td>
-              </tr>
-            ))}
+              {(failedLogsWithTemplates).map((l, k) => (
+                <tr key={k} onClick={() => this.openLogs(l)}>
+                  <td className='selection'>
+                    <a style={{ textDecoration: 'underline' }} onClick={() => l.template._id ? openTab({ _id: l.template._id }) : null}>
+                      {l.template.path}
+                    </a>
+                  </td>
+                  <td>{!l.error.message || l.error.message.length < 90 ? l.error.message : (l.error.message.substring(0, 80) + '...')}</td>
+                  <td>{new Date(l.timestamp).toLocaleString()}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -139,13 +133,13 @@ export default class Startup extends Component {
               </tr>
             </thead>
             <tbody>
-            {templates.map((t) => (
-              <tr key={t._id} onClick={() => openTab({ _id: t._id })}>
-                <td className='selection'>{t.path}</td>
-                <td>{t.recipe}</td>
-                <td>{t.modificationDate.toLocaleString()}</td>
-              </tr>
-            ))}
+              {templates.map((t) => (
+                <tr key={t._id} onClick={() => openTab({ _id: t._id })}>
+                  <td className='selection'>{t.path}</td>
+                  <td>{t.recipe}</td>
+                  <td>{t.modificationDate.toLocaleString()}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -154,3 +148,10 @@ export default class Startup extends Component {
     )
   }
 }
+
+export default connect((state) => ({
+  activeTabKey: state.editor.activeTabKey,
+  logsWithTemplates: settingsSelectors.getLogsWithTemplates(state),
+  failedLogsWithTemplates: settingsSelectors.getFailedLogsWithTemplates(state),
+  resolveEntityPath: (...params) => entitiesSelectors.resolveEntityPath(state, ...params)
+}), { ...actions, ...settingsActions }, undefined, { forwardRef: true })(Startup)

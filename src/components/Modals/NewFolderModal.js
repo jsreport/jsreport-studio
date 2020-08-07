@@ -5,8 +5,7 @@ import { actions as editorActions } from '../../redux/editor'
 import { actions as entitiesActions } from '../../redux/entities'
 import api from '../../helpers/api.js'
 
-@connect((state) => ({}), { ...entitiesActions, ...editorActions })
-export default class Modal extends Component {
+class NewFolderModal extends Component {
   static propTypes = {
     close: PropTypes.func.isRequired,
     options: PropTypes.object.isRequired
@@ -133,3 +132,8 @@ export default class Modal extends Component {
     </div>
   }
 }
+
+export default connect(
+  (state) => ({}),
+  { ...entitiesActions, ...editorActions }
+)(NewFolderModal)

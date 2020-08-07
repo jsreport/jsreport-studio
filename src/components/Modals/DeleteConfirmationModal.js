@@ -4,11 +4,7 @@ import { connect } from 'react-redux'
 import { entitySets } from '../../lib/configuration.js'
 import { actions, selectors } from '../../redux/entities'
 
-@connect((state, props) => ({
-  entity: selectors.getById(state, props.options._id, false),
-  childrenIds: props.options.childrenIds
-}), { ...actions })
-export default class DeleteConfirmationModal extends Component {
+class DeleteConfirmationModal extends Component {
   static propTypes = {
     close: PropTypes.func.isRequired,
     options: PropTypes.object.isRequired
@@ -55,3 +51,8 @@ export default class DeleteConfirmationModal extends Component {
     )
   }
 }
+
+export default connect((state, props) => ({
+  entity: selectors.getById(state, props.options._id, false),
+  childrenIds: props.options.childrenIds
+}), { ...actions })(DeleteConfirmationModal)

@@ -446,4 +446,4 @@ class TextEditor extends Component {
 
 export default connect(undefined, {
   reformat
-}, undefined, { withRef: true })(TextEditor)
+}, undefined, { forwardRef: true })(TextEditor)

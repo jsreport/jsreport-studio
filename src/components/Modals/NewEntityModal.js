@@ -5,8 +5,7 @@ import { actions } from '../../redux/editor'
 import api from '../../helpers/api.js'
 import { entitySets } from '../../lib/configuration.js'
 
-@connect((state) => ({}), { ...actions })
-export default class Modal extends Component {
+class NewEntityModal extends Component {
   static propTypes = {
     close: PropTypes.func.isRequired,
     options: PropTypes.object.isRequired
@@ -103,3 +102,8 @@ export default class Modal extends Component {
     </div>
   }
 }
+
+export default connect(
+  (state) => ({}),
+  { ...actions }
+)(NewEntityModal)

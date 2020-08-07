@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import { selectors } from '../../redux/entities'
 import { actions } from '../../redux/editor'
 
-@connect((state, props) => ({ entity: selectors.getById(state, props.options._id, false) }), { ...actions })
-export default class CloseConfirmationModal extends Component {
+class CloseConfirmationModal extends Component {
   static propTypes = {
     close: PropTypes.func.isRequired,
     options: PropTypes.object.isRequired
@@ -41,3 +40,8 @@ export default class CloseConfirmationModal extends Component {
     </div>
   }
 }
+
+export default connect(
+  (state, props) => ({ entity: selectors.getById(state, props.options._id, false) }),
+  { ...actions }
+)(CloseConfirmationModal)

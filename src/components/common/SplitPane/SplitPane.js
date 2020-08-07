@@ -6,7 +6,7 @@ import assign from 'lodash/assign'
 import Pane from './Pane'
 import Resizer from './Resizer'
 
-export default class SplitPane extends Component {
+class SplitPane extends Component {
   constructor (props) {
     super(props)
 
@@ -447,3 +447,5 @@ export default class SplitPane extends Component {
     )
   }
 }
+
+export default SplitPane
