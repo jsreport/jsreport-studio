@@ -2,8 +2,8 @@ import Promise from 'bluebird'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { DragDropContext } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 import { actions, selectors } from 'redux/editor'
 import * as entities from 'redux/entities'
 import Preview from '../../components/Preview/Preview.js'
@@ -337,7 +337,7 @@ class App extends Component {
       minHeight: 0
     }
 
-    const { activeEntity, references, openTab } = this.props
+    const { activeEntity, references } = this.props
 
     const entityTreeProps = {
       main: true,
@@ -364,8 +364,7 @@ class App extends Component {
       onRemove: (id, children) => removeHandler ? removeHandler(id, children) : this.openModal(DeleteConfirmationModal, { _id: id, childrenIds: children }),
       activeEntity,
       entities: references,
-      onClick: (_id) => openTab({ _id: _id }),
-      onNewClick: (es, options) => entitySets[es].onNew ? entitySets[es].onNew(options || {}) : this.openModal(NewEntityModal, { ...options, entitySet: es })
+      onNewEntity: (es, options) => entitySets[es].onNew ? entitySets[es].onNew(options || {}) : this.openModal(NewEntityModal, { ...options, entitySet: es })
     }
 
     // if there are no components registered, defaults to rendering the EntityTree alone
@@ -422,72 +421,74 @@ class App extends Component {
     } = this.props
 
     return (
-      <div className='container'>
-        <Helmet />
-        <Modal ref='modal' openCallback={(open) => { this.refOpenModal = open }} />
+      <DndProvider backend={HTML5Backend}>
+        <div className='container'>
+          <Helmet />
+          <Modal ref='modal' openCallback={(open) => { this.refOpenModal = open }} />
 
-        <div className={style.appContent + ' container'}>
-          <div className='block'>
-            <Toolbar
-              canRun={canRun}
-              canSave={canSave}
-              canSaveAll={canSaveAll}
-              onSave={() => this.save()}
-              onSaveAll={() => this.saveAll()}
-              isPending={isPending}
-              activeTab={activeTabWithEntity}
-              onUpdate={update}
-              onRun={(target, ignoreUndockMode) => this.handleRun(target, ignoreUndockMode ? false : undockMode)}
-              undockPreview={this.undockPreview}
-              openStartup={() => this.openStartup()}
-            />
-
+          <div className={style.appContent + ' container'}>
             <div className='block'>
-              <SplitPane
-                ref='leftPane'
-                collapsedText='Objects / Properties' collapsable='first'
-                resizerClassName='resizer' defaultSize='85%' onChange={() => this.handleSplitChanged()}
-                onDragFinished={() => this.handleSplitDragFinished()}>
-                <SplitPane
-                  resizerClassName='resizer-horizontal' split='horizontal'
-                  defaultSize={(window.innerHeight * 0.5) + 'px'}>
-                  <EntityTreeBox>
-                    {this.renderEntityTree()}
-                  </EntityTreeBox>
-                  <Properties entity={activeEntity} entities={entities} onChange={update} />
-                </SplitPane>
+              <Toolbar
+                canRun={canRun}
+                canSave={canSave}
+                canSaveAll={canSaveAll}
+                onSave={() => this.save()}
+                onSaveAll={() => this.saveAll()}
+                isPending={isPending}
+                activeTab={activeTabWithEntity}
+                onUpdate={update}
+                onRun={(target, ignoreUndockMode) => this.handleRun(target, ignoreUndockMode ? false : undockMode)}
+                undockPreview={this.undockPreview}
+                openStartup={() => this.openStartup()}
+              />
 
-                <div className='block'>
-                  <TabTitles
-                    activeTabKey={activeTabKey} activateTab={activateTab} tabs={tabsWithEntities}
-                    closeTab={(k) => this.closeTab(k)} />
+              <div className='block'>
+                <SplitPane
+                  ref='leftPane'
+                  collapsedText='Objects / Properties' collapsable='first'
+                  resizerClassName='resizer' defaultSize='85%' onChange={() => this.handleSplitChanged()}
+                  onDragFinished={() => this.handleSplitDragFinished()}>
                   <SplitPane
-                    ref='previewPane'
-                    collapsedText='preview'
-                    collapsable='second'
-                    undockeable={this.isPreviewUndockeable}
-                    cancellable
-                    onChange={() => this.handleSplitChanged()}
-                    onCollapsing={this.handlePreviewCollapsing}
-                    onCollapseChange={this.handlePreviewCollapseChange}
-                    onDocking={this.handlePreviewDocking}
-                    onUndocking={this.handlePreviewUndocking}
-                    onUndocked={this.handlePreviewUndocked}
-                    onCancel={this.handlePreviewCancel}
-                    onDragFinished={() => this.handleSplitDragFinished()}
-                    resizerClassName='resizer'>
-                    <EditorTabs
-                      activeTabKey={activeTabKey} onUpdate={(v) => groupedUpdate(v)} tabs={tabsWithEntities} />
-                    <Preview ref='preview' main onLoad={stop} />
+                    resizerClassName='resizer-horizontal' split='horizontal'
+                    defaultSize={(window.innerHeight * 0.5) + 'px'}>
+                    <EntityTreeBox>
+                      {this.renderEntityTree()}
+                    </EntityTreeBox>
+                    <Properties entity={activeEntity} entities={entities} onChange={update} />
                   </SplitPane>
-                </div>
-              </SplitPane>
+
+                  <div className='block'>
+                    <TabTitles
+                      activeTabKey={activeTabKey} activateTab={activateTab} tabs={tabsWithEntities}
+                      closeTab={(k) => this.closeTab(k)} />
+                    <SplitPane
+                      ref='previewPane'
+                      collapsedText='preview'
+                      collapsable='second'
+                      undockeable={this.isPreviewUndockeable}
+                      cancellable
+                      onChange={() => this.handleSplitChanged()}
+                      onCollapsing={this.handlePreviewCollapsing}
+                      onCollapseChange={this.handlePreviewCollapseChange}
+                      onDocking={this.handlePreviewDocking}
+                      onUndocking={this.handlePreviewUndocking}
+                      onUndocked={this.handlePreviewUndocked}
+                      onCancel={this.handlePreviewCancel}
+                      onDragFinished={() => this.handleSplitDragFinished()}
+                      resizerClassName='resizer'>
+                      <EditorTabs
+                        activeTabKey={activeTabKey} onUpdate={(v) => groupedUpdate(v)} tabs={tabsWithEntities} />
+                      <Preview ref='preview' main onLoad={stop} />
+                    </SplitPane>
+                  </div>
+                </SplitPane>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </DndProvider>
     )
   }
 }
 
-export default DragDropContext(HTML5Backend)(App)
+export default App

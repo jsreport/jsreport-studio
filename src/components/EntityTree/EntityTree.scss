@@ -11,8 +11,18 @@
   height: 100%;
 }
 
+.treeListContainer.dragging {
+
+}
+
 .toolbar {
   padding: 0.3rem;
+}
+
+.toolbarGroup {
+  display: inline-block;
+  margin-left: 0.2rem;
+  margin-right: 0.2rem;
 }
 
 .nodeBox {
@@ -55,6 +65,7 @@
   font-size: 0.9rem;
   cursor: pointer;
   width: 0.2rem;
+  user-select: none;
 }
 
 .nodeTitle:before {
@@ -107,6 +118,11 @@
 .link:hover, .link.focused {
   background: $entityTree-node-hover-backgroundColor;
   color: $entityTree-node-hover-color;
+}
+
+.treeListContainer.dragging .link:hover {
+  background: inherit;
+  color: inherit;
 }
 
 .link.dragging {

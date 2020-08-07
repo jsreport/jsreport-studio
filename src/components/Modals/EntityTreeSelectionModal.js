@@ -116,41 +116,16 @@ class EntityTreeSelectionModal extends Component {
     }
 
     this.createNewFolder = this.createNewFolder.bind(this)
-    this.handleTreeNodeSelect = this.handleTreeNodeSelect.bind(this)
+    this.handleSelectionChange = this.handleSelectionChange.bind(this)
   }
 
   componentDidMount () {
     setTimeout(() => this.refs.cancel.focus(), 0)
   }
 
-  handleTreeNodeSelect (references, childrenOrSingle, v) {
-    const { multiple } = this.props.options
-    let updates = {}
-
-    if (multiple) {
-      Object.assign(updates, this.state.selected)
-    }
-
-    if (Array.isArray(childrenOrSingle)) {
-      const children = multiple ? childrenOrSingle : childrenOrSingle[0]
-
-      children.forEach((_id) => {
-        if (v === true) {
-          updates[_id] = v
-        } else {
-          delete updates[_id]
-        }
-      })
-    } else {
-      if (v === true) {
-        updates[childrenOrSingle._id] = v
-      } else {
-        delete updates[childrenOrSingle._id]
-      }
-    }
-
+  handleSelectionChange (selected) {
     this.setState({
-      selected: updates
+      selected: selected
     })
   }
 
@@ -257,13 +232,9 @@ class EntityTreeSelectionModal extends Component {
 
     const { getEntityByShortid, resolveEntityPath } = this.props
 
-    const { newFolderEdit } = this.state
+    const { selected, newFolderEdit } = this.state
 
     const entities = this.filterEntities(this.props.references)
-
-    Object.keys(entities).forEach((k) => {
-      Object.keys(entities[k]).forEach((e) => (entities[k][e] = Object.assign({}, entities[k][e], { __selected: this.state.selected[entities[k][e]._id] })))
-    })
 
     return (
       <div>
@@ -307,6 +278,8 @@ class EntityTreeSelectionModal extends Component {
                 return true
               }
             }}
+            selected={selected}
+            onSelectionChanged={this.handleSelectionChange}
             getContextMenuItems={allowNewFolder ? ({ entity, isRoot }) => {
               if (isRoot) {
                 return
@@ -321,8 +294,6 @@ class EntityTreeSelectionModal extends Component {
                 })
               }]
             } : undefined}
-            onNodeSelect={(es, v) => this.handleTreeNodeSelect(entities, es, v)}
-            onSelect={(e) => this.handleTreeNodeSelect(entities, e, !e.__selected === true)}
           />
         </div>
         <div className='button-bar'>

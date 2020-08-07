@@ -83,12 +83,13 @@ export default () => {
   })
 
   configuration.entityTreeContextMenuItemsResolvers.push(({
+    node,
     entity,
     entitySets,
     isRoot,
     isGroupEntity,
     getVisibleEntitySetsInTree,
-    onNewClick
+    onNewEntity
   }) => {
     const items = []
 
@@ -103,8 +104,8 @@ export default () => {
           title: entitySet.visibleName,
           icon: entitySet.faIcon != null ? entitySet.faIcon : 'fa-file',
           onClick: () => {
-            onNewClick(
-              isRoot ? undefined : entity._id,
+            onNewEntity(
+              isRoot ? undefined : node,
               entitySet.name,
               { defaults: { folder: isRoot ? null : { shortid: entity.shortid } } }
             )
@@ -117,8 +118,8 @@ export default () => {
         title: 'New Folder',
         icon: 'fa-folder',
         onClick: () => {
-          onNewClick(
-            isRoot ? null : entity._id,
+          onNewEntity(
+            isRoot ? null : node,
             'folders',
             { defaults: { folder: isRoot ? null : { shortid: entity.shortid } } }
           )
@@ -142,7 +143,7 @@ export default () => {
     getAllEntitiesInHierarchy,
     setClipboard,
     releaseClipboardTo,
-    onNodeClick,
+    onOpen,
     onRename,
     onClone,
     onRemove
@@ -155,7 +156,7 @@ export default () => {
         title: 'Edit',
         icon: 'fa-edit',
         onClick: () => {
-          onNodeClick(entity)
+          onOpen(entity)
         }
       })
     }
