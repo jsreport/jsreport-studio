@@ -119,8 +119,8 @@ class App extends Component {
       }
     })
 
-    if (this.props.params.shortid) {
-      const { shortid, entitySet } = this.props.params
+    if (this.props.match.params.shortid) {
+      const { shortid, entitySet } = this.props.match.params
 
       // delay the collapsing a bit to avoid showing ugly transition of collapsed -> uncollapsed
       setTimeout(() => {

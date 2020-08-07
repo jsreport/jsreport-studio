@@ -3,8 +3,8 @@ import Promise from 'bluebird'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { Router, browserHistory } from 'react-router'
-import { syncHistoryWithStore } from 'react-router-redux'
+import { createBrowserHistory } from 'history'
+import { ConnectedRouter } from 'connected-react-router'
 import ReactModal from 'react-modal'
 import zipObject from 'lodash/zipObject'
 import createStore from './redux/create'
@@ -32,8 +32,8 @@ window.__webpack_public_path__ = __webpack_public_path__
 
 defaults()
 
+const browserHistory = createBrowserHistory()
 const store = createStore(browserHistory)
-const history = syncHistoryWithStore(browserHistory, store)
 
 var Studio = window.Studio = createStudio(store)
 
@@ -95,7 +95,11 @@ const start = async () => {
 
   const routes = getRoutes(window.Studio.routes)
 
-  let component = <Router history={history}>{routes}</Router>
+  let component = (
+    <ConnectedRouter history={browserHistory}>
+      {routes}
+    </ConnectedRouter>
+  )
 
   ReactDOM.render(
     <Provider store={store} key='provider'>

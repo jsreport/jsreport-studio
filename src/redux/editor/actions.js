@@ -4,7 +4,7 @@ import * as ActionTypes from './constants.js'
 import uid from '../../helpers/uid.js'
 import api from '../../helpers/api.js'
 import * as selectors from './selectors.js'
-import { push } from 'react-router-redux'
+import { push } from 'connected-react-router'
 import shortid from 'shortid'
 import reformatter from '../../helpers/reformatter'
 import preview from '../../helpers/preview'
@@ -151,7 +151,7 @@ export function updateHistory () {
       path = locationResolver(path, entity)
     }
 
-    if (path !== getState().routing.locationBeforeTransitions.pathname) {
+    if (path !== getState().router.location.pathname) {
       dispatch(push(path))
     }
   }
