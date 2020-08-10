@@ -99,6 +99,9 @@ class ThemeModal extends Component {
                 <input
                   type='radio'
                   value={themeName}
+                  onChange={(ev) => {
+                    ev.target.checked && this.changeTheme(themeName)
+                  }}
                   checked={selectedTheme === themeName}
                 />
                 {themeName}
@@ -115,6 +118,9 @@ class ThemeModal extends Component {
                 <input
                   type='radio'
                   value={themeName}
+                  onChange={(ev) => {
+                    ev.target.checked && this.changeTheme(themeName)
+                  }}
                   checked={selectedEditorTheme === themeName}
                 />
                 {themeName}
@@ -127,7 +133,7 @@ class ThemeModal extends Component {
         <br />
         <div className='button-bar'>
           <button className='button confirmation' onClick={() => this.props.close()}>Confirm</button>
-          <button style={{'white-space': 'nowrap'}} className='button danger' onClick={() => this.restoreThemeToDefault()}>Restore to default</button>
+          <button style={{ 'whiteSpace': 'nowrap' }} className='button danger' onClick={() => this.restoreThemeToDefault()}>Restore to default</button>
         </div>
       </div>
     )
