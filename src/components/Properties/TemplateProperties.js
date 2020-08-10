@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { engines, recipes } from '../../lib/configuration'
 
-export default class TemplateProperties extends Component {
+class TemplateProperties extends Component {
   static propTypes = {
     entity: PropTypes.object,
     entities: PropTypes.object,
@@ -42,3 +42,5 @@ export default class TemplateProperties extends Component {
     )
   }
 }
+
+export default TemplateProperties

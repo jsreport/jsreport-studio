@@ -319,6 +319,7 @@ export default function useEntityTree (main, {
 
   const sharedValues = useMemo(() => {
     return {
+      allEntities: entities,
       paddingByLevel: paddingByLevelInTree,
       selectable,
       selectionMode,
@@ -424,6 +425,7 @@ export default function useEntityTree (main, {
       getContextMenuItems
     }
   }, [
+    entities,
     paddingByLevelInTree,
     selectable,
     selectionMode,

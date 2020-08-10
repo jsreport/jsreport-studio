@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import style from './Properties.scss'
 import { entitySets, propertiesComponents } from '../../lib/configuration.js'
 
-export default class Properties extends Component {
+class Properties extends Component {
   static propTypes = {
     entity: PropTypes.object,
     entities: PropTypes.object,
@@ -48,17 +48,19 @@ export default class Properties extends Component {
 
     const nameAttribute = entitySets[entity.__entitySet].nameAttribute
 
-    return <div className={style.propertiesNodes}>
-      <div>
-        <div className='form-group'>
-          <label>{nameAttribute}</label>
-          <input
-            type='text' value={entity[nameAttribute] || ''}
-            onChange={(v) => onChange({ _id: entity._id, [nameAttribute]: v.target.value })} />
+    return (
+      <div className={style.propertiesNodes}>
+        <div>
+          <div className='form-group'>
+            <label>{nameAttribute}</label>
+            <input
+              type='text' value={entity[nameAttribute] || ''}
+              onChange={(v) => onChange({ _id: entity._id, [nameAttribute]: v.target.value })} />
+          </div>
         </div>
+        {propertiesComponents.map((p, i) => this.renderOne(p, i, entity, entities, onChange))}
       </div>
-      {propertiesComponents.map((p, i) => this.renderOne(p, i, entity, entities, onChange))}
-    </div>
+    )
   }
 
   render () {
@@ -74,3 +76,5 @@ export default class Properties extends Component {
     )
   }
 }
+
+export default Properties
