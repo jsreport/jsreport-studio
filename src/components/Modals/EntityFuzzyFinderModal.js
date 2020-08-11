@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import fuzzyFilterFactory from 'react-fuzzy-filter'
 import { selectors as entitiesSelector } from '../../redux/entities'
 import { actions as editorActions } from '../../redux/editor'
-import { entitySets, entityTreeIconResolvers } from '../../lib/configuration'
+import { resolveEntityTreeIconStyle } from '../EntityTree/utils'
+import { entitySets } from '../../lib/configuration'
 import styles from './EntityFuzzyFinderModal.scss'
 
 const { InputFilter, FilterResults } = fuzzyFilterFactory()
@@ -14,17 +15,6 @@ const fuseConfig = {
   includeScore: true,
   includeMatches: true,
   keys: ['path', 'name']
-}
-
-const resolveEntityTreeIconStyle = (entity) => {
-  for (const k in entityTreeIconResolvers) {
-    const mode = entityTreeIconResolvers[k](entity)
-    if (mode) {
-      return mode
-    }
-  }
-
-  return null
 }
 
 class EntityFuzzyFinderModal extends Component {
@@ -45,12 +35,13 @@ class EntityFuzzyFinderModal extends Component {
     this.setInputNode = this.setInputNode.bind(this)
     this.setResulItemNode = this.setResulItemNode.bind(this)
     this.getItem = this.getItem.bind(this)
+    this.handleInputFilterChange = this.handleInputFilterChange.bind(this)
     this.handleKeyDown = this.handleKeyDown.bind(this)
     this.renderResults = this.renderResults.bind(this)
   }
 
   componentDidMount () {
-    setTimeout(() => this.inputNode.focus(), 0)
+    setTimeout(() => this.inputNode && this.inputNode.focus(), 0)
   }
 
   setInputNode (el) {
@@ -68,6 +59,14 @@ class EntityFuzzyFinderModal extends Component {
   openEntity (entity) {
     this.props.openTab({ _id: entity._id })
     this.props.close()
+  }
+
+  handleInputFilterChange (newValue) {
+    if (this.state.selectedIndex !== 0) {
+      this.setState({ selectedIndex: 0 })
+    }
+
+    return newValue
   }
 
   handleKeyDown (ev) {
@@ -308,7 +307,7 @@ class EntityFuzzyFinderModal extends Component {
         <div onKeyDown={this.handleKeyDown}>
           <InputFilter
             debounceTime={200}
-            onChange={() => this.setState({ selectedIndex: 0 })}
+            onChange={this.handleInputFilterChange}
             inputProps={{
               ref: this.setInputNode,
               placeholder: 'Ex: Orders, Invoice, /samples, /samples/Population',
