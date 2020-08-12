@@ -12,6 +12,11 @@ class SplitPane extends Component {
 
     this.windows = {}
 
+    this.splitPaneRef = React.createRef()
+    this.resizerRef = React.createRef()
+    this.pane1Ref = React.createRef()
+    this.pane2Ref = React.createRef()
+
     this.state = {
       active: false,
       resized: false
@@ -67,7 +72,7 @@ class SplitPane extends Component {
   }
 
   setSize (props, state, cb) {
-    const ref = this.props.primary === 'first' ? this.refs.pane1 : this.refs.pane2
+    const ref = this.props.primary === 'first' ? this.pane1Ref.current : this.pane2Ref.current
     let newSize
 
     if (ref) {
@@ -104,7 +109,7 @@ class SplitPane extends Component {
     if (this.props.allowResize && !this.props.size && !this.state.collapsed) {
       if (this.state.active || force) {
         this.unFocus()
-        const ref = this.props.primary === 'first' ? this.refs.pane1 : this.refs.pane2
+        const ref = this.props.primary === 'first' ? this.pane1Ref.current : this.pane2Ref.current
         if (ref) {
           const node = ReactDOM.findDOMNode(ref)
 
@@ -243,8 +248,8 @@ class SplitPane extends Component {
     shouldCollapseAsync = (this.props.onCollapsing != null) ? this.props.onCollapsing(v) : true
 
     Promise.resolve(shouldCollapseAsync).then((shouldCollapse) => {
-      let ref1 = this.props.collapsable === 'first' ? this.refs.pane2 : this.refs.pane1
-      const ref2 = this.props.collapsable === 'first' ? this.refs.pane1 : this.refs.pane2
+      let ref1 = this.props.collapsable === 'first' ? this.pane2Ref.current : this.pane1Ref.current
+      const ref2 = this.props.collapsable === 'first' ? this.pane1Ref.current : this.pane2Ref.current
 
       let stateToUpdate
 
@@ -417,14 +422,14 @@ class SplitPane extends Component {
     const cancelSupported = (typeof cancellable === 'function' ? cancellable() : cancellable)
 
     return (
-      <div className={classes.join(' ')} style={style} ref='splitPane'>
+      <div className={classes.join(' ')} style={style} ref={this.splitPaneRef}>
         {this.renderPane(
           'first',
           undockSupported,
-          <Pane ref='pane1' key='pane1' className='Pane1' split={split}>{children[0]}</Pane>
+          <Pane ref={this.pane1Ref} key='pane1' className='Pane1' split={split}>{children[0]}</Pane>
         )}
         <Resizer
-          ref='resizer'
+          ref={this.resizerRef}
           key='resizer'
           collapsable={collapsable}
           collapsedText={collapsedText}
@@ -441,7 +446,7 @@ class SplitPane extends Component {
         {this.renderPane(
           'second',
           undockSupported,
-          <Pane ref='pane2' key='pane2' className='Pane2' split={split}>{children[1]}</Pane>
+          <Pane ref={this.pane2Ref} key='pane2' className='Pane2' split={split}>{children[1]}</Pane>
         )}
       </div>
     )

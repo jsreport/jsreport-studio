@@ -5,6 +5,12 @@ import { selectors } from '../../redux/entities'
 import { actions } from '../../redux/editor'
 
 class CloseConfirmationModal extends Component {
+  constructor (props) {
+    super(props)
+
+    this.cancelRef = React.createRef()
+  }
+
   static propTypes = {
     close: PropTypes.func.isRequired,
     options: PropTypes.object.isRequired
@@ -20,7 +26,7 @@ class CloseConfirmationModal extends Component {
   }
 
   componentDidMount () {
-    setTimeout(() => this.refs.cancel.focus(), 0)
+    setTimeout(() => this.cancelRef.current.focus(), 0)
   }
 
   render () {
@@ -30,14 +36,16 @@ class CloseConfirmationModal extends Component {
       return <div />
     }
 
-    return <div>
-      <div>Are you sure you want to close {entity.name} and lose the changes ? </div>
+    return (
+      <div>
+        <div>Are you sure you want to close {entity.name} and lose the changes ? </div>
 
-      <div className='button-bar'>
-        <button className='button danger' onClick={() => this.remove()}>Yes</button>
-        <button className='button confirmation' ref='cancel' onClick={() => this.cancel()}>Cancel</button>
+        <div className='button-bar'>
+          <button className='button danger' onClick={() => this.remove()}>Yes</button>
+          <button className='button confirmation' ref={this.cancelRef} onClick={() => this.cancel()}>Cancel</button>
+        </div>
       </div>
-    </div>
+    )
   }
 }
 

@@ -17,13 +17,14 @@ class ConcurrentUpdateErrorModal extends Component {
       isSaving: false
     }
 
+    this.latestRef = React.createRef()
     this.componentMounted = false
   }
 
   componentDidMount () {
     this.componentMounted = true
 
-    setTimeout(() => this.refs.latest.focus(), 0)
+    setTimeout(() => this.latestRef.current.focus(), 0)
   }
 
   componentWillUnmount () {
@@ -100,8 +101,21 @@ class ConcurrentUpdateErrorModal extends Component {
         </div>
 
         <div className='button-bar'>
-          <button className='button confirmation' disabled={isSaving} ref='latest' onClick={() => this.useLatest()}>Refresh entity</button>
-          <button className='button danger' disabled={isSaving} onClick={() => this.override()}>Override</button>
+          <button
+            ref={this.latestRef}
+            className='button confirmation'
+            disabled={isSaving}
+            onClick={() => this.useLatest()}
+          >
+            Refresh entity
+          </button>
+          <button
+            className='button danger'
+            disabled={isSaving}
+            onClick={() => this.override()}
+          >
+            Override
+          </button>
         </div>
       </div>
     )

@@ -29,6 +29,8 @@ class TextEditor extends Component {
     this.lintWorker = null
     this.oldCode = null
 
+    this.monacoRef = React.createRef()
+
     this.getFocus = this.getFocus.bind(this)
     this.setUpLintWorker = this.setUpLintWorker.bind(this)
     this.lint = this.lint.bind(this)
@@ -332,12 +334,12 @@ class TextEditor extends Component {
   getFocus () {
     const self = this
 
-    if (!self.refs.monaco) {
+    if (!self.monacoRef.current) {
       setTimeout(() => {
         self.getFocus()
       }, 150)
     } else {
-      self.refs.monaco.editor.focus()
+      self.monacoRef.current.editor.focus()
     }
   }
 
@@ -394,8 +396,8 @@ class TextEditor extends Component {
   }
 
   calculateEditorLayout (ev) {
-    if (this.refs.monaco && this.refs.monaco.editor) {
-      this.refs.monaco.editor.layout()
+    if (this.monacoRef.current && this.monacoRef.current.editor) {
+      this.monacoRef.current.editor.layout()
     }
   }
 
@@ -429,7 +431,7 @@ class TextEditor extends Component {
     return (
       <MonacoEditor
         name={name}
-        ref='monaco'
+        ref={this.monacoRef}
         width='100%'
         height='100%'
         language={mode}

@@ -12,7 +12,6 @@ import EntityTree from '../../components/EntityTree/EntityTree.js'
 import Properties from '../../components/Properties/Properties.js'
 import style from './App.scss'
 import Toolbar from '../../components/Toolbar/Toolbar.js'
-import Helmet from 'react-helmet'
 import SplitPane from '../../components/common/SplitPane/SplitPane.js'
 import EditorTabs from '../../components/Tabs/EditorTabs.js'
 import TabTitles from '../../components/Tabs/TabTitles.js'
@@ -57,6 +56,10 @@ class App extends Component {
   constructor (props) {
     super(props)
 
+    this.leftPaneRef = React.createRef()
+    this.previewPaneRef = React.createRef()
+    this.previewRef = React.createRef()
+
     this.openModal = this.openModal.bind(this)
     this.undockPreview = this.undockPreview.bind(this)
     this.handlePreviewCollapsing = this.handlePreviewCollapsing.bind(this)
@@ -81,7 +84,7 @@ class App extends Component {
       if (this.props.undockMode) {
         target = 'previewFrame_GENERAL'
 
-        this.refs.previewPane.openWindow({
+        this.previewPaneRef.current.openWindow({
           id: target,
           name: target,
           tab: true
@@ -98,11 +101,11 @@ class App extends Component {
     })
 
     registerCollapseLeftHandler((type = true) => {
-      this.refs.leftPane.collapse(type)
+      this.leftPaneRef.current.collapse(type)
     })
 
     registerCollapsePreviewHandler((type = true) => {
-      this.refs.previewPane.collapse(type)
+      this.previewPaneRef.current.collapse(type)
     })
 
     previewListeners.push((request, entities, target) => {
@@ -113,9 +116,9 @@ class App extends Component {
       // using the native close functionality of the browser tab,
       // if we don't try to open the window again we will have inconsistent references and
       // we can not close all preview tabs when un-collapsing the main pane preview again
-      if (undockMode && this.refs.previewPane && target && target.indexOf(request.template.shortid) !== -1) {
+      if (undockMode && this.previewPaneRef.current && target && target.indexOf(request.template.shortid) !== -1) {
         let previewWinOpts = this.getPreviewWindowOptions()
-        this.refs.previewPane.openWindow(previewWinOpts)
+        this.previewPaneRef.current.openWindow(previewWinOpts)
       }
     })
 
@@ -214,7 +217,7 @@ class App extends Component {
   }
 
   undockPreview () {
-    if (!this.refs.previewPane) {
+    if (!this.previewPaneRef.current) {
       return
     }
 
@@ -224,7 +227,7 @@ class App extends Component {
       return
     }
 
-    this.refs.previewPane.collapse(true, true, true)
+    this.previewPaneRef.current.collapse(true, true, true)
   }
 
   handleSplitDragFinished () {
@@ -270,14 +273,14 @@ class App extends Component {
   }
 
   handlePreviewDocking () {
-    const previews = this.refs.previewPane.windows
+    const previews = this.previewPaneRef.current.windows
 
     // close all preview windows when docking
     if (Object.keys(previews).length) {
       Object.keys(previews).forEach((id) => previews[id] && previews[id].close())
     }
 
-    this.refs.previewPane.windows = {}
+    this.previewPaneRef.current.windows = {}
   }
 
   handlePreviewUndocking () {
@@ -297,7 +300,7 @@ class App extends Component {
   }
 
   handlePreviewUndocked (id, previewWindow) {
-    const previews = this.refs.previewPane.windows
+    const previews = this.previewPaneRef.current.windows
 
     previews[id] = previewWindow
 
@@ -305,8 +308,8 @@ class App extends Component {
   }
 
   handlePreviewCancel () {
-    if (this.refs.preview) {
-      this.refs.preview.clear()
+    if (this.previewRef.current) {
+      this.previewRef.current.clear()
     }
   }
 
@@ -406,7 +409,6 @@ class App extends Component {
     return (
       <DndProvider backend={HTML5Backend}>
         <div className='container'>
-          <Helmet />
           <Modal openCallback={(open) => { this.refOpenModal = open }} />
 
           <div className={style.appContent + ' container'}>
@@ -427,7 +429,7 @@ class App extends Component {
 
               <div className='block'>
                 <SplitPane
-                  ref='leftPane'
+                  ref={this.leftPaneRef}
                   collapsedText='Objects / Properties' collapsable='first'
                   resizerClassName='resizer' defaultSize='85%' onChange={() => this.handleSplitChanged()}
                   onDragFinished={() => this.handleSplitDragFinished()}>
@@ -445,7 +447,7 @@ class App extends Component {
                       activeTabKey={activeTabKey} activateTab={activateTab} tabs={tabsWithEntities}
                       closeTab={(k) => this.closeTab(k)} />
                     <SplitPane
-                      ref='previewPane'
+                      ref={this.previewPaneRef}
                       collapsedText='preview'
                       collapsable='second'
                       undockeable={this.isPreviewUndockeable}
@@ -461,7 +463,7 @@ class App extends Component {
                       resizerClassName='resizer'>
                       <EditorTabs
                         activeTabKey={activeTabKey} onUpdate={(v) => groupedUpdate(v)} tabs={tabsWithEntities} />
-                      <Preview ref='preview' main onLoad={stop} />
+                      <Preview ref={this.previewRef} main onLoad={stop} />
                     </SplitPane>
                   </div>
                 </SplitPane>

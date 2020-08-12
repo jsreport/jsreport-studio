@@ -14,13 +14,15 @@ class RenameModal extends Component {
   constructor (props) {
     super(props)
 
+    this.nameRef = React.createRef()
+
     this.state = {
       error: null
     }
   }
 
   componentDidMount () {
-    setTimeout(() => this.refs.name.focus(), 0)
+    setTimeout(() => this.nameRef.current.focus(), 0)
   }
 
   handleKeyPress (e) {
@@ -30,11 +32,11 @@ class RenameModal extends Component {
   }
 
   async rename () {
-    if (!this.refs.name.value) {
+    if (!this.nameRef.current.value) {
       return
     }
 
-    const newName = this.refs.name.value
+    const newName = this.nameRef.current.value
     const nameAttribute = entitySets[this.props.entity.__entitySet].nameAttribute
 
     try {
@@ -76,7 +78,7 @@ class RenameModal extends Component {
       <div className='form-group'>
         <label>rename entity</label>
         <input
-          ref='name'
+          ref={this.nameRef}
           type='text'
           defaultValue={entity[nameAttribute]}
           onKeyPress={(e) => this.handleKeyPress(e)}
@@ -87,7 +89,7 @@ class RenameModal extends Component {
       </div>
       <div className='button-bar'>
         <button className='button confirmation' onClick={() => this.rename()}>Ok</button>
-        <button className='button confirmation' ref='cancel' onClick={() => this.props.close()}>Cancel</button>
+        <button className='button confirmation' onClick={() => this.props.close()}>Cancel</button>
       </div>
     </div>
   }

@@ -14,10 +14,17 @@ class NewEntityModal extends Component {
   constructor (props) {
     super(props)
 
+    this.nameInputRef = React.createRef()
+
     this.state = {
       error: null,
       processing: false
     }
+  }
+
+  // the modal component for some reason after open focuses the panel itself
+  componentDidMount () {
+    setTimeout(() => this.nameInputRef.current.focus(), 0)
   }
 
   handleKeyPress (e) {
@@ -31,7 +38,7 @@ class NewEntityModal extends Component {
       return
     }
 
-    const name = val || this.refs.nameInput.value
+    const name = val || this.nameInputRef.current.value
 
     let entity = Object.assign({}, this.props.options.entity)
 
@@ -73,11 +80,6 @@ class NewEntityModal extends Component {
     })
   }
 
-  // the modal component for some reason after open focuses the panel itself
-  componentDidMount () {
-    setTimeout(() => this.refs.nameInput.focus(), 0)
-  }
-
   render () {
     const { error, processing } = this.state
     const { entitySet, initialName } = this.props.options
@@ -88,7 +90,7 @@ class NewEntityModal extends Component {
         <input
           type='text'
           placeholder='name...'
-          ref='nameInput'
+          ref={this.nameInputRef}
           defaultValue={initialName}
           onKeyPress={(e) => this.handleKeyPress(e)}
         />

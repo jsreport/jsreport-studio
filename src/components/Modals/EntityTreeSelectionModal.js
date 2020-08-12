@@ -115,12 +115,14 @@ class EntityTreeSelectionModal extends Component {
       }, {})
     }
 
+    this.cancelRef = React.createRef()
+
     this.createNewFolder = this.createNewFolder.bind(this)
     this.handleSelectionChange = this.handleSelectionChange.bind(this)
   }
 
   componentDidMount () {
-    setTimeout(() => this.refs.cancel.focus(), 0)
+    setTimeout(() => this.cancelRef.current.focus(), 0)
   }
 
   handleSelectionChange (selected) {
@@ -297,7 +299,13 @@ class EntityTreeSelectionModal extends Component {
           />
         </div>
         <div className='button-bar'>
-          <button className='button confirmation' ref='cancel' onClick={() => this.cancel()}>Cancel</button>
+          <button
+            ref={this.cancelRef}
+            className='button confirmation'
+            onClick={() => this.cancel()}
+          >
+            Cancel
+          </button>
           <button className='button confirmation' onClick={() => this.unselect()}>Unselect</button>
           <button className='button danger' onClick={() => this.save()}>Ok</button>
         </div>

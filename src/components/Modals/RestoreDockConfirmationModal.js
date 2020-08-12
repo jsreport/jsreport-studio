@@ -9,6 +9,16 @@ class RestoreDockConfirmationModal extends Component {
     options: PropTypes.object.isRequired
   }
 
+  constructor (props) {
+    super(props)
+
+    this.cancelRef = React.createRef()
+  }
+
+  componentDidMount () {
+    setTimeout(() => this.cancelRef.focus(), 0)
+  }
+
   dock () {
     this.props.close(true)
     this.props.desactivateUndockMode()
@@ -27,10 +37,6 @@ class RestoreDockConfirmationModal extends Component {
     this.cancel()
   }
 
-  componentDidMount () {
-    setTimeout(() => this.refs.cancel.focus(), 0)
-  }
-
   render () {
     return <div>
       <div>
@@ -40,7 +46,7 @@ class RestoreDockConfirmationModal extends Component {
 
       <div className='button-bar'>
         <button className='button danger' onClick={() => this.onResponse(true)}>Yes</button>
-        <button className='button confirmation' ref='cancel' onClick={() => this.onResponse(false)}>Cancel</button>
+        <button className='button confirmation' ref={this.cancelRef} onClick={() => this.onResponse(false)}>Cancel</button>
       </div>
     </div>
   }

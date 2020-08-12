@@ -20,6 +20,10 @@ class Preview extends Component {
   constructor (props) {
     super(props)
 
+    this.containerRef = React.createRef()
+    this.overlayRef = React.createRef()
+    this.iframeRef = React.createRef()
+
     this.state = {
       nodeKey: shortid.generate(),
       src: this.props.initialSrc,
@@ -121,29 +125,29 @@ class Preview extends Component {
   }
 
   applyStylesToIframe () {
-    if (!this.refs.container || !this.refs.preview) {
+    if (!this.containerRef.current || !this.iframeRef.current) {
       return
     }
 
     try {
       const { disableTheming } = this.state
 
-      if (this.refs.container.classList.contains(styles.containerDefaultBackground)) {
-        this.refs.container.classList.remove(styles.containerDefaultBackground)
+      if (this.containerRef.current.classList.contains(styles.containerDefaultBackground)) {
+        this.containerRef.current.classList.remove(styles.containerDefaultBackground)
       }
 
-      const previousStyle = this.refs.preview.contentDocument.head.querySelector('style[data-jsreport-theme-styles]')
+      const previousStyle = this.iframeRef.current.contentDocument.head.querySelector('style[data-jsreport-theme-styles]')
 
       if (previousStyle) {
         previousStyle.remove()
       }
 
       if (disableTheming) {
-        this.refs.container.classList.add(styles.containerDefaultBackground)
+        this.containerRef.current.classList.add(styles.containerDefaultBackground)
         return
       }
 
-      const containerStyles = window.getComputedStyle(this.refs.container, null)
+      const containerStyles = window.getComputedStyle(this.containerRef.current, null)
       const style = document.createElement('style')
 
       style.dataset.jsreportThemeStyles = true
@@ -156,9 +160,9 @@ class Preview extends Component {
         }
       `))
 
-      this.refs.preview.contentDocument.head.insertBefore(
+      this.iframeRef.current.contentDocument.head.insertBefore(
         style,
-        this.refs.preview.contentDocument.head.firstChild
+        this.iframeRef.current.contentDocument.head.firstChild
       )
     } catch (e) {
       // ignore error, because it was just cross-origin issues
@@ -178,22 +182,22 @@ class Preview extends Component {
   }
 
   resizeStarted () {
-    if (this.refs.overlay) {
-      this.refs.overlay.style.display = 'block'
+    if (this.overlayRef.current) {
+      this.overlayRef.current.style.display = 'block'
     }
 
-    if (this.refs.preview) {
-      this.refs.preview.style.display = 'none'
+    if (this.iframeRef.current) {
+      this.iframeRef.current.style.display = 'none'
     }
   }
 
   resizeEnded () {
-    if (this.refs.overlay) {
-      this.refs.overlay.style.display = 'none'
+    if (this.overlayRef.current) {
+      this.overlayRef.current.style.display = 'none'
     }
 
-    if (this.refs.preview) {
-      this.refs.preview.style.display = 'block'
+    if (this.iframeRef.current) {
+      this.iframeRef.current.style.display = 'block'
     }
   }
 
@@ -207,11 +211,11 @@ class Preview extends Component {
     }
 
     return (
-      <div ref='container' className={`block ${styles.container}`}>
-        <div ref='overlay' style={{ display: 'none' }} />
+      <div ref={this.containerRef} className={`block ${styles.container}`}>
+        <div ref={this.overlayRef} style={{ display: 'none' }} />
         <iframe
           key={nodeKey}
-          ref='preview'
+          ref={this.iframeRef}
           frameBorder='0'
           onLoad={this.handleOnLoad}
           allowFullScreen

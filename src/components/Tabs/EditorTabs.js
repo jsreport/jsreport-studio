@@ -26,7 +26,7 @@ export default class EditorTabs extends Component {
       return
     }
 
-    const componentTabRef = this.refs[activeTabKey]
+    const componentTabRef = this[`${activeTabKey}Ref`]
 
     if (!componentTabRef) {
       return
@@ -70,12 +70,12 @@ export default class EditorTabs extends Component {
       ...editorComponentResult.props,
       entity,
       tab: t.tab,
-      ref: t.tab.key,
+      ref: (el) => { this[`${t.tab.key}Ref`] = el },
       onUpdate: (o) => onUpdate(o)
     }
 
     return (
-      <Tab key={t.tab.key} >
+      <Tab key={t.tab.key}>
         {React.createElement(editorComponents[editorComponentResult.key], editorProps)}
       </Tab>
     )

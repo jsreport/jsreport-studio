@@ -14,10 +14,17 @@ class NewFolderModal extends Component {
   constructor (props) {
     super(props)
 
+    this.nameInputRef = React.createRef()
+
     this.state = {
       processing: false,
       error: null
     }
+  }
+
+  // the modal component for some reason after open focuses the panel itself
+  componentDidMount () {
+    setTimeout(() => this.nameInputRef.current.focus(), 0)
   }
 
   handleKeyPress (e) {
@@ -32,7 +39,7 @@ class NewFolderModal extends Component {
     }
 
     let entity = Object.assign({}, this.props.options.entity)
-    const name = val || this.refs.nameInput.value
+    const name = val || this.nameInputRef.current.value
     const isCloning = this.props.options.cloning === true
     let response
 
@@ -103,11 +110,6 @@ class NewFolderModal extends Component {
     this.props.close()
   }
 
-  // the modal component for some reason after open focuses the panel itself
-  componentDidMount () {
-    setTimeout(() => this.refs.nameInput.focus(), 0)
-  }
-
   render () {
     const { error, processing } = this.state
     const { initialName } = this.props.options
@@ -118,7 +120,7 @@ class NewFolderModal extends Component {
         <input
           type='text'
           placeholder='name...'
-          ref='nameInput'
+          ref={this.nameInputRef}
           defaultValue={initialName}
           onKeyPress={(e) => this.handleKeyPress(e)}
         />

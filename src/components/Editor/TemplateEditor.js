@@ -5,14 +5,17 @@ import _debounce from 'lodash/debounce'
 import SplitPane from '../../components/common/SplitPane/SplitPane.js'
 import { triggerSplitResize, templateEditorModeResolvers } from '../../lib/configuration.js'
 
-export default class TemplateEditor extends Component {
+class TemplateEditor extends Component {
   static propTypes = {
     entity: PropTypes.object.isRequired,
     onUpdate: PropTypes.func.isRequired
   }
 
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
+
+    this.contentEditorRef = React.createRef()
+
     this.handleSplitChanged = _debounce(this.handleSplitChanged, 150, { leading: true })
   }
 
@@ -40,7 +43,7 @@ export default class TemplateEditor extends Component {
         defaultSize={(window.innerHeight * 0.2) + 'px'}>
         <TextEditor
           key={entity._id}
-          ref='contentEditor'
+          ref={this.contentEditorRef}
           name={entity._id}
           getFilename={() => entity.name}
           mode={this.resolveTemplateEditorMode(entity) || 'handlebars'}
@@ -60,3 +63,5 @@ export default class TemplateEditor extends Component {
     )
   }
 }
+
+export default TemplateEditor

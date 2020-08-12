@@ -10,6 +10,12 @@ class DeleteConfirmationModal extends Component {
     options: PropTypes.object.isRequired
   }
 
+  constructor (props) {
+    super(props)
+
+    this.cancelRef = React.createRef()
+  }
+
   remove () {
     this.props.close()
     this.props.remove(this.props.entity._id, this.props.childrenIds)
@@ -20,7 +26,7 @@ class DeleteConfirmationModal extends Component {
   }
 
   componentDidMount () {
-    setTimeout(() => this.refs.cancel.focus(), 0)
+    setTimeout(() => this.cancelRef.current.focus(), 0)
   }
 
   render () {
@@ -44,8 +50,19 @@ class DeleteConfirmationModal extends Component {
           Are you sure you want to delete&nbsp;<b>{entityDisplay}</b>&nbsp;({entitySets[entity.__entitySet].visibleName || entity.__entitySet})?
         </div>
         <div className='button-bar'>
-          <button className='button danger' onClick={() => this.remove()}>Yes</button>
-          <button className='button confirmation' ref='cancel' onClick={() => this.cancel()}>Cancel</button>
+          <button
+            className='button danger'
+            onClick={() => this.remove()}
+          >
+            Yes
+          </button>
+          <button
+            ref={this.cancelRef}
+            className='button confirmation'
+            onClick={() => this.cancel()}
+          >
+            Cancel
+          </button>
         </div>
       </div>
     )
