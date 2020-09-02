@@ -1,5 +1,6 @@
 import 'babel-polyfill'
 import Promise from 'bluebird'
+import PropTypes from 'prop-types'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
@@ -19,6 +20,9 @@ import defaults from './configurationDefaults.js'
 import getEntityTreeOrder from './helpers/getEntityTreeOrder'
 
 window.React = React
+// NOTE: we add this alias just to be able to support compatibility between
+// older extensions and studio with react 16, we plan to remove remove this line in v3
+window.React.PropTypes = PropTypes
 
 ReactModal.setAppElement(getAppElement())
 
