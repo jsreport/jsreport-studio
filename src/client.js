@@ -15,7 +15,6 @@ import './theme/style.scss'
 import * as entities from './redux/entities'
 import * as settings from './redux/settings'
 import * as configuration from './lib/configuration.js'
-import { createStudio } from './Studio'
 import defaults from './configurationDefaults.js'
 import getEntityTreeOrder from './helpers/getEntityTreeOrder'
 
@@ -28,16 +27,15 @@ ReactModal.setAppElement(getAppElement())
 
 // eslint-disable-next-line no-undef, camelcase
 __webpack_public_path__ = configuration.rootPath() + '/studio/assets/'
-// the following is needed because a bug in monaco-editor-webpack-plugin
-// we should be able to remove the next line once this PR is merged and lands in new version
-// https://github.com/Microsoft/monaco-editor-webpack-plugin/pull/63
-// eslint-disable-next-line no-undef, camelcase
-window.__webpack_public_path__ = __webpack_public_path__
 
 defaults()
 
 const browserHistory = createBrowserHistory()
 const store = createStore(browserHistory)
+
+// we need to require the Studio file api at this point because it requires some component files
+// that need to be evaluated/executed after we set the correct __webpack_public_path__
+const { createStudio } = require('./Studio')
 
 var Studio = window.Studio = createStudio(store)
 
