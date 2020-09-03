@@ -56,6 +56,13 @@ export default class Toolbar extends Component {
         return false
       }
     }
+
+    if (e.which === 119 && this.props.canRun) {
+      e.preventDefault()
+      e.stopPropagation()
+      this.props.onRun()
+      return false
+    }
   }
 
   handleShortcut (e) {
@@ -83,12 +90,6 @@ export default class Toolbar extends Component {
         this.handleSave(this.props.onSave)
         return false
       }
-    }
-
-    if (e.which === 119 && this.props.canRun) {
-      e.preventDefault()
-      this.props.onRun()
-      return false
     }
   }
 
