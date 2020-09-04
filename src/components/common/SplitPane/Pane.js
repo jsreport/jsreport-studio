@@ -4,6 +4,13 @@ class Pane extends Component {
   constructor (props) {
     super(props)
     this.state = {}
+    this.nodeRef = React.createRef()
+  }
+
+  get node () {
+    if (this.nodeRef && this.nodeRef.current) {
+      return this.nodeRef.current
+    }
   }
 
   render () {
@@ -30,7 +37,7 @@ class Pane extends Component {
     style.minWidth = 0
 
     return (
-      <div className={classes.join(' ')} style={style}>
+      <div ref={this.nodeRef} className={classes.join(' ')} style={style}>
         {this.props.children}
       </div>
     )

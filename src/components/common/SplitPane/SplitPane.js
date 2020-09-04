@@ -111,7 +111,7 @@ class SplitPane extends Component {
         this.unFocus()
         const ref = this.props.primary === 'first' ? this.pane1Ref.current : this.pane2Ref.current
         if (ref) {
-          const node = ReactDOM.findDOMNode(ref)
+          const node = ref.node
 
           if (node.getBoundingClientRect) {
             const width = node.getBoundingClientRect().width
