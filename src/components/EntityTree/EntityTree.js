@@ -1,13 +1,12 @@
 import React, { useRef, useCallback } from 'react'
 import classNames from 'classnames'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import useEntityTree from './useEntityTree'
 import EntityTreeContext from './EntityTreeContext'
 import Toolbar from './Toolbar'
 import TreeList from './TreeList'
 import HighlightedArea from './HighlightedArea'
 import { RootContextMenu } from './ContextMenu'
-import { selectors as entitiesSelectors } from '../../redux/entities'
 import { actions as editorActions } from '../../redux/editor'
 import styles from './EntityTree.scss'
 
@@ -29,11 +28,6 @@ const EntityTree = ({
   onSelectionChanged,
   children
 }) => {
-  const { getEntityById, getEntityByShortid } = useSelector((state) => ({
-    getEntityById: (id, ...params) => entitiesSelectors.getById(state, id, ...params),
-    getEntityByShortid: (shortid, ...params) => entitiesSelectors.getByShortid(state, shortid, ...params)
-  }))
-
   const dispatch = useDispatch()
 
   const openTab = useCallback((...params) => {
@@ -62,8 +56,6 @@ const EntityTree = ({
     entities,
     selected,
     activeEntity,
-    getEntityById,
-    getEntityByShortid,
     getContextMenuItems,
     openTab,
     hierarchyMove,

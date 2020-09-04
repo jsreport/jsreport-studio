@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import isEqual from 'lodash/isEqual'
 import useFilteredEntities from './useFilteredEntities'
 import useCollapsed from './useCollapsed'
@@ -6,6 +7,7 @@ import useContextMenu from './useContextMenu'
 import useDropHandler from './useDropHandler'
 import useConstructor from '../../hooks/useConstructor'
 import HierarchyReplaceEntityModal from '../Modals/HierarchyReplaceEntityModal'
+import { selectors as entitiesSelectors } from '../../redux/entities'
 import ENTITY_NODE_DRAG_TYPE from './nodeDragType'
 import {
   checkIsGroupNode,
@@ -16,6 +18,11 @@ import {
 } from './utils'
 import { registerCollapseEntityHandler, modalHandler, entityTreeDropResolvers } from '../../lib/configuration.js'
 
+const mainEntityDropResolver = {
+  type: ENTITY_NODE_DRAG_TYPE,
+  handler: () => {}
+}
+
 export default function useEntityTree (main, {
   paddingByLevelInTree,
   selectable,
@@ -23,8 +30,6 @@ export default function useEntityTree (main, {
   entities,
   selected,
   activeEntity,
-  getEntityById,
-  getEntityByShortid,
   getContextMenuItems,
   openTab,
   hierarchyMove,
@@ -36,6 +41,11 @@ export default function useEntityTree (main, {
   listRef,
   contextMenuRef
 }) {
+  const entitiesFromState = useSelector((state) => state.entities)
+
+  const getEntityById = useCallback((id, ...params) => entitiesSelectors.getById({ entities: entitiesFromState }, id, ...params), [entitiesFromState])
+  const getEntityByShortid = useCallback((shortid, ...params) => entitiesSelectors.getByShortid({ entities: entitiesFromState }, shortid, ...params), [entitiesFromState])
+
   const dragOverContextRef = useRef(null)
   const [clipboard, setClipboard] = useState(null)
   const [highlightedArea, setHighlightedArea] = useState(null)
@@ -124,72 +134,77 @@ export default function useEntityTree (main, {
     return true
   }, [getEntityByShortid])
 
+  mainEntityDropResolver.handler = async ({ draggedItem, dragOverContext, dropComplete }) => {
+    const sourceEntitySet = draggedItem.entitySet
+    const sourceNode = draggedItem.node
+    const targetNode = dragOverContext ? dragOverContext.targetNode : undefined
+    let sourceInfo
+    let targetInfo
+
+    if (sourceNode && dragOverContext && !dragOverContext.containerTargetEntity) {
+      if (!dragOverContext.overRoot) {
+        if (!isValidHierarchyTarget(sourceNode, targetNode)) {
+          return
+        }
+      }
+
+      // drop will be at the same root level, so we stop it
+      if (sourceNode.data.folder == null) {
+        return
+      }
+
+      sourceInfo = {
+        id: sourceNode.data._id,
+        entitySet: sourceEntitySet
+      }
+
+      targetInfo = {
+        shortid: null
+      }
+    } else if (
+      sourceNode &&
+      dragOverContext &&
+      dragOverContext.containerTargetEntity
+    ) {
+      if (!isValidHierarchyTarget(sourceNode, targetNode)) {
+        return
+      }
+
+      // skip drop over same hierarchy
+      if (
+        (sourceNode.data.__entitySet === 'folders' &&
+        sourceNode.data.shortid === dragOverContext.containerTargetEntity.shortid) ||
+        (sourceNode.data.folder && sourceNode.data.folder.shortid === dragOverContext.containerTargetEntity.shortid)
+      ) {
+        return
+      }
+
+      sourceInfo = {
+        id: sourceNode.data._id,
+        entitySet: sourceEntitySet
+      }
+
+      targetInfo = {
+        shortid: dragOverContext.containerTargetEntity.shortid,
+        children: getAllEntitiesInHierarchy(listRef.current.entityNodesById[dragOverContext.containerTargetEntity._id])
+      }
+    }
+
+    if (sourceInfo && targetInfo) {
+      dropComplete()
+      copyOrMoveEntity(sourceInfo, targetInfo)
+    }
+  }
+
   useConstructor(() => {
     if (main) {
-      entityTreeDropResolvers.push({
-        type: ENTITY_NODE_DRAG_TYPE,
-        handler: async ({ draggedItem, dragOverContext, dropComplete }) => {
-          const sourceEntitySet = draggedItem.entitySet
-          const sourceNode = draggedItem.node
-          const targetNode = dragOverContext ? dragOverContext.targetNode : undefined
-          let sourceInfo
-          let targetInfo
+      const registered = entityTreeDropResolvers.find((r) => r === mainEntityDropResolver)
 
-          if (sourceNode && dragOverContext && !dragOverContext.containerTargetEntity) {
-            if (!dragOverContext.overRoot) {
-              if (!isValidHierarchyTarget(sourceNode, targetNode)) {
-                return
-              }
-            }
+      if (registered != null) {
+        return
+      }
 
-            // drop will be at the same root level, so we stop it
-            if (sourceNode.data.folder == null) {
-              return
-            }
-
-            sourceInfo = {
-              id: sourceNode.data._id,
-              entitySet: sourceEntitySet
-            }
-
-            targetInfo = {
-              shortid: null
-            }
-          } else if (
-            sourceNode &&
-            dragOverContext &&
-            dragOverContext.containerTargetEntity
-          ) {
-            if (!isValidHierarchyTarget(sourceNode, targetNode)) {
-              return
-            }
-
-            // skip drop over same hierarchy
-            if (
-              (sourceNode.data.__entitySet === 'folders' &&
-              sourceNode.data.shortid === dragOverContext.containerTargetEntity.shortid) ||
-              (sourceNode.data.folder && sourceNode.data.folder.shortid === dragOverContext.containerTargetEntity.shortid)
-            ) {
-              return
-            }
-
-            sourceInfo = {
-              id: sourceNode.data._id,
-              entitySet: sourceEntitySet
-            }
-
-            targetInfo = {
-              shortid: dragOverContext.containerTargetEntity.shortid,
-              children: getAllEntitiesInHierarchy(listRef.current.entityNodesById[dragOverContext.containerTargetEntity._id])
-            }
-          }
-
-          if (sourceInfo && targetInfo) {
-            dropComplete()
-            copyOrMoveEntity(sourceInfo, targetInfo)
-          }
-        }
-      })
+      entityTreeDropResolvers.push(mainEntityDropResolver)
     }
   })
 
